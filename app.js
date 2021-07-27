@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors=require("cors")
@@ -29,6 +30,10 @@ app.use('/testApi',apirouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
+//CREATE TABLE `globalreach`.`signup` ( `Firstname` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL , `Lastname` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL , `Email` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL , `Password` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ) ENGINE = InnoDB;
+
 
 // error handler
 app.use(function(err, req, res, next) {
