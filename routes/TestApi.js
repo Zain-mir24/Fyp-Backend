@@ -9,6 +9,9 @@ router.post("/add", async function (req, res, next) {
   // res.send("this is the mainpage");
   const {Firstname, Lastname, Email, Password} = req.body;
   console.log("query", query);
+  //query for selection email
+  //if email found { return email alreayd present}
+  //else { insert query sign up}
   query(
     "INSERT INTO `signup`(`Firstname`, `Lastname`, `Email`, `Password`) VALUES (?,?,?,?)",
     [Firstname, Lastname, Email, Password]

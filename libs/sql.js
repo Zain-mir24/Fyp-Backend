@@ -7,7 +7,6 @@ let db = mysql.createConnection({
     password: "",
     database: "globalreach",
   });
-  let query = util.promisify(db.query).bind(db);
+  const query = util.promisify(db.query).bind(db);
   console.log("connected", query);
-
-export default query;
+   module.exports=query
