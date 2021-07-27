@@ -1,40 +1,25 @@
-var express = require('express');
-var router = express.Router();
-const mysql = require("mysql");
-var connection = mysql.createConnection({
-  //properties
-  host:'localhost',
-  user:'root',
-  password:'',
-  database:'globalreach'
+let express = require("express");
+let router = express.Router();
+let query = require('../libs/sql');
 
-})
-connection.connect(function(error){
-  if(!error){
-      console.log('Error')
-  }
-  else{
-      console.log('Connected')
-  }
-})
+
+
 /* GET home page. */
-router.post('/add', function(req, res, next) {
-  res.send('this is the mainpage');
-  const fname=req.body.Firstname
-  const lname=req.body.Lastname
-  const email=req.body.Email
-  const password=req.body.Password
-  console.log(req.body)
-  connection.query("INSERT INTO `signup`(`Firstname`, `Lastname`, `Email`, `Password`) VALUES (?,?,?,?)",[fname,lname,email,password],function(error,rows,field){
-    if(!!error){
-        console.log('Error in  the query')
-    }
-    else{
-     console.log('successful query')
-    }
- })
+router.post("/add", async function (req, res, next) {
+  // res.send("this is the mainpage");
+  const {Firstname, Lastname, Email, Password} = req.body;
+  console.log("query", query);
+  query(
+    "INSERT INTO `signup`(`Firstname`, `Lastname`, `Email`, `Password`) VALUES (?,?,?,?)",
+    [Firstname, Lastname, Email, Password]
+  ).then((val) => {
+    console.log("val", val);
+    return res.status(200).json({body: val})
+  }
+  ).catch((err) => {
+    console.log("err", err);
+    return res.status(400).json({body: err})
+  });
 });
 
-
-  
 module.exports = router;
