@@ -4,16 +4,21 @@ let query = require('../libs/sql');
 
 
 
-/* GET home page. */
+/* POST Signup */
 router.post("/add", async function (req, res, next) {
   // res.send("this is the mainpage");
-  const {Firstname, Lastname, Email, Password} = req.body;
-  console.log("query", query);
+  const Firstname = req.body.Firstname;
+  const Lastname =  req.body.Lastname
+  const Email= req.body.Email
+  const Password= req.body.Password
+    console.log("Zain",req.body.Firstname);
+  console.log('zain')
   //query for selection email
+
   //if email found { return email alreayd present}
   //else { insert query sign up}
   query(
-    "INSERT INTO `signup`(`Firstname`, `Lastname`, `Email`, `Password`) VALUES (?,?,?,?)",
+    "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
     [Firstname, Lastname, Email, Password]
   ).then((val) => {
     console.log("val", val);
