@@ -12,11 +12,13 @@ router.post("/add", async function (req, res, next) {
 
   //query for selection email
   query(
-    'SELECT Email FROM signup WHERE Email ="' + Email + '"',  //checks if email already exist
+    'SELECT Email FROM signup WHERE Email ="' + Email + '"', //checks if email already exist
     function (err, result) {
-      if (result) {  //if it does return that email already exist
+      if (result) {
+        //if it does return that email already exist
         res.send("Email exists already enter a new email");
-      } else {   //if not then enter the data into the database
+      } else {
+        //if not then enter the data into the database
         query(
           "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
           [Firstname, Lastname, Email, Password]
@@ -33,12 +35,19 @@ router.post("/add", async function (req, res, next) {
     }
   );
 });
-router.get("/search",async function(err,result){
+router.get("/search", function (req, res, err, result) {
+  const Email = req.body.Email;
   query(
-    'SELECT Email FROM signup WHERE Email ="' + Email + '"',  //checks if email already exist
-      ).then(()=>{
-     res.send(result)
-      })
-})
+    'SELECT Email FROM signup WHERE Email ="' + Email + '"' //checks if email already exist
+  )
+    .then((val) => {
+      console.log("val", val);
+      return res.status(200).json({ body: val });
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).json({ body: err });
+    });
+});
 
 module.exports = router;
