@@ -9,17 +9,14 @@ router.post("/add", async function (req, res, next) {
   const Lastname = req.body.Lastname;
   const Email = req.body.Email;
   const Password = req.body.Password;
-  console.log("Zain", req.body.Firstname);
-  console.log("zain");
+
   //query for selection email
-  //if email found { return email alreayd present}
-  //else { insert query sign up}
   query(
-    'SELECT Email FROM signup WHERE Email ="' + Email + '"',
+    'SELECT Email FROM signup WHERE Email ="' + Email + '"',  //checks if email already exist
     function (err, result) {
-      if (result) {
+      if (result) {  //if it does return that email already exist
         res.send("Email exists already enter a new email");
-      } else {
+      } else {   //if not then enter the data into the database
         query(
           "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
           [Firstname, Lastname, Email, Password]
@@ -36,5 +33,12 @@ router.post("/add", async function (req, res, next) {
     }
   );
 });
+router.get("/search",async function(err,result){
+  query(
+    'SELECT Email FROM signup WHERE Email ="' + Email + '"',  //checks if email already exist
+      ).then(()=>{
+     res.send(result)
+      })
+})
 
 module.exports = router;
