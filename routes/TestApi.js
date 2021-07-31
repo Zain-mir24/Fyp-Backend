@@ -11,13 +11,14 @@ router.post("/add", async function (req, res, next) {
   const Password = req.body.Password;
 
   //query for selection email
-  query(
-    'SELECT Email FROM signup WHERE Email ="' + Email + '"', //checks if email already exist
-    function (err, result) {
-      if (result) {
+  // query(
+  //   'SELECT Email FROM signup WHERE Email ="' + Email + '"', //checks if email already exist
+  //   function (err, result) {
+      // if (result) {
         //if it does return that email already exist
-        res.send("Email exists already enter a new email");
-      } else {
+      //   res.send("Email exists already enter a new email");
+      //   console.log("already exists");
+      // } else {
         //if not then enter the data into the database
         query(
           "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
@@ -31,23 +32,23 @@ router.post("/add", async function (req, res, next) {
             console.log("err", err);
             return res.status(400).json({ body: err });
           });
-      }
-    }
-  );
+    //   }
+    // }
+//   );
 });
-router.get("/search", function (req, res, err, result) {
-  const Email = req.body.Email;
-  query(
-    'SELECT Email FROM signup WHERE Email ="' + Email + '"' //checks if email already exist
-  )
-    .then((val) => {
-      console.log("val", val);
-      return res.status(200).json({ body: val });
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(400).json({ body: err });
-    });
+router.post("/search", function (req, res, err, result) {
+  res.send({ type: "post" });
+  // const Email = req.body.Email;
+  // query(
+  //   'SELECT Email FROM signup WHERE Email ="' + Email + '"' //checks if email already exist
+  // )
+  //   .then(() => {
+  //     return res.status(200).send(result)
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     return res.status(400).json({ body: err });
+  //   });
 });
 
 module.exports = router;
