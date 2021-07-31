@@ -3,8 +3,9 @@ let router = express.Router();
 let query = require("../libs/sql");
 
 /* POST Signup */
-router.post("/add", async function (req, res, next) {
-  //getting data from input fields
+router.post("/add", async (req, res, next) => {
+  try {
+    //getting data from input fields
   const Firstname = req.body.Firstname;
   const Lastname = req.body.Lastname;
   const Email = req.body.Email;
@@ -13,49 +14,35 @@ router.post("/add", async function (req, res, next) {
   //query for selection email
 
   //if not then enter the data into the database
-  
-    query('SELECT COUNT(*) AS cnt FROM signup WHERE Email ="' + Email + '"',function(err,data){
-      if(err){
-        console.log(err);
-    }   
-    else{
-        if(data[0].cnt > 0){  
-              res.send("Already exist")
-        }else{
-          query(
-            "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
-            [Firstname, Lastname, Email, Password]
-          )
-            .then((val) => {
-              console.log("val", val);
-              return res.status(200).json({ body: val });
-            })
-            .catch((err) => {
-              console.log("err", err);
-              return res.status(400).json({ body: err });
-            });
 
- 
+  const ifEmail = await query(`SELECT Email FROM signup WHERE Email = "${Email}"`);
+  if (ifEmail.length > 0) {
+    console.log("ifEMail", ifEmail);
+    return res.status(409).json(ifEmail);
+  } 
+
+  const addEmail = await query(
+    "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
+    [Firstname, Lastname, Email, Password]
+  )
+
+  if(!addEmail) {
+    return res.status(400).json({message: "Not saved"});
   }
-}
 
-  
+  return res.status(200).json(addEmail);
+
+
+
+  } catch(err) {
+    console.log("err", err);
+    next(err)
+  }
   
 });
-})
-router.post("/search", function (req, res, err, result) {
+router.post("/search", (req, res, next) => {
   res.send({ type: "post" });
-  // const Email = req.body.Email;
-  // query(
-  //   'SELECT Email FROM signup WHERE Email ="' + Email + '"' //checks if email already exist
-  // )
-  //   .then(() => {
-  //     return res.status(200).send(result)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //     return res.status(400).json({ body: err });
-  //   });
+  
 });
 
 module.exports = router;
