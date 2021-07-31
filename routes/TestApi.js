@@ -10,15 +10,18 @@ router.post("/add", async function (req, res, next) {
   const Email = req.body.Email;
   const Password = req.body.Password;
 
+  console.log(Email);
+
+
   //query for selection email
   query(
-    'SELECT Email FROM signup WHERE Email ="' + Email + '"', //checks if email already exist
+    'SELECT * FROM signup WHERE Email ="' + Email + '"', //checks if email already exist
     function (err, result) {
       if (result) {
         //if it does return that email already exist
-        res.send("Email exists already enter a new email");
+        console.log("Already Exist");
       } else {
-        //if not then enter the data into the database
+        // if not then enter the data into the databas
         query(
           "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
           [Firstname, Lastname, Email, Password]
