@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 let express = require("express");
 let router = express.Router();
 let query = require("../libs/sql");
