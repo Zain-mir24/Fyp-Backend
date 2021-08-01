@@ -4,11 +4,14 @@ let express = require("express");
 let router = express.Router();
 let query = require("../libs/sql");
 let jwt = require("jsonwebtoken");
+const  auth= require("../middleware/auth") 
 /* POST Signup */
+
 router.post("/add", async (req, res, next) => {
   try {
     //getting data from input fields
     //Authenticating the user
+    
     const Firstname = req.body.Firstname;
     const Lastname = req.body.Lastname;
     const Email = req.body.Email;
@@ -48,14 +51,15 @@ router.post("/add", async (req, res, next) => {
   }
 });
 //this route is for the admin. To search and get the data of the User
-router.post("/search", async (req, res, next) => {
+router.post("/search",auth, async (req, res, next) => {
   const Email = req.body.Email;
-  let Firstname, Lastname, Password;
+  let ID,Firstname, Lastname, Password;
   const ifEmail = await query(
-    `SELECT Firstname,Lastname,Email,Password FROM signup WHERE Email = "${Email}"`
+    `SELECT id,firstname,lastname,email,password FROM signup WHERE email = "${Email}"`
   );
   if (ifEmail.length > 0) {
-    console.log("ifEMail", ifEmail);
+    console.log("ifEmail", ifEmail);
+    Id =ifEmail[0].id
     Firstname = ifEmail[0].Firstname;
     Lastname = ifEmail[0].Lastname;
     Password = ifEmail[0].Password;
