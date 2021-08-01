@@ -5,6 +5,7 @@ let router = express.Router();
 let query = require("../libs/sql");
 let jwt = require("jsonwebtoken");
 const  auth= require("../middleware/auth") 
+const findUser=require("../models/users")
 /* POST Signup */
 
 router.post("/add", async (req, res, next) => {
@@ -53,7 +54,7 @@ router.post("/add", async (req, res, next) => {
 //this route is for the admin. To search and get the data of the User
 router.post("/search",auth, async (req, res, next) => {
   const Email = req.body.Email;
-  let ID,Firstname, Lastname, Password;
+  let Id,Firstname, Lastname, Password;
   const ifEmail = await query(
     `SELECT id,firstname,lastname,email,password FROM signup WHERE email = "${Email}"`
   );
