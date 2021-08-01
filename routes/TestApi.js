@@ -1,17 +1,23 @@
 let express = require("express");
 let router = express.Router();
 let query = require("../libs/sql");
-
+let jwt = require("jsonwebtoken");
 /* POST Signup */
 router.post("/add", async (req, res, next) => {
   try {
     //getting data from input fields
+    //Authenticating the user
     const Firstname = req.body.Firstname;
     const Lastname = req.body.Lastname;
     const Email = req.body.Email;
     const Password = req.body.Password;
 
-    //query for selection email
+    const User = {
+      Firstname,
+      Lastname,
+      Email,
+      Password,
+    };
 
     //if not then enter the data into the database
 
@@ -27,12 +33,13 @@ router.post("/add", async (req, res, next) => {
       "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
       [Firstname, Lastname, Email, Password]
     );
+    const accesstoken = jwt.sign(User, process.env.ACCESS_TOKEN_SECRET);
 
     if (!addEmail) {
       return res.status(400).json({ message: "Not saved" });
     }
 
-    return res.status(200).json(addEmail);
+    return res.status(200).json({ accesstoken: accesstoken });
   } catch (err) {
     console.log("err", err);
     next(err);
@@ -50,8 +57,13 @@ router.post("/search", async (req, res, next) => {
     Firstname = ifEmail[0].Firstname;
     Lastname = ifEmail[0].Lastname;
     Password = ifEmail[0].Password;
-    
-    return res.status(409).json(Firstname);
+    const User = {
+      Firstname,
+      Lastname,
+      Email,
+      Password,
+    };
+    return res.status(409).json(User);
   }
 });
 
