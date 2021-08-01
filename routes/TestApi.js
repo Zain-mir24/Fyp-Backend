@@ -38,10 +38,10 @@ router.post("/add", async (req, res, next) => {
     next(err);
   }
 });
+//this route is for the admin. To search and get the data of the User
 router.post("/search", async (req, res, next) => {
   const Email = req.body.Email;
   let Firstname, Lastname, Password;
-
   const ifEmail = await query(
     `SELECT Firstname,Lastname,Email,Password FROM signup WHERE Email = "${Email}"`
   );
@@ -50,10 +50,7 @@ router.post("/search", async (req, res, next) => {
     Firstname = ifEmail[0].Firstname;
     Lastname = ifEmail[0].Lastname;
     Password = ifEmail[0].Password;
-    console.log(Firstname);
-    console.log(Lastname);
-    console.log(Password);
-
+    
     return res.status(409).json(Firstname);
   }
 });
