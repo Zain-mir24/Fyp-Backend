@@ -14,38 +14,46 @@ router.post("/add", async function (req, res, next) {
 
 
   //query for selection email
-  query(
-    'SELECT * FROM signup WHERE Email ="' + Email + '"', //checks if email already exist
-    function (err, result) {
-      if (result) {
-        //if it does return that email already exist
-        console.log("Already Exist");
-      } else {
-        // if not then enter the data into the databas
-        query(
-          "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
-          [Firstname, Lastname, Email, Password]
-        )
-          .then((val) => {
-            console.log("val", val);
-            return res.status(200).json({ body: val });
-          })
-          .catch((err) => {
-            console.log("err", err);
-            return res.status(400).json({ body: err });
-          });
-      }
-    }
-  );
+
+  //if not then enter the data into the database
+  
+    query('SELECT COUNT(*) AS cnt FROM signup WHERE Email ="' + Email + '"',function(err,data){
+      if(err){
+        console.log(err);
+    }   
+    else{
+        if(data[0].cnt > 0){  
+              res.send("Already exist")
+        }else{
+          query(
+            "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
+            [Firstname, Lastname, Email, Password]
+          )
+            .then((val) => {
+              console.log("val", val);
+              return res.status(200).json({ body: val });
+            })
+            .catch((err) => {
+              console.log("err", err);
+              return res.status(400).json({ body: err });
+            });
+
+ 
+  }
+}
+
+  
+  
 });
-router.get("/search", function (req, res, err, result) {
+})
+router.post("/search", function (req, res, err, result) {
+  res.send({ type: "post" });
   const Email = req.body.Email;
   query(
-    'SELECT Email FROM signup WHERE Email ="' + Email + '"' //checks if email already exist
+    'SELECT * FROM signup WHERE Email ="' + Email + '"' //checks if email already exist
   )
-    .then((val) => {
-      console.log("val", val);
-      return res.status(200).json({ body: val });
+    .then(() => {
+      return res.status(200).send(result)
     })
     .catch((err) => {
       console.log(err);
