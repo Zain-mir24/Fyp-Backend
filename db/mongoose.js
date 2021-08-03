@@ -6,3 +6,4 @@ mongoose.connect('mongodb+srv://Zain:globalreach123@cluster0.myxr4.mongodb.net/G
     useFindAndModify: false,
     useUnifiedTopology: true 
 })
+module.exports=mongoose
