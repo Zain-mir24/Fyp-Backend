@@ -5,7 +5,7 @@ let router = express.Router();
 let query = require("../libs/sql");
 let jwt = require("jsonwebtoken");
 const  auth= require("../middleware/auth") 
-const findUser=require("../models/users")
+const User=require("../models/users")
 /* POST Signup */
 
 router.post("/add", async (req, res, next) => {
