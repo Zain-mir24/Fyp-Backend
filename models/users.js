@@ -3,7 +3,7 @@ const validator = require('validator')
 const sharp = require('sharp')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const Task = require('./task')
+
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -35,15 +35,8 @@ const userSchema = new mongoose.Schema({
         }
     },
   
-    tokens: [{
-        token: {
-            type: String,
-            required: true
-        }
-    }],
-    role:{
-        postion:[beneficries,donor,volunteer]
-    }
+
+   
 }, {
     timestamps: true
 })
