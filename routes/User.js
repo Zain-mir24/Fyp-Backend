@@ -45,5 +45,12 @@ router.post("/search",auth, async (req, res, next) => {
     return res.status(409).json(User);
   }
 });
+router.post("/login",async(req,res)=>{
+  try{
+
+  }catch(e){
+
+  }
+})
 
 module.exports = router;
