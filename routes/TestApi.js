@@ -9,47 +9,55 @@ const User=require("../models/users")
 /* POST Signup */
 
 router.post("/add", async (req, res, next) => {
+  const user = new User(req.body);
+
   try {
-    //getting data from input fields
-    //Authenticating the user
+    await user.save();
     
-    const Firstname = req.body.Firstname;
-    const Lastname = req.body.Lastname;
-    const Email = req.body.Email;
-    const Password = req.body.Password;
-
-    const User = {
-      Firstname,
-      Lastname,
-      Email,
-      Password,
-    };
-
-    //if not then enter the data into the database
-
-    const ifEmail = await query(
-      `SELECT Email FROM signup WHERE Email = "${Email}"`
-    );
-    if (ifEmail.length > 0) {
-      console.log("ifEMail", ifEmail);
-      return res.status(409).json(ifEmail);
-    }
-
-    const addEmail = await query(
-      "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
-      [Firstname, Lastname, Email, Password]
-    );
-    const accesstoken = jwt.sign(User, process.env.ACCESS_TOKEN_SECRET);
-
-    if (!addEmail) {
-      return res.status(400).json({ message: "Not saved" });
-    }
-
-    return res.status(200).json({ accesstoken: accesstoken });
-  } catch (err) {
-    console.log("err", err);
-    next(err);
+    const token = await user.generateAuthToken();
+    res.status(201).send({ user, token });
+  } catch (e) {
+    console.log(e)
+    res.status(400).send(e);
   }
+  // try {
+  //   //getting data from input fields
+  //   //Authenticating the user
+    
+  
+
+  //   const User = {
+  //     Firstname,
+  //     Lastname,
+  //     Email,
+  //     Password,
+  //   };
+
+  //   //if not then enter the data into the database
+
+  //   const ifEmail = await query(
+  //     `SELECT Email FROM signup WHERE Email = "${Email}"`
+  //   );
+  //   if (ifEmail.length > 0) {
+  //     console.log("ifEMail", ifEmail);
+  //     return res.status(409).json(ifEmail);
+  //   }
+
+  //   const addEmail = await query(
+  //     "INSERT INTO signup (Firstname, Lastname, Email, Password) VALUES (?,?,?,?)",
+  //     [Firstname, Lastname, Email, Password]
+  //   );
+  //   const accesstoken = jwt.sign(User, process.env.ACCESS_TOKEN_SECRET);
+
+  //   if (!addEmail) {
+  //     return res.status(400).json({ message: "Not saved" });
+  //   }
+
+  //   return res.status(200).json({ accesstoken: accesstoken });
+  // } catch (err) {
+  //   console.log("err", err);
+  //   next(err);
+  // }
 });
 //this route is for the admin. To search and get the data of the User
 router.post("/search",auth, async (req, res, next) => {
