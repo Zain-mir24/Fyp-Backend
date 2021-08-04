@@ -7,6 +7,7 @@ let query = require("../libs/sql");
 const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
+
 /* POST Signup */
 
 router.post("/Signup", async (req, res, next) => {
@@ -35,6 +36,7 @@ router.post("/login", async (req, res) => {
     await user.save();
     res.status(201).send({ user, token });
   } catch (e) {
+    
     res.status(409).send(e);
   }
 });

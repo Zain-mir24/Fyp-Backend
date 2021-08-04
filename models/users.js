@@ -3,7 +3,8 @@ const validator = require('validator')
 const sharp = require('sharp')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-
+const dotenv = require("dotenv");
+dotenv.config();
 
 const userSchema = new mongoose.Schema({
     name: {
