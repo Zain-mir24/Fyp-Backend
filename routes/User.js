@@ -9,7 +9,7 @@ const User = require("../models/users");
 const mongoose = require("../db/mongoose");
 /* POST Signup */
 
-router.post("/add", async (req, res, next) => {
+router.post("/Signup", async (req, res, next) => {
   const user = new User(req.body);
 
   try {
@@ -42,6 +42,7 @@ router.post("/login", async (req, res) => {
 //post route for the user
 router.post("/logout", async (req, res) => {
   try {
+    console.log("logout");
   } catch (e) {}
 });
 module.exports = router;
