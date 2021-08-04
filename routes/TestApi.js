@@ -6,6 +6,7 @@ let query = require("../libs/sql");
 let jwt = require("jsonwebtoken");
 const  auth= require("../middleware/auth") 
 const User=require("../models/users")
+const mongoose =require("../db/mongoose")
 /* POST Signup */
 
 router.post("/add", async (req, res, next) => {
@@ -17,7 +18,7 @@ router.post("/add", async (req, res, next) => {
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (e) {
-    console.log(e)
+    console.log('errrorr',e)
     res.status(400).send(e);
   }
   // try {
