@@ -32,19 +32,27 @@ router.post("/login", async (req, res) => {
       req.body.email,
       req.body.password
     );
+    console.log(user)
     const token = user.generateAuthToken();
     await user.save();
     res.status(201).send({ user, token });
   } catch (e) {
     
-    res.status(409).send(e);
+    res.status(400).send(e);
   }
 });
 //logout route for the user
 //post route for the user
 router.post("/logout", async (req, res) => {
   try {
-    console.log("logout");
-  } catch (e) {}
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    });
+    await req.user.save();
+
+    res.send();
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 module.exports = router;
