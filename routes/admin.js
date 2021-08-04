@@ -7,6 +7,7 @@ let query = require("../libs/sql");
 const  auth= require("../middleware/auth") 
 const User=require("../models/users")
 const mongoose =require("../db/mongoose")
+//Admin routes
 router.post("/search",auth, async (req, res, next) => {
   const Email = req.body.Email;
   let Id,Firstname, Lastname, Password;
