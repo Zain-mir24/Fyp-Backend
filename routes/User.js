@@ -3,7 +3,6 @@ dotenv.config();
 let express = require("express");
 let router = express.Router();
 let query = require("../libs/sql");
-
 const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
@@ -32,12 +31,11 @@ router.post("/login", async (req, res) => {
       req.body.email,
       req.body.password
     );
-    console.log(user)
+  
     const token = user.generateAuthToken();
-    await user.save();
+    console.log(user);
     res.status(201).send({ user, token });
   } catch (e) {
-    
     res.status(400).send(e);
   }
 });

@@ -7,7 +7,7 @@ const  auth= require("../middleware/auth")
 const User=require("../models/users")
 const mongoose =require("../db/mongoose")
 //Admin routes
-
+//admindahsboard route should also be created
 //viewing all the users
 router.get("/user", async (req, res, next) => {
  try{
@@ -19,9 +19,9 @@ router.get("/user", async (req, res, next) => {
 });
 
 //updating the user in the database
-router.patch("/users/me", auth, async (req, res) => {
+router.patch("/users/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["name", "email", "password", "age"];
+  const allowedUpdates = ["name", "email", "password"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
