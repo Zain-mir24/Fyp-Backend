@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }],
+    }]
   
 
    
@@ -71,7 +71,7 @@ userSchema.methods.generateAuthToken = async function () {
 
     user.tokens = user.tokens.concat({ token })
     await user.save()
-
+      console.log("tokeen",token)
     return token
 }
 
