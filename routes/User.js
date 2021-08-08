@@ -6,7 +6,16 @@ let query = require("../libs/sql");
 const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
-
+//Reading users
+router.get("/users", auth, async (req, res, next) => {
+  try {
+    const user = await User.find({});
+    console.log("its working");
+    res.send(user);
+  } catch (e) {
+    res.status(501).send();
+  }
+});
 /* POST Signup */
 
 router.post("/Signup", async (req, res, next) => {
@@ -31,8 +40,7 @@ router.post("/login", async (req, res) => {
       req.body.email,
       req.body.password
     );
-
-    const token =await user.generateAuthToken();
+    const token = await user.generateAuthToken();
     console.log(user);
     console.log("tokeeen", token);
     res.status(201).send({ user, token });
