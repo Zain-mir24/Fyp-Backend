@@ -43,14 +43,15 @@ router.post("/login", async (req, res) => {
     const token = await user.generateAuthToken();
     console.log(user);
     console.log("tokeeen", token);
-    res.status(201).send({ user, token });
+    res.status(200).send({ user, token });
   } catch (e) {
+    console.log(e)
     res.status(400).send(e);
   }
 });
 //logout route for the user
 //post route for the user
-router.post("/logout", async (req, res) => {
+router.post("/logout",auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
       return token.token !== req.token;
@@ -73,7 +74,7 @@ router.post("/logoutAll", auth, async (req, res) => {
   }
 });
 //showing the users profile
-router.get("/me", auth, async (req, res) => {
+router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
 
