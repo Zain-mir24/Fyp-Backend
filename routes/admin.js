@@ -12,8 +12,9 @@ const mongoose = require("../db/mongoose");
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);
+  console.log(req.body )
   console.log(updates);
-  const allowedUpdates = ["name", "email", "password"];
+  const allowedUpdates = ['name', 'email', 'password'];
   const isValidOperation = updates.every((update) =>{
     return allowedUpdates.includes(update)
   }   
@@ -22,11 +23,15 @@ router.patch("/users/:id", async (req, res) => {
     return res.status(400).send({ error: "Invalid updates!" });
   }
   try {
-    updates.forEach((update) => (req.user[update] = req.body[update]));
-    await req.user.save();
-    res.send(req.user);
+    const user =await User.findByIdAndUpdate(req.params.id,req.body,{new:true,runValidators:true})
+    if(!user){
+      return res.status(404).send()
+    }
+  
+   
+    res.send(user);
   } catch (e) {
-    console.log(e);
+    console.log("error",e);
     res.status(400).send(e);
   }
 });
