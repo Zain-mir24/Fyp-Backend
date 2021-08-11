@@ -41,10 +41,12 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     volunteer:{
-        type:Boolean
+        type:Boolean,
+        required:true
     },
     Donor:{
-        type:Boolean
+        type:Boolean,
+        required:true
     },
     tokens: [{
         token: {
