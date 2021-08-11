@@ -7,7 +7,7 @@ const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
 //Admin routes
-//admindahsboard route should also be created
+
 
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {

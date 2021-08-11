@@ -35,12 +35,24 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    
+    benefeceires:{
+        type:Boolean,
+        required: true
+    },
+    volunteer:{
+        type:Boolean
+    },
+    Donor:{
+        type:Boolean
+    },
     tokens: [{
         token: {
             type: String,
             required: true
         }
     }]
+
   
 
    
