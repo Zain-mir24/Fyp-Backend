@@ -36,5 +36,18 @@ router.patch("/users/:id", async (req, res) => {
   }
 });
 //deleting user from the database
+router.delete('/users/:id', async (req, res) => {
+  try {
+      const user = await User.findOneAndDelete({ _id: req.params.id})
+
+      if (!user) {
+          res.status(404).send()
+      }
+
+      res.send(user)
+  } catch (e) {
+      res.status(500).send()
+  }
+})
 
 module.exports = router;
