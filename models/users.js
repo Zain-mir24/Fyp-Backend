@@ -34,7 +34,14 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-<<<<<<< HEAD
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
@@ -46,26 +53,6 @@ userSchema.virtual("tasks", {
   localField: "_id",
   foreignField: "owner",
 });
-=======
-    tokens: [{
-        token: {
-            type: String,
-            required: true
-        }
-    }],
-  
-
-   
-}, {
-    timestamps: true
-})
-
-userSchema.virtual('tasks', {
-    ref: 'Task',
-    localField: '_id',
-    foreignField: 'owner'
-})
->>>>>>> 1d30b8eb08206fd57a060a2b2037b69c793e2277
 
 userSchema.methods.toJSON = function () {
   const user = this;
@@ -79,13 +66,11 @@ userSchema.methods.toJSON = function () {
 };
 
 userSchema.methods.generateAuthToken = async function () {
-<<<<<<< HEAD
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
-=======
-    const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, process.env.ACCESS_TOKEN_SECRET)
->>>>>>> 1d30b8eb08206fd57a060a2b2037b69c793e2277
+  const token = jwt.sign(
+    { _id: user._id.toString() },
+    process.env.ACCESS_TOKEN_SECRET
+  );
 
   user.tokens = user.tokens.concat({ token });
   await user.save();
