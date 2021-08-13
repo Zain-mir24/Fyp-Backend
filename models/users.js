@@ -74,11 +74,11 @@ userSchema.virtual("tasks", {
     },
     volunteer:{
         type:Boolean,
-        required:true
+       
     },
     Donor:{
         type:Boolean,
-        required:true
+       
     },
     tokens: [{
         token: {

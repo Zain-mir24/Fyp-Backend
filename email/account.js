@@ -3,7 +3,7 @@ const mailGun=require('nodemailer-mailgun-transport')
 
 const auth={
         auth:{
-            api_key:'2e44feb9e9703acc34eeaef9aeb9882b-9ad3eb61-403dbf3d',
+            api_key:process.env.MAILGUN_API_KEY,
             domain:'https://app.mailgun.com/app/sending/domains/sandbox4cea388a96b8438b8943038896545d9f.mailgun.org'
         }
 }
@@ -25,6 +25,7 @@ const sendMail = (name, email, cb) => {
         }
     });
 
+
+}
 // Exporting the sendmail
 module.exports = sendMail;
-}
