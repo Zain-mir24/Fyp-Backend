@@ -1,33 +1,54 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 let express = require("express");
 let router = express.Router();
 let query = require("../libs/sql");
-
-const  auth= require("../middleware/auth") 
-const User=require("../models/users")
-const mongoose =require("../db/mongoose")
+const auth = require("../middleware/auth");
+const User = require("../models/users");
+const mongoose = require("../db/mongoose");
 //Admin routes
-router.post("/search",auth, async (req, res, next) => {
-  const Email = req.body.Email;
-  let Id,Firstname, Lastname, Password;
-  const ifEmail = await query(
-    `SELECT id,firstname,lastname,email,password FROM signup WHERE email = "${Email}"`
-  );
-  if (ifEmail.length > 0) {
-    console.log("ifEmail", ifEmail);
-    Id =ifEmail[0].id
-    Firstname = ifEmail[0].Firstname;
-    Lastname = ifEmail[0].Lastname;
-    Password = ifEmail[0].Password;
-    const User = {
-      Firstname,
-      Lastname,
-      Email,
-      Password,
-    };
-    return res.status(409).json(User);
+
+
+//updating the user in the database
+router.patch("/users/:id", async (req, res) => {
+  const updates = Object.keys(req.body);
+  console.log(req.body);
+  console.log(updates);
+  const allowedUpdates = ["name", "email", "password"];
+  const isValidOperation = updates.every((update) => {
+    return allowedUpdates.includes(update);
+  });
+  if (!isValidOperation) {
+    return res.status(400).send({ error: "Invalid updates!" });
+  }
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!user) {
+      return res.status(404).send();
+    }
+
+    res.send(user);
+  } catch (e) {
+    console.log("error", e);
+    res.status(400).send(e);
   }
 });
-  
+//deleting user from the database
+router.delete("/users/:id", async (req, res) => {
+  try {
+    const user = await User.findOneAndDelete({ _id: req.params.id }); //checking if id is in the database
+
+    if (!user) {
+      res.status(404).send();
+    }
+
+    res.send(user);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
 module.exports = router;
