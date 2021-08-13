@@ -6,6 +6,7 @@ let query = require("../libs/sql");
 const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
+const sendMail=require("../email/account")
 //Reading users
 router.get("/users", auth, async (req, res, next) => {
   try {
@@ -20,12 +21,21 @@ router.get("/users", auth, async (req, res, next) => {
 
 router.post("/Signup", async (req, res, next) => {
   const user = new User(req.body);
-
+ const {name,email}=req.body
+ sendMail(name, email, function(err, data) {
+  if (err) {
+      res.status(500).json({ message: 'Internal Error' });
+  } else {
+      res.status({ message: 'Email sent!!!' });
+  }
+});
   try {
+   
     await user.save();
 
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
+    
   } catch (e) {
     console.log("errrorr", e);
     res.status(400).send(e);
