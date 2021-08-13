@@ -6,7 +6,7 @@ let query = require("../libs/sql");
 const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
-const sendMail=require("../email/account")
+const sendMail = require("../email/account");
 //Reading users
 router.get("/users", auth, async (req, res, next) => {
   try {
@@ -21,21 +21,24 @@ router.get("/users", auth, async (req, res, next) => {
 
 router.post("/Signup", async (req, res, next) => {
   const user = new User(req.body);
- const {name,email}=req.body
- sendMail(name, email, function(err, data) {
-  if (err) {
-      res.status(500).json({ message: 'Internal Error' });
-  } else {
-      res.status({ message: 'Email sent!!!' });
-  }
-});
+  const name = req.body.name
+  const email = req.body.email
+  console.log("name is",name)
+  console.log("email is",email)
+  
   try {
-   
+    await sendMail(name, email, function (err, data) {
+      if (err) {
+        res.status(500).json({ message: "Internal Error" });
+      } else {
+        console.log("emailSent")
+        res.status({ message: "Email sent!!!" });
+      }
+    });
     await user.save();
 
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
-    
   } catch (e) {
     console.log("errrorr", e);
     res.status(400).send(e);
@@ -55,13 +58,13 @@ router.post("/login", async (req, res) => {
     console.log("tokeeen", token);
     res.status(200).send({ user, token });
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(400).send(e);
   }
 });
 //logout route for the user
 //post route for the user
-router.post("/logout",auth, async (req, res) => {
+router.post("/logout", auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
       return token.token !== req.token;

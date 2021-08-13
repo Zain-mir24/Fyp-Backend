@@ -42,11 +42,11 @@ const userSchema = new mongoose.Schema({
     },
     volunteer:{
         type:Boolean,
-        required:true
+       
     },
     Donor:{
         type:Boolean,
-        required:true
+       
     },
     tokens: [{
         token: {
