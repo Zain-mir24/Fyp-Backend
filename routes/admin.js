@@ -7,8 +7,11 @@ const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
 //Admin routes
-
-
+//reading the users
+router.get("/users", async (req, res) => {
+  const user = await User.find();
+  res.json(user);
+});
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);
