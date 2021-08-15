@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 let express = require("express");
 let router = express.Router();
-let query = require("../libs/sql");
+
 const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
@@ -23,22 +23,22 @@ router.post("/Signup", async (req, res, next) => {
   const user = new User(req.body);
   const name = req.body.name
   const email = req.body.email
-  console.log("name is",name)
-  console.log("email is",email)
-  
+
+   sendMail(name, email, function (err, data) {
+    if (err) {
+      console.log(err)
+      res.status(500).json({ message: "Internal Error" });
+    } else {
+      console.log("emailSent")
+      res.status({ message: "Email sent!!!" });
+    }
+  });
   try {
-    await sendMail(name, email, function (err, data) {
-      if (err) {
-        res.status(500).json({ message: "Internal Error" });
-      } else {
-        console.log("emailSent")
-        res.status({ message: "Email sent!!!" });
-      }
-    });
+    
     await user.save();
 
     const token = await user.generateAuthToken();
-    res.status(201).send({ user, token });
+    // res.status(201).send({ user, token });
   } catch (e) {
     console.log("errrorr", e);
     res.status(400).send(e);
@@ -57,7 +57,7 @@ router.post("/login", async (req, res) => {
     console.log(user);
     console.log("tokeeen", token);
     res.status(200).send({ user, token });
-  } catch (e) {
+  } catch (e) { 
     console.log(e);
     res.status(400).send(e);
   }
