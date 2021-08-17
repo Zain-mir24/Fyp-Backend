@@ -1,23 +1,13 @@
-<<<<<<< HEAD
 const mongoose = require("mongoose");
 const validator = require("validator");
 const sharp = require("sharp");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
-const userSchema = new mongoose.Schema(
-  {
-=======
-const mongoose = require('mongoose')
-const validator = require('validator')
-const sharp = require('sharp')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 const dotenv = require("dotenv");
 dotenv.config();
 
-const userSchema = new mongoose.Schema({
->>>>>>> 8b6977298ef36adf2837da6dea73ebfa61bb1e97
+const userSchema = new mongoose.Schema(
+  {
     name: {
       type: String,
       required: true,
@@ -46,7 +36,17 @@ const userSchema = new mongoose.Schema({
         }
       },
     },
-<<<<<<< HEAD
+
+    benefeceires: {
+      type: Boolean,
+      required: true,
+    },
+    volunteer: {
+      type: Boolean,
+    },
+    Donor: {
+      type: Boolean,
+    },
     tokens: [
       {
         token: {
@@ -66,40 +66,6 @@ userSchema.virtual("tasks", {
   localField: "_id",
   foreignField: "owner",
 });
-=======
-    
-    benefeceires:{
-        type:Boolean,
-        required: true
-    },
-    volunteer:{
-        type:Boolean,
-       
-    },
-    Donor:{
-        type:Boolean,
-       
-    },
-    tokens: [{
-        token: {
-            type: String,
-            required: true
-        }
-    }]
-
-  
-
-   
-}, {
-    timestamps: true
-})
-
-userSchema.virtual('tasks', {
-    ref: 'Task',
-    localField: '_id',
-    foreignField: 'owner'
-})
->>>>>>> 8b6977298ef36adf2837da6dea73ebfa61bb1e97
 
 userSchema.methods.toJSON = function () {
   const user = this;
@@ -113,13 +79,12 @@ userSchema.methods.toJSON = function () {
 };
 
 userSchema.methods.generateAuthToken = async function () {
-<<<<<<< HEAD
   const user = this;
   const token = jwt.sign(
     { _id: user._id.toString() },
     process.env.ACCESS_TOKEN_SECRET
   );
-
+  console.log(token);
   user.tokens = user.tokens.concat({ token });
   await user.save();
 
@@ -128,19 +93,6 @@ userSchema.methods.generateAuthToken = async function () {
 
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
-=======
-    const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, process.env.ACCESS_TOKEN_SECRET)
-       console.log(token)
-    user.tokens = user.tokens.concat({ token })
-    await user.save()
-    
-    return token
-}
-
-userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email})
->>>>>>> 8b6977298ef36adf2837da6dea73ebfa61bb1e97
 
   if (!user) {
     throw new Error("Unable to login");
