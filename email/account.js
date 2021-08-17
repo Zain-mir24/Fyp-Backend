@@ -1,31 +1,24 @@
-const nodemailer=require('nodemailer')
-const mailGun=require('nodemailer-mailgun-transport')
+const nodemailer = require('nodemailer');
 
-const auth={
-        auth:{
-            api_key:process.env.MAILGUN_API_KEY,
-            domain:'https://app.mailgun.com/app/sending/domains/sandbox4cea388a96b8438b8943038896545d9f.mailgun.org'
-        }
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp-mail.outlook.com',
+    port: 587,
+    secureConnection: false,
+    tls: {
+        ciphers:'SSLv3'
+    },
+    auth: {
+        user: 'zainzz123@outlook.com',
+        pass: 'test12345678'
+    }
+})
+
+const mailOptions = {
+    from: '"Our Code World " <zainzz123@outlook.com>',
+    to: "zainnaeemk10@gmail.com",
+    subject: 'Hello',
+    text: "finally succeeeded in api calls"
 }
-const transporter = nodemailer.createTransport(mailGun(auth));
-const sendMail = (name, email, cb) => {
-    const mailOptions = {
-        sender: name,
-        from: 'zainmir1000@gmail.com',
-        to:email ,
-        subject: "Signup for mailgun",
-        text: "Welcome to mail gun. we are happy to have you!"
-    };
 
-    transporter.sendMail(mailOptions, function(err, data) {
-        if (err) {
-            cb(err, null);
-        } else {
-            cb(null, data);
-        }
-    });
-
-
-}
-// Exporting the sendmail
-module.exports = sendMail;
+module.exports = {transporter, mailOptions};
