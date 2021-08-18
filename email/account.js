@@ -14,11 +14,6 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-const mailOptions = {
-    from: '"Our Code World " <zainzz123@outlook.com>',
-    to: "zainnaeemk10@gmail.com",
-    subject: 'Hello',
-    text: "finally succeeeded in api calls"
-}
 
-module.exports = {transporter, mailOptions};
+
+module.exports = {transporter};
