@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 let express = require("express");
 let router = express.Router();
-
+const Campaign = require("../models/CampaignDB");
 const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
@@ -51,6 +51,17 @@ router.delete("/users/:id", async (req, res) => {
     res.send(user);
   } catch (e) {
     res.status(500).send();
+  }
+});
+//Adding campaigns
+router.post("/addCampaign", async (req, res) => {
+  const campaign = new Campaign(req.body);
+  try {
+    await campaign.save();
+    res.status(201).send("campaign added");
+  } catch (e) {
+    console.log(e);
+    res.status(401);
   }
 });
 
