@@ -21,9 +21,17 @@ router.get("/users", auth, async (req, res, next) => {
 /* POST Signup */
 
 router.post("/Signup", async (req, res, next) => {
+<<<<<<< HEAD
   const mailOptions = {
     from: '"Our Code World " <zainzz123@outlook.com>',
     to: req.body.email,
+=======
+  const user = new User(req.body);
+  const email = req.body.email;
+  const mailOptions = {
+    from: '"Our Code World " <zainzz123@outlook.com>',
+    to: email,
+>>>>>>> cab326bca5ea144cc526a0c2c3937979d5266cee
     subject: "Hello",
     text: "finally succeeeded in api calls",
   };
@@ -32,6 +40,7 @@ router.post("/Signup", async (req, res, next) => {
     .then((result) => {
       console.log("sent success");
       console.log("result", result);
+<<<<<<< HEAD
       res.status(200).send(result);
     })
     .catch((err) => {
@@ -46,6 +55,23 @@ router.post("/Signup", async (req, res, next) => {
   //   console.log("errrorr", e);
   //   res.status(400).send(e);
   // }
+=======
+      
+    })
+    .catch((err) => {
+      console.log("error", err);
+    
+    });
+  try {
+    await user.save();
+
+    const token = await user.generateAuthToken();
+    res.status(201).send({ user, token });
+  } catch (e) {
+    console.log("errrorr", e);
+    res.status(400).send(e);
+  }
+>>>>>>> cab326bca5ea144cc526a0c2c3937979d5266cee
 });
 
 //user login route
