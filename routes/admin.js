@@ -2,10 +2,15 @@ const dotenv = require("dotenv");
 dotenv.config();
 let express = require("express");
 let router = express.Router();
+const path = require("path");
 const Campaign = require("../models/CampaignDB");
 const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
+const News = require("../models/LatestNewsDB");
+const upload = require("../middleware/img");
+const fs = require("fs");
+
 //Admin routes
 //reading the users
 router.get("/users", async (req, res) => {
@@ -64,5 +69,39 @@ router.post("/addCampaign", async (req, res) => {
     res.status(401);
   }
 });
-
+//Latest news section
+//Reading the news data
+router.get("/LatestNews", async (req, res) => {
+  try {
+    const news = await News.find();
+    res.json(news)
+  } catch (e) {
+    console.log("errorrrr", e);
+  }
+});
+router.post("/addNews", upload.single("file"), async (req, res) => {
+  const news = new News(req.body);
+  try {
+    await news.save();
+    res.status(201).send("campaign added");
+  } catch (e) {
+    console.log(e);
+    res.status(401);
+  }
+  // var obj = {
+  //   name: req.body.name,
+  //   desription: req.body.desc,
+  //   img: {
+  //     data: fs.readFileSync(
+  //       path.join(__dirname + "/uploads/" + req.file.filename)
+  //     ),
+  //     contentType: "image/png",
+  //   },
+  // };
+  // try {
+  //   await News.create(obj);
+  // } catch (e) {
+  //   console.log(e);
+  // }
+});
 module.exports = router;
