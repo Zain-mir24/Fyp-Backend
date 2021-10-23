@@ -74,13 +74,14 @@ router.post("/addCampaign", async (req, res) => {
 router.get("/LatestNews", async (req, res) => {
   try {
     const news = await News.find();
-    res.json(news)
+    res.json(news);
   } catch (e) {
     console.log("errorrrr", e);
   }
 });
 router.post("/addNews", upload.single("file"), async (req, res) => {
   const news = new News(req.body);
+  res.send(news);
   try {
     await news.save();
     res.status(201).send("campaign added");
