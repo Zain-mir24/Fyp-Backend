@@ -9,7 +9,7 @@ const newsSchema =  new mongoose.Schema({
         type:String,
         required:true
     },
-    img:{
+    file:{
         data: Buffer,
         contentType: String
     }
