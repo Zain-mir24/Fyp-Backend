@@ -80,12 +80,7 @@ router.get("/LatestNews", async (req, res) => {
   }
 });
 router.post("/addNews", upload.single("file"), async (req, res) => {
-<<<<<<< HEAD
   const news = new News(req.body);
-  res.send(news);
-=======
-  const news = new News(req.body);  
->>>>>>> 2b58af37a89855885cbd0b0974db12c5d9e52c5a
   try {
     await news.save();
     res.status(201).send("Latest News added");
