@@ -1,19 +1,18 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const newsSchema =  new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
-        },
-      description:{
-        type:String,
-        required:true
-    },
-    file:{
-        data: Buffer,
-        contentType: String
-    }
-})
-const News = mongoose.model('LatestNews', newsSchema)
+const newsSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  file: {
+    type: String,
+  },
+});
+const News = mongoose.model("LatestNews", newsSchema);
 
-module.exports = News
+module.exports = News;
