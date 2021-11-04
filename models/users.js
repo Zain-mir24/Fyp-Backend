@@ -36,15 +36,11 @@ const userSchema = new mongoose.Schema({
         }
     },
     
-    benefeceires:{
+    beneficiary:{
         type:Boolean,
-        required: true
+        
     },
-    volunteer:{
-        type:Boolean,
-       
-    },
-    Donor:{
+    donor:{
         type:Boolean,
        
     },

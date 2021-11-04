@@ -45,6 +45,7 @@ router.post("/Signup", async (req, res, next) => {
 
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
+    
   } catch (e) {
     console.log("errrorr", e);
     res.status(400).send(e);
@@ -54,11 +55,13 @@ router.post("/Signup", async (req, res, next) => {
 //user login route
 // Post route
 router.post("/login", async (req, res) => {
+  
   try {
     const user = await User.findByCredentials(
-      req.body.email,
-      req.body.password
+      req.body.getEmail,
+      req.body.getPassword
     );
+
     const token = await user.generateAuthToken();
     console.log(user);
     console.log("tokeeen", token);
@@ -97,4 +100,21 @@ router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
 
+//Changing user's passowrd route
+router.post("/changepassword",async(req,res)=>{
+  try{
+    const user = await User.findOne({email:req.body.email});
+    if(!user){
+      return res.status(400).send("user with given email does not exist")
+    }
+    user.password=req.body.password;
+    await user.save();
+    return res.status(201).send("User's password has been changeds")
+  }catch(e){
+     console.log("Couldnt change the password",e)
+  }
+})
+router.get("/resetpassword",async(req,res)=>{
+
+})
 module.exports = router;
