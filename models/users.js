@@ -84,6 +84,19 @@ userSchema.methods.generateAuthToken = async function () {
     
     return token
 }
+userSchema.methods.generateSecretToken=async function(){
+    const user=this
+const secret = process.env.ACCESS_TOKEN_SECRET + user.password 
+const payload={
+    email:user.email,
+    _id:user._id.toString()
+}
+const token=jwt.sign(payload,secret,{expiresIn:"5m"})
+const link=`http://localhost:3000/resetPassword/${user._id}/${token}`
+await user.save()
+
+return link
+}
 
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email})
@@ -113,11 +126,11 @@ userSchema.pre('save', async function (next) {
 })
 
 // Delete user tasks when user is removed
-userSchema.pre('remove', async function (next) {
-    const user = this
-    await Task.deleteMany({ owner: user._id })
-    next()
-})
+// userSchema.pre('remove', async function (next) {
+//     const user = this
+//     await Task.deleteMany({ owner: user._id })
+//     next()
+// })
 
 const User = mongoose.model('User', userSchema)
 
