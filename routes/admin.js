@@ -44,6 +44,8 @@ router.patch("/users/:id", async (req, res) => {
     res.status(400).send(e);
   }
 });
+
+
 //deleting user from the database
 router.delete("/users/:id", async (req, res) => {
   try {
@@ -58,6 +60,8 @@ router.delete("/users/:id", async (req, res) => {
     res.status(500).send();
   }
 });
+
+
 //Adding campaigns
 router.post("/addCampaign", async (req, res) => {
   const campaign = new Campaign(req.body);
@@ -69,6 +73,9 @@ router.post("/addCampaign", async (req, res) => {
     res.status(401);
   }
 });
+
+
+
 //Latest news section
 //Reading the news data
 router.get("/LatestNews", async (req, res) => {
@@ -79,6 +86,8 @@ router.get("/LatestNews", async (req, res) => {
     console.log("errorrrr", e);
   }
 });
+
+//Addnews
 router.post("/addNews", upload.single("file"), async (req, res) => {
   var obj = {
     name: req.body.name,
@@ -93,20 +102,6 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     console.log(e);
     res.status(401);
   }
-  // var obj = {
-  //   name: req.body.name,
-  //   desription: req.body.desc,
-  //   img: {
-  //     data: fs.readFileSync(
-  //       path.join(__dirname + "/uploads/" + req.file.filename)
-  //     ),
-  //     contentType: "image/png",
-  //   },
-  // };
-  // try {
-  //   await News.create(obj);
-  // } catch (e) {
-  //   console.log(e);
-  // }
+ 
 });
 module.exports = router;
