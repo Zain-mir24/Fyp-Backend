@@ -107,13 +107,15 @@ router.post("/changepassword",async(req,res)=>{
     if(!user){
       return res.status(400).send("user with given email does not exist")
     }
-    user.password=req.body.password;
+    user.password=req.body.newpass;
     await user.save();
     return res.status(201).send("User's password has been changeds")
   }catch(e){
      console.log("Couldnt change the password",e)
   }
 })
+//Reset password route
+
 router.get("/resetpassword",async(req,res)=>{
 
 })
