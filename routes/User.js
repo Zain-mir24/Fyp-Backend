@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 const User = require("../models/users");
 const mongoose = require("../db/mongoose");
 const mailSender = require("../email/account");
+const jwt = require("jsonwebtoken");
 
 //Reading users
 router.get("/users", auth, async (req, res, next) => {
@@ -54,9 +55,10 @@ router.post("/Signup", async (req, res, next) => {
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findByCredentials(
-      req.body.email,
-      req.body.password
+      req.body.getEmail,
+      req.body.getPassword
     );
+
     const token = await user.generateAuthToken();
     console.log(user);
     console.log("tokeeen", token);
@@ -95,4 +97,74 @@ router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
 
+//Changing user's passowrd route
+router.post("/changepassword", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).send("user with given email does not exist");
+    }
+    user.password = req.body.newpass;
+    await user.save();
+    return res.status(201).send("User's password has been changeds");
+  } catch (e) {
+    console.log("Couldnt change the password", e);
+  }
+});
+//Forgot password route
+
+router.post("/forgotpassword", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).send("user does not exist");
+    }
+    //User link valid for 5 minutes
+    const link = await user.generateSecretToken();
+
+    const mailOptions = {
+      from: '"Global Reach " <zainzz123@outlook.com>',
+      to: email,
+      subject: "Resetlink",
+      text: `Here is your reset link ${link}`,
+    };
+    mailSender.transporter
+      .sendMail(mailOptions)
+      .then((res) => {
+        console.log("sent success");
+        console.log("result", res);
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+    res.status(201).send(link);
+  } catch (e) {
+    console.log("error ocured", e);
+  }
+});
+
+router.post("/resetPassword/:_id/:token", async (req, res) => {
+  const { _id, token } = req.params;
+  
+  const user = await User.findOne({ _id });
+  if (!user) return res.send("invalid id");
+  const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
+  try {
+    const payload = await jwt.verify(token, secret);
+    if(!payload) return res.render("doesnt work")
+    user.password=req.body.pass
+    await user.save()
+
+    return res.status(201)
+
+  } catch (e) {
+    console.log("Myerror",e.message);
+    res.send(e.message);
+  }
+});
+// router.post("/resetPassword/:_id/:token", async (req, res) => {
+//   const { _id, token } = req.params;
+//   res.send(user)
+// });
 module.exports = router;

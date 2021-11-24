@@ -45,7 +45,6 @@ router.patch("/users/:id", async (req, res) => {
   }
 });
 
-
 //deleting user from the database
 router.delete("/users/:id", async (req, res) => {
   try {
@@ -61,7 +60,6 @@ router.delete("/users/:id", async (req, res) => {
   }
 });
 
-
 //Adding campaigns
 router.post("/addCampaign", async (req, res) => {
   const campaign = new Campaign(req.body);
@@ -74,10 +72,6 @@ router.post("/addCampaign", async (req, res) => {
   }
 });
 
-
-
-//Latest news section
-//Reading the news data
 router.get("/LatestNews", async (req, res) => {
   try {
     const news = await News.find();
@@ -102,6 +96,5 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     console.log(e);
     res.status(401);
   }
- 
 });
 module.exports = router;
