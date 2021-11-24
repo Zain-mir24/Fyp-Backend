@@ -5,13 +5,42 @@ let router = express.Router();
 const path = require("path");
 const Campaign = require("../models/CampaignDB");
 const auth = require("../middleware/auth");
-const User = require("../models/users");
+const Admin = require("../models/Admin");
 const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
 const fs = require("fs");
 
 //Admin routes
+router.post("/Signup",async(req,res,next)=>{
+const admin = new Admin(req.body)
+try {
+  await admin.save();
+  const token = await user.generateAuthToken();
+  const mailOptions = {
+    from: '"Our Code World " <zainzz123@outlook.com>',
+    to: email,
+    subject: "You have signedup as an admin for global reach",
+    text: "Welcome to global reach",
+  };
+  mailSender.transporter
+    .sendMail(mailOptions)
+    .then((result) => {
+      console.log("sent success");
+      console.log("result", result);
+    })
+    .catch((err) => {
+      console.log("error", err);
+    });
+  res.status(201).send({ user, token });
+
+  
+} catch (e) {
+  console.log("errrorr", e);
+  res.status(400).send(e);
+}
+})
+
 //reading the users
 router.get("/users", async (req, res) => {
   const user = await User.find();

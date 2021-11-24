@@ -27,22 +27,15 @@ router.post("/Signup", async (req, res, next) => {
   const mailOptions = {
     from: '"Our Code World " <zainzz123@outlook.com>',
     to: email,
-    subject: "Hello",
-    text: "finally succeeeded in api calls",
+    subject: "You have signedup for global reach",
+    text: "Welcome to global reach",
   };
-  mailSender.transporter
-    .sendMail(mailOptions)
-    .then((result) => {
-      console.log("sent success");
-      console.log("result", result);
-    })
-    .catch((err) => {
-      console.log("error", err);
-    });
+
   try {
     await user.save();
-
     const token = await user.generateAuthToken();
+    await mailSender.transporter.sendMail(mailOptions);
+
     res.status(201).send({ user, token });
   } catch (e) {
     console.log("errrorr", e);
@@ -143,28 +136,24 @@ router.post("/forgotpassword", async (req, res) => {
     console.log("error ocured", e);
   }
 });
-
+//Resetpassword
 router.post("/resetPassword/:_id/:token", async (req, res) => {
   const { _id, token } = req.params;
-  
+
   const user = await User.findOne({ _id });
   if (!user) return res.send("invalid id");
   const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
   try {
     const payload = await jwt.verify(token, secret);
-    if(!payload) return res.render("doesnt work")
-    user.password=req.body.pass
-    await user.save()
+    if (!payload) return res.render("doesnt work");
+    user.password = req.body.pass;
+    await user.save();
 
-    return res.status(201)
-
+    return res.status(201);
   } catch (e) {
-    console.log("Myerror",e.message);
+    console.log("Myerror", e.message);
     res.send(e.message);
   }
 });
-// router.post("/resetPassword/:_id/:token", async (req, res) => {
-//   const { _id, token } = req.params;
-//   res.send(user)
-// });
+
 module.exports = router;
