@@ -40,7 +40,37 @@ try {
   res.status(400).send(e);
 }
 })
+// Post route
+router.post("/login", async (req, res) => {
+  try {
+    const user = await Admin.findByCredentials(
+      req.body.getEmail,
+      req.body.getPassword
+    );
 
+    const token = await Admin.generateAuthToken();
+    console.log(user);
+    console.log("tokeeen", token);
+    res.status(200).send({ user, token });
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  }
+});
+//logout route for the user
+//post route for the user
+router.post("/logout", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    });
+    await req.user.save();
+    res.status(200).send();
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+});
 //reading the users
 router.get("/users", async (req, res) => {
   const user = await User.find();
