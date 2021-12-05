@@ -26,6 +26,6 @@ const appealloanSchema = new mongoose.Schema({
     required: true,
   },
 });
-const Loanappeal = mongoose.model("Campaignappeal", appealloanSchema);
+const Loanappeal = mongoose.model("loanappeal", appealloanSchema);
 
 module.exports = Loanappeal;
