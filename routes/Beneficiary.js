@@ -17,7 +17,25 @@ router.post("/addCampaignappeal",upload.single("file"),async(req,res)=>{
         bid:req.body.bid,
         name: req.body.name,
         description: req.body.description,
-       file:req.body.fileName
+       file:req.body.fileName,
+       amountneeded:req.body.amountneeded  
+      };
+const camp = new Campaignappeal(obj)
+try{
+   await camp.save()
+   res.status(200).send(camp)
+}
+catch(e){
+    res.status(500).send(e)
+}
+})
+router.post("/addloanappeal",upload.single("file"),async(req,res)=>{
+    var obj = {
+        bid:req.body.bid,
+        name: req.body.name,
+        description: req.body.description,
+        file:req.body.fileName,
+       
       };
 const camp = new Campaignappeal(obj)
 try{
