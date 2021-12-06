@@ -13,7 +13,10 @@ const campaignSchema =  new mongoose.Schema({
     description:{
         type:String,
         required:true
-    }
+    }, file: {
+        type: String,
+        required:true
+      },
 })
 const Campaign = mongoose.model('Campaign', campaignSchema)
 

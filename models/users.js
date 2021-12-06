@@ -36,13 +36,11 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
+    userType: {
+      type: String,
+      required: true,
+    },
 
-    beneficiary: {
-      type: Boolean,
-    },
-    donor: {
-      type: Boolean,
-    },
     tokens: [
       {
         token: {
@@ -57,11 +55,11 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.virtual("tasks", {
-  ref: "Task",
-  localField: "_id",
-  foreignField: "owner",
-});
+// userSchema.virtual('tasks', {
+//     ref: 'Task',
+//     localField: '_id',
+//     foreignField: 'owner'
+// })
 
 userSchema.methods.toJSON = function () {
   const user = this;

@@ -1,0 +1,24 @@
+const mongoose = require("mongoose");
+
+const appealcampaignSchema = new mongoose.Schema({
+  bid: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  
+  description: {
+    type: String,
+    required: true,
+  },
+  file: {
+    type: String,
+    required: true,
+  },
+});
+const Campaignappeal = mongoose.model("Campaignappeal", appealcampaignSchema);
+
+module.exports = Campaignappeal;

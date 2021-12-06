@@ -5,13 +5,72 @@ let router = express.Router();
 const path = require("path");
 const Campaign = require("../models/CampaignDB");
 const auth = require("../middleware/auth");
-const User = require("../models/users");
+const Admin = require("../models/Admin");
 const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
 const fs = require("fs");
 
 //Admin routes
+router.post("/Signup",async(req,res,next)=>{
+const admin = new Admin(req.body)
+try {
+  await admin.save();
+  const token = await user.generateAuthToken();
+  const mailOptions = {
+    from: '"Our Code World " <zainzz123@outlook.com>',
+    to: email,
+    subject: "You have signedup as an admin for global reach",
+    text: "Welcome to global reach",
+  };
+  mailSender.transporter
+    .sendMail(mailOptions)
+    .then((result) => {
+      console.log("sent success");
+      console.log("result", result);
+    })
+    .catch((err) => {
+      console.log("error", err);
+    });
+  res.status(201).send({ user, token });
+
+  
+} catch (e) {
+  console.log("errrorr", e);
+  res.status(400).send(e);
+}
+})
+// Post route
+router.post("/login", async (req, res) => {
+  try {
+    const user = await Admin.findByCredentials(
+      req.body.getEmail,
+      req.body.getPassword
+    );
+
+    const token = await Admin.generateAuthToken();
+    console.log(user);
+    console.log("tokeeen", token);
+    res.status(200).send({ user, token });
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  }
+});
+//logout route for the user
+//post route for the user
+router.post("/logout", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    });
+    await req.user.save();
+    res.status(200).send();
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+});
 //reading the users
 router.get("/users", async (req, res) => {
   const user = await User.find();
