@@ -6,6 +6,8 @@ const path = require("path");
 const Campaign = require("../models/CampaignDB");
 const auth = require("../middleware/auth");
 const Admin = require("../models/Admin");
+const User = require("../models/users");
+
 const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
@@ -133,11 +135,17 @@ router.post("/addCampaign", async (req, res) => {
 //View campaigns appealed
 router.get("/viewAppeals", async (req, res) => {
   try {
-    const appeal = await Appeal.find({});
-    const beneficiaryid= appeal.data.bid
-    if(!appeal) return Error
-    res.status(200).json(appeal);
-    console.log(beneficiaryid,"Beneficiaryid")
+    const appeal = await Appeal.find();
+    var ids = appeal.map((i) => i.bid);
+    console.log(ids);
+    const beneficiary = await User.find({
+      _id: {
+        $in: ids,
+      },
+    }).exec();
+   
+    if (!appeal) return Error;
+    res.status(200).send({appeal,beneficiary});
   } catch (e) {
     res.status(500).send(e);
   }
