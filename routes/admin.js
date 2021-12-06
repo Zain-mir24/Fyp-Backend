@@ -9,37 +9,36 @@ const Admin = require("../models/Admin");
 const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
+const Appeal = require("../models/appealedCampaign");
 const fs = require("fs");
 
 //Admin routes
-router.post("/Signup",async(req,res,next)=>{
-const admin = new Admin(req.body)
-try {
-  await admin.save();
-  const token = await user.generateAuthToken();
-  const mailOptions = {
-    from: '"Our Code World " <zainzz123@outlook.com>',
-    to: email,
-    subject: "You have signedup as an admin for global reach",
-    text: "Welcome to global reach",
-  };
-  mailSender.transporter
-    .sendMail(mailOptions)
-    .then((result) => {
-      console.log("sent success");
-      console.log("result", result);
-    })
-    .catch((err) => {
-      console.log("error", err);
-    });
-  res.status(201).send({ user, token });
-
-  
-} catch (e) {
-  console.log("errrorr", e);
-  res.status(400).send(e);
-}
-})
+router.post("/Signup", async (req, res, next) => {
+  const admin = new Admin(req.body);
+  try {
+    await admin.save();
+    const token = await user.generateAuthToken();
+    const mailOptions = {
+      from: '"Our Code World " <zainzz123@outlook.com>',
+      to: email,
+      subject: "You have signedup as an admin for global reach",
+      text: "Welcome to global reach",
+    };
+    mailSender.transporter
+      .sendMail(mailOptions)
+      .then((result) => {
+        console.log("sent success");
+        console.log("result", result);
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+    res.status(201).send({ user, token });
+  } catch (e) {
+    console.log("errrorr", e);
+    res.status(400).send(e);
+  }
+});
 // Post route
 router.post("/login", async (req, res) => {
   try {
@@ -72,10 +71,10 @@ router.post("/logout", auth, async (req, res) => {
   }
 });
 //reading the users
-router.get("/users", async (req, res) => {
-  const user = await User.find();
-  res.json(user);
-});
+// router.get("/users", async (req, res) => {
+//   const user = await User.find();
+//   res.json(user);
+// });
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);
@@ -104,7 +103,6 @@ router.patch("/users/:id", async (req, res) => {
   }
 });
 
-
 //deleting user from the database
 router.delete("/users/:id", async (req, res) => {
   try {
@@ -120,7 +118,6 @@ router.delete("/users/:id", async (req, res) => {
   }
 });
 
-
 //Adding campaigns
 router.post("/addCampaign", async (req, res) => {
   const campaign = new Campaign(req.body);
@@ -133,14 +130,25 @@ router.post("/addCampaign", async (req, res) => {
   }
 });
 
-
-
+//View campaigns appealed
+router.get("/viewAppeals", async (req, res) => {
+  try {
+    const appeal = await Appeal.find({});
+    const beneficiaryid= appeal.data.bid
+    if(!appeal) return Error
+    res.status(200).json(appeal);
+    console.log(beneficiaryid,"Beneficiaryid")
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
 //Latest news section
+
 //Reading the news data
 router.get("/LatestNews", async (req, res) => {
   try {
     const news = await News.find();
-    res.json(news)
+    res.json(news);
   } catch (e) {
     console.log("errorrrr", e);
   }
@@ -148,13 +156,12 @@ router.get("/LatestNews", async (req, res) => {
 
 //Addnews
 router.post("/addNews", upload.single("file"), async (req, res) => {
-
   var obj = {
     name: req.body.name,
     description: req.body.description,
-   file:req.body.fileName
+    file: req.body.fileName,
   };
-  const news = new News(obj);  
+  const news = new News(obj);
   try {
     await news.save();
     res.status(201).send("Latest News added");
@@ -162,6 +169,5 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     console.log(e);
     res.status(401);
   }
- 
 });
 module.exports = router;

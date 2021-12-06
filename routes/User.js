@@ -24,6 +24,7 @@ router.get("/users", auth, async (req, res, next) => {
 router.post("/Signup", async (req, res, next) => {
   const user = new User(req.body);
   const email = req.body.email;
+  const matchEmail= await User.findByCredentials(email)
   const mailOptions = {
     from: '"Our Code World " <zainzz123@outlook.com>',
     to: email,
@@ -32,11 +33,15 @@ router.post("/Signup", async (req, res, next) => {
   };
 
   try {
+if(!matchEmail){
     await user.save();
     const token = await user.generateAuthToken();
     await mailSender.transporter.sendMail(mailOptions);
 
-    res.status(201).send({ user, token });
+    res.status(201).send({ user, token });}
+    else{
+   res.send("ALready existing email")
+    }
   } catch (e) {
     console.log("errrorr", e);
     res.status(400).send(e);
