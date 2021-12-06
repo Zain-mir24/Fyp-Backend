@@ -18,6 +18,10 @@ const appealcampaignSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  amountneeded:{
+    type:Number,
+    required:true
+  }
 });
 const Campaignappeal = mongoose.model("Campaignappeal", appealcampaignSchema);
 

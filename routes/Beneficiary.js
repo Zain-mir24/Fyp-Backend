@@ -5,6 +5,7 @@ let router = express.Router();
 
 const auth = require("../middleware/auth");
 const Campaignappeal = require("../models/appealedCampaign");
+const loanappeal = require("../models/appealedLoans");
 const mongoose = require("../db/mongoose");
 const mailSender = require("../email/account");
 const jwt = require("jsonwebtoken");
@@ -16,6 +17,7 @@ router.post("/addCampaignappeal", upload.single("file"), async (req, res) => {
     name: req.body.name,
     description: req.body.description,
     file: req.body.fileName,
+    amountneeded: req.body.amountneeded,
   };
   const camp = new Campaignappeal(obj);
   try {
