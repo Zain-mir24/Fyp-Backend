@@ -81,13 +81,24 @@ userSchema.methods.generateSecretToken = async function () {
   const user = this;
   const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
   const payload = {
-    email: user.email,
+    emai: user.email,
     _id: user._id.toString(),
   };
   const token = jwt.sign(payload, secret, { expiresIn: "5m" });
   const link = `http://localhost:3000/resetPassword/${user._id}/${token}`;
   await user.save();
 
+  return link;
+};
+userSchema.methods.verifyToken = async function () {
+  const user = this;
+  const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
+  const payload = {
+    email: user.email,
+    _id: user._id.toString(),
+  };
+  const token = jwt.sign(payload, secret, { expiresIn: "5m" });
+  const link = `http://localhost:3000/addUser/${user._id}/${token}/${user.name}/${user.email}/${user.password}/${user.userType}`;
   return link;
 };
 

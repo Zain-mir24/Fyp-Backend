@@ -20,34 +20,52 @@ router.get("/users", auth, async (req, res, next) => {
   }
 });
 /* POST Signup */
-
+// verification email in this route
 router.post("/Signup", async (req, res, next) => {
   const user = new User(req.body);
-  const email = req.body.email;
-  const matchEmail= await User.findByCredentials(email)
-  const mailOptions = {
-    from: '"Our Code World " <zainzz123@outlook.com>',
-    to: email,
-    subject: "You have signedup for global reach",
-    text: "Welcome to global reach",
-  };
-
+  const { name, email, password, userType } = req.body;
+  const matchEmail = await User.findOne({email});
   try {
-if(!matchEmail){
-    await user.save();
-    const token = await user.generateAuthToken();
-    await mailSender.transporter.sendMail(mailOptions);
+    if (!matchEmail) {
+      const link = await user.verifyToken();
+      const mailOptions = {
+        from: '"Our Code World " <zainzz123@outlook.com>',
+        to: email,
+        subject: "Verify your email",
+        text: `Here is your verification link ${link}`,
+      };
+     await mailSender.transporter.sendMail(mailOptions) 
+      res.status(201).send("Mailsent");
 
-    res.status(201).send({ user, token });}
-    else{
-   res.send("ALready existing email")
+    } else {
+      res.send("ALready existing email");
     }
   } catch (e) {
     console.log("errrorr", e);
     res.status(400).send(e);
   }
 });
-
+//  adding user in this route
+router.post("/signup/:_id/:token", async (req, res) => {
+  const { _id, token } = req.params;
+  const user = new User(req.body);
+  console.log(user,"my user")
+  console.log(token,"token recieved here")
+  const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
+  
+  try {
+    const payload = await jwt.verify(token, secret);
+    console.log("token verified")
+    if (!payload) {
+      console.log("user not saved because token was not verified")
+      return res.render("doesnt work")};
+    await user.save();
+    res.status(201).send({ user, token });
+    console.log("User saved")
+  } catch (e) {
+    console.log(e,"error while saving")
+  }
+});
 //user login route
 // Post route
 router.post("/login", async (req, res) => {
@@ -144,10 +162,11 @@ router.post("/forgotpassword", async (req, res) => {
 //Resetpassword
 router.post("/resetPassword/:_id/:token", async (req, res) => {
   const { _id, token } = req.params;
-
+console.log(token,"my reset token")
   const user = await User.findOne({ _id });
   if (!user) return res.send("invalid id");
   const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
+ console.log(secret,"New reset secret")
   try {
     const payload = await jwt.verify(token, secret);
     if (!payload) return res.render("doesnt work");
