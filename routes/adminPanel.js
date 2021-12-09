@@ -26,14 +26,14 @@ router.post("/saveEmail", (req, res) => {
   });
 });
 
-router.get("/sendAllEmail", async (req, res) => {
+router.post("/sendAllEmail", async (req, res) => {
   var exp = await Email.find();
   exp.map((item) => {
     const mailOptions = {
-      from: '"Global Reach " <zainzz123@outlook.com>',
+      from: req.body.from,
       to: item.Email,
-      subject: "Resetlink",
-      text: `Here is your reset link`,
+      subject: req.body.subject,
+      text: req.body.message,
     };
     mailSender.transporter.sendMail(mailOptions);
   });

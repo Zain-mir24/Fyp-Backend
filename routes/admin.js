@@ -12,34 +12,32 @@ const upload = require("../middleware/img");
 const fs = require("fs");
 
 //Admin routes
-router.post("/Signup",async(req,res,next)=>{
-const admin = new Admin(req.body)
-try {
-  await admin.save();
-  const token = await user.generateAuthToken();
-  const mailOptions = {
-    from: '"Our Code World " <zainzz123@outlook.com>',
-    to: email,
-    subject: "You have signedup as an admin for global reach",
-    text: "Welcome to global reach",
-  };
-  mailSender.transporter
-    .sendMail(mailOptions)
-    .then((result) => {
-      console.log("sent success");
-      console.log("result", result);
-    })
-    .catch((err) => {
-      console.log("error", err);
-    });
-  res.status(201).send({ user, token });
-
-  
-} catch (e) {
-  console.log("errrorr", e);
-  res.status(400).send(e);
-}
-})
+router.post("/Signup", async (req, res, next) => {
+  const admin = new Admin(req.body);
+  try {
+    await admin.save();
+    const token = await user.generateAuthToken();
+    const mailOptions = {
+      from: '"Our Code World " <zainzz123@outlook.com>',
+      to: email,
+      subject: "You have signedup as an admin for global reach",
+      text: "Welcome to global reach",
+    };
+    mailSender.transporter
+      .sendMail(mailOptions)
+      .then((result) => {
+        console.log("sent success");
+        console.log("result", result);
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+    res.status(201).send({ user, token });
+  } catch (e) {
+    console.log("errrorr", e);
+    res.status(400).send(e);
+  }
+});
 // Post route
 router.post("/login", async (req, res) => {
   try {
@@ -140,6 +138,22 @@ router.get("/LatestNews", async (req, res) => {
   }
 });
 
+// router.delete("/deleteNews/:_id", async (req, res) => {
+//   try {
+//     News.deleteOne({ _id: req.params._id }).then((response) => {
+//       res.status(200).send(response);
+//     });
+//   } catch (e) {}
+// });
+
+router.patch("/updateNews/:_id", async (req, res) => {
+  try {
+    News.findOneAndUpdate({ _id: req.params._id }, req.body);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 //Addnews
 router.post("/addNews", upload.single("file"), async (req, res) => {
   var obj = {
@@ -148,6 +162,7 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     file: req.body.fileName,
   };
   const news = new News(obj);
+  console.log(news, "TESTING");
   try {
     await news.save();
     res.status(201).send("Latest News added");
@@ -156,4 +171,5 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     res.status(401);
   }
 });
+
 module.exports = router;
