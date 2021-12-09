@@ -24,7 +24,7 @@ router.get("/users", auth, async (req, res, next) => {
 router.post("/Signup", async (req, res, next) => {
   const user = new User(req.body);
   const { name, email, password, userType } = req.body;
-  const matchEmail = await User.findOne({email});
+  const matchEmail = await User.findOne({ email });
   try {
     if (!matchEmail) {
       const link = await user.verifyToken();
@@ -34,9 +34,8 @@ router.post("/Signup", async (req, res, next) => {
         subject: "Verify your email",
         text: `Here is your verification link ${link}`,
       };
-     await mailSender.transporter.sendMail(mailOptions) 
+      await mailSender.transporter.sendMail(mailOptions);
       res.status(201).send("Mailsent");
-
     } else {
       res.send("ALready existing email");
     }
@@ -49,21 +48,20 @@ router.post("/Signup", async (req, res, next) => {
 router.post("/signup/:_id/:token", async (req, res) => {
   const { _id, token } = req.params;
   const user = new User(req.body);
-  console.log(user,"my user")
-  console.log(token,"token recieved here")
   const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
-  
+
   try {
     const payload = await jwt.verify(token, secret);
-    console.log("token verified")
+    console.log("token verified");
     if (!payload) {
-      console.log("user not saved because token was not verified")
-      return res.render("doesnt work")};
+      console.log("user not saved because token was not verified");
+      return res.render("doesnt work");
+    }
     await user.save();
     res.status(201).send({ user, token });
-    console.log("User saved")
+    console.log("User saved");
   } catch (e) {
-    console.log(e,"error while saving")
+    console.log(e, "error while saving");
   }
 });
 //user login route
@@ -162,11 +160,11 @@ router.post("/forgotpassword", async (req, res) => {
 //Resetpassword
 router.post("/resetPassword/:_id/:token", async (req, res) => {
   const { _id, token } = req.params;
-console.log(token,"my reset token")
+  console.log(token, "my reset token");
   const user = await User.findOne({ _id });
   if (!user) return res.send("invalid id");
   const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
- console.log(secret,"New reset secret")
+  console.log(secret, "New reset secret");
   try {
     const payload = await jwt.verify(token, secret);
     if (!payload) return res.render("doesnt work");

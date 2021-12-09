@@ -73,10 +73,10 @@ router.post("/logout", auth, async (req, res) => {
   }
 });
 //reading the users
-// router.get("/users", async (req, res) => {
-//   const user = await User.find();
-//   res.json(user);
-// });
+router.get("/users", async (req, res) => {
+  const user = await User.find();
+  res.json(user);
+});
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);
