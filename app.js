@@ -8,7 +8,8 @@ var cors = require("cors");
 var adminRouter = require("./routes/admin");
 
 var apirouter = require("./routes/User");
-var beneficiaryRouter=require("./routes/Beneficiary")
+var beneficiaryRouter = require("./routes/Beneficiary");
+var adminPanelRouter = require("./routes/adminPanel");
 
 var app = express();
 
@@ -26,16 +27,15 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/admin", adminRouter);
 app.use("/User", apirouter);
 app.use("/beneficiary", beneficiaryRouter);
+app.use("/adminPanel", adminPanelRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  try{
+  try {
     next(createError(404));
-  }catch(e){
-    console.log(e)
+  } catch (e) {
+    console.log(e);
   }
-  
-
 });
 
 //CREATE TABLE `globalreach`.`signup` ( `Firstname` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL , `Lastname` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL , `Email` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL , `Password` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ) ENGINE = InnoDB;

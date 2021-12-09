@@ -162,6 +162,22 @@ router.get("/LatestNews", async (req, res) => {
   }
 });
 
+// router.delete("/deleteNews/:_id", async (req, res) => {
+//   try {
+//     News.deleteOne({ _id: req.params._id }).then((response) => {
+//       res.status(200).send(response);
+//     });
+//   } catch (e) {}
+// });
+
+router.patch("/updateNews/:_id", async (req, res) => {
+  try {
+    News.findOneAndUpdate({ _id: req.params._id }, req.body);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 //Addnews
 router.post("/addNews", upload.single("file"), async (req, res) => {
   var obj = {
@@ -178,4 +194,5 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     res.status(401);
   }
 });
+
 module.exports = router;
