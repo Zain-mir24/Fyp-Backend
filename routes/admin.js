@@ -138,13 +138,17 @@ router.get("/LatestNews", async (req, res) => {
   }
 });
 
-// router.delete("/deleteNews/:_id", async (req, res) => {
-//   try {
-//     News.deleteOne({ _id: req.params._id }).then((response) => {
-//       res.status(200).send(response);
-//     });
-//   } catch (e) {}
-// });
+router.delete("/deleteNews/:_id", async (req, res) => {
+  try {
+    const id = req.params._id;
+    console.log(id, "My id");
+    await News.findByIdAndDelete({ _id: id }).then((response) => {
+      res.status(200).send(response);
+    });
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 router.patch("/updateNews/:_id", async (req, res) => {
   try {
