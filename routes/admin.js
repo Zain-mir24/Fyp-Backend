@@ -6,9 +6,12 @@ const path = require("path");
 const Campaign = require("../models/CampaignDB");
 const auth = require("../middleware/auth");
 const Admin = require("../models/Admin");
+const User = require("../models/users");
+
 const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
+const Appeal = require("../models/appealedCampaign");
 const fs = require("fs");
 
 //Admin routes
@@ -129,6 +132,27 @@ router.post("/addCampaign", async (req, res) => {
   }
 });
 
+//View campaigns appealed
+router.get("/viewAppeals", async (req, res) => {
+  try {
+    const appeal = await Appeal.find();
+    var ids = appeal.map((i) => i.bid);
+    console.log(ids);
+    const beneficiary = await User.find({
+      _id: {
+        $in: ids,
+      },
+    }).exec();
+   
+    if (!appeal) return Error;
+    res.status(200).send({appeal,beneficiary});
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+//Latest news section
+
+//Reading the news data
 router.get("/LatestNews", async (req, res) => {
   try {
     const news = await News.find();
@@ -166,7 +190,6 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     file: req.body.fileName,
   };
   const news = new News(obj);
-  console.log(news, "TESTING");
   try {
     await news.save();
     res.status(201).send("Latest News added");
