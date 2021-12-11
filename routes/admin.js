@@ -76,8 +76,12 @@ router.post("/logout", auth, async (req, res) => {
 });
 //reading the users
 router.get("/users", async (req, res) => {
-  const user = await User.find();
-  res.json(user);
+  try {
+    const user = await User.find({});
+    res.send(user);
+  } catch (e) {
+    res.send("Error found");
+  }
 });
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
@@ -148,6 +152,7 @@ router.get("/viewAppeals", async (req, res) => {
 
     if (!appeal) return Error;
     res.status(200).send({ appeal, beneficiary });
+    console.log(appeal);
   } catch (e) {
     res.status(500).send(e);
   }
@@ -163,17 +168,14 @@ router.get("/LatestNews", async (req, res) => {
     console.log("errorrrr", e);
   }
 });
+//  delete news using id
 
 router.delete("/deleteNews/:_id", async (req, res) => {
   try {
-    const id = req.params._id;
-    console.log(id, "My id");
-    await News.findByIdAndDelete({ _id: id }).then((response) => {
+    await News.findOneAndDelete({ _id: req.params._id }).then((response) => {
       res.status(200).send(response);
     });
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 });
 
 router.patch("/updateNews/:_id", async (req, res) => {
