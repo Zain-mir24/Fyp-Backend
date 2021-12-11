@@ -12,6 +12,10 @@ const newsSchema = new mongoose.Schema({
   file: {
     type: String,
   },
+  category: {
+    type: mongoose.Types.ObjectId,
+    ref: "Category",
+  },
 });
 const News = mongoose.model("LatestNews", newsSchema);
 

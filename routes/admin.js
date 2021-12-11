@@ -7,12 +7,14 @@ const Campaign = require("../models/CampaignDB");
 const auth = require("../middleware/auth");
 const Admin = require("../models/Admin");
 const User = require("../models/users");
+const Category = require("../models/Category");
 
 const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
 const Appeal = require("../models/appealedCampaign");
 const fs = require("fs");
+const { response } = require("express");
 
 //Admin routes
 router.post("/Signup", async (req, res, next) => {
@@ -143,9 +145,9 @@ router.get("/viewAppeals", async (req, res) => {
         $in: ids,
       },
     }).exec();
-   
+
     if (!appeal) return Error;
-    res.status(200).send({appeal,beneficiary});
+    res.status(200).send({ appeal, beneficiary });
   } catch (e) {
     res.status(500).send(e);
   }
@@ -197,6 +199,33 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     console.log(e);
     res.status(401);
   }
+});
+
+router.post("/addCategory", async (req, res) => {
+  try {
+    await Category.create(req.body).then((response) => {
+      res.status(201).send(response);
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(401);
+  }
+});
+
+router.get("/sendCategory", async (req, res) => {
+  Category.find().then(async (response) => {
+    await res.send(response);
+  });
+});
+
+router.delete("/deleteCategory/:id", async (req, res) => {
+  Category.findByIdAndDelete({ _id: req.params.id }, (err, response) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(response);
+    }
+  });
 });
 
 module.exports = router;
