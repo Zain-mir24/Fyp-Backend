@@ -192,6 +192,7 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     name: req.body.name,
     description: req.body.description,
     file: req.body.fileName,
+    category: req.body.category,
   };
   const news = new News(obj);
   try {
@@ -217,6 +218,16 @@ router.post("/addCategory", async (req, res) => {
 router.get("/sendCategory", async (req, res) => {
   Category.find().then(async (response) => {
     await res.send(response);
+  });
+});
+
+router.get("/sendcategory/:id", async (req, res) => {
+  Category.findOne({ _id: req.params.id }, (err, result) => {
+    if (err) {
+      res.status(300).send(err);
+    } else {
+      res.status(200).send(result);
+    }
   });
 });
 
