@@ -21,10 +21,10 @@ const appealloanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // file: {
-  //   type: String,
-  //   required: true,
-  // },
+  file: {
+    type: String,
+    required: true,
+  },
 });
 const Loanappeal = mongoose.model("loanappeal", appealloanSchema);
 

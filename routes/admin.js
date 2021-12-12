@@ -13,6 +13,7 @@ const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
 const Appeal = require("../models/appealedCampaign");
+const AppealLoan = require("../models/appealedLoans");
 const fs = require("fs");
 const { response } = require("express");
 
@@ -127,8 +128,9 @@ router.delete("/users/:id", async (req, res) => {
 });
 
 //Adding campaigns
-router.post("/addCampaign", async (req, res) => {
+router.post("/addCampaign", upload.single("file"), async (req, res) => {
   const campaign = new Campaign(req.body);
+  console.log(req.body, "Coming from the frontend");
   try {
     await campaign.save();
     res.status(201).send("campaign added");
@@ -138,6 +140,48 @@ router.post("/addCampaign", async (req, res) => {
   }
 });
 
+// View created campaigns
+
+router.get("/viewCampaigns", async (req, res) => {
+  try {
+    const campaign = await Campaign.find({});
+    if (!campaign) {
+      res.status(401).send();
+    }
+    res.status(200).send(campaign);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+// Delete campaigns
+router.delete("/Deletecampaign/:_id", async (req, res) => {
+  const campaign = await Campaign.findByIdAndDelete({ _id: req.params._id });
+  try {
+    if (!campaign) {
+      res.status(401).send();
+    }
+    res.send(campaign);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+// Update campaigns
+router.patch("/updateCampaign/:_id",upload.single("file"),async(req,res)=>{
+  console.log(req.body,"Body coming from frontend")
+  const campaign = await Campaign.findByIdAndUpdate({_id:req.params._id},req.body);
+  try{
+   if(!campaign){
+     throw new Error("Campaign with that does not exist")
+    }
+    res.status(200).send(campaign)
+    console.log(campaign)
+  }
+  catch(e){
+    res.status(500).send(e)
+  }
+})
 //View campaigns appealed
 router.get("/viewAppeals", async (req, res) => {
   try {
@@ -157,6 +201,30 @@ router.get("/viewAppeals", async (req, res) => {
     res.status(500).send(e);
   }
 });
+// Loan Section
+// View latest Loan Apeeals
+router.get("/viewLoanAppeals", async (req, res) => {
+  try {
+    const appeal = await AppealLoans.find();
+    var ids = appeal.map((i) => i.bid);
+    console.log(ids);
+    const beneficiary = await User.find({
+      _id: {
+        $in: ids,
+      },
+    }).exec();
+
+    if (!appeal) return Error;
+    res.status(200).send({ appeal, beneficiary });
+    console.log(appeal);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+
+
+
 //Latest news section
 
 //Reading the news data

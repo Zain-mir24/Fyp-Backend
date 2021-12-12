@@ -2,13 +2,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 let express = require("express");
 let router = express.Router();
-
-const auth = require("../middleware/auth");
 const Campaignappeal = require("../models/appealedCampaign");
 const loanappeal = require("../models/appealedLoans");
-const mongoose = require("../db/mongoose");
-const mailSender = require("../email/account");
-const jwt = require("jsonwebtoken");
 const upload = require("../middleware/img");
 
 router.post("/addCampaignappeal", upload.single("file"), async (req, res) => {
@@ -24,6 +19,24 @@ router.post("/addCampaignappeal", upload.single("file"), async (req, res) => {
     await camp.save();
     res.status(200).send(camp);
   } catch (e) {
+    res.status(500).send(e);
+  }
+});
+router.post("/addloanappeal", upload.single("file"), async (req, res) => {
+  var obj = {
+    bid: req.body.bid,
+    name: req.body.name,
+    loandescription: req.body.loandescription,
+    Loanamount: req.body.Loanamount,
+    loanType: req.body.loanType,
+    file: req.body.fileName,
+  };
+  const camp = new loanappeal(obj);
+  try {
+    await camp.save();
+    res.status(200).send(camp);
+  } catch (e) {
+    console.log("Error",e)
     res.status(500).send(e);
   }
 });
