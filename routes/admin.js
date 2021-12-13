@@ -168,20 +168,26 @@ router.delete("/Deletecampaign/:_id", async (req, res) => {
 });
 
 // Update campaigns
-router.patch("/updateCampaign/:_id",upload.single("file"),async(req,res)=>{
-  console.log(req.body,"Body coming from frontend")
-  const campaign = await Campaign.findByIdAndUpdate({_id:req.params._id},req.body);
-  try{
-   if(!campaign){
-     throw new Error("Campaign with that does not exist")
+router.patch(
+  "/updateCampaign/:_id",
+  upload.single("file"),
+  async (req, res) => {
+    console.log(req.body, "Body coming from frontend");
+    const campaign = await Campaign.findByIdAndUpdate(
+      { _id: req.params._id },
+      req.body
+    );
+    try {
+      if (!campaign) {
+        throw new Error("Campaign with that does not exist");
+      }
+      res.status(200).send(campaign);
+      console.log(campaign);
+    } catch (e) {
+      res.status(500).send(e);
     }
-    res.status(200).send(campaign)
-    console.log(campaign)
   }
-  catch(e){
-    res.status(500).send(e)
-  }
-})
+);
 //View campaigns appealed
 router.get("/viewAppeals", async (req, res) => {
   try {
@@ -222,15 +228,21 @@ router.get("/viewLoanAppeals", async (req, res) => {
   }
 });
 
-
-
-
 //Latest news section
 
 //Reading the news data
 router.get("/LatestNews", async (req, res) => {
   try {
     const news = await News.find();
+    res.json(news);
+  } catch (e) {
+    console.log("errorrrr", e);
+  }
+});
+
+router.get("/LatestNews/:id", async (req, res) => {
+  try {
+    const news = await News.find({ category: req.params.id });
     res.json(news);
   } catch (e) {
     console.log("errorrrr", e);
@@ -243,7 +255,9 @@ router.delete("/deleteNews/:_id", async (req, res) => {
     await News.findOneAndDelete({ _id: req.params._id }).then((response) => {
       res.status(200).send(response);
     });
-  } catch (e) {}
+  } catch (e) {
+    log;
+  }
 });
 
 router.patch("/updateNews/:_id", async (req, res) => {

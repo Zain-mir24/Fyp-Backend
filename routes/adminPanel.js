@@ -26,6 +26,15 @@ router.post("/saveEmail", (req, res) => {
   });
 });
 
+router.get("/displayEmail", async (req, res) => {
+  try {
+    const email = await Email.find();
+    res.json(email);
+  } catch (e) {
+    console.log("errorrrr", e);
+  }
+});
+
 router.post("/sendAllEmail", async (req, res) => {
   var exp = await Email.find();
   exp.map((item) => {
@@ -39,6 +48,16 @@ router.post("/sendAllEmail", async (req, res) => {
   });
 
   res.status(200).send("OK");
+});
+
+router.delete("/deleteEmail/:id", async (req, res) => {
+  try {
+    await Email.findOneAndDelete({ _id: req.params.id }).then((response) => {
+      res.status(200).send(response);
+    });
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 module.exports = router;
