@@ -9,6 +9,10 @@ const campaignSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  donation:{
+    type: Number,
+    required: true,
+  },
   fileName: {
     type: String,
     required: true,

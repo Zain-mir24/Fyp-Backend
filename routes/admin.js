@@ -205,7 +205,7 @@ router.get("/viewAppeals", async (req, res) => {
 // View latest Loan Apeeals
 router.get("/viewLoanAppeals", async (req, res) => {
   try {
-    const appeal = await AppealLoans.find();
+    const appeal = await AppealLoan.find();
     var ids = appeal.map((i) => i.bid);
     console.log(ids);
     const beneficiary = await User.find({
