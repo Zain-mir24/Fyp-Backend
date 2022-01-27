@@ -11,8 +11,7 @@ const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
 const fs = require("fs");
-const jwt = require("jsonwebtoken");
-
+const { response } = require("express");
 const mailSender = require("../email/account");
 
 // Verifying Email for  Latest News
@@ -32,6 +31,9 @@ router.post("/saveEmail", async(req, res) => {
     };
     await mailSender.transporter.sendMail(mailOptions);
     res.status(201).send("Mailsent");
+  }
+  else{
+    console.log("Mail exists")
   }}
   catch(e){
     console.log(e)
@@ -39,11 +41,11 @@ router.post("/saveEmail", async(req, res) => {
   }
 });
 // saving verified email
-router.post("/saveEmail/:id/:token",async(req,res)=>{
-  const {token}=req.params;
-  console.log(req.body)
-  const email= new Email(req.body);
-  console.log(email.Email)
+router.post("/saveEmail/:id/:token", async (req, res) => {
+  const { token } = req.params;
+  console.log(req.body);
+  const email = new Email(req.body);
+  console.log(email.Email);
   const secret = process.env.ACCESS_TOKEN_SECRET + email.Email;
   try {
     const payload = await jwt.verify(token, secret);
@@ -53,12 +55,12 @@ router.post("/saveEmail/:id/:token",async(req,res)=>{
       return res.render("doesnt work");
     }
     await email.save();
-    res.status(201).send({email});
+    res.status(201).send({ email });
     console.log("User saved");
   } catch (e) {
     console.log(e, "error while saving");
   }
-})
+});
 router.get("/displayEmail", async (req, res) => {
   try {
     const email = await Email.find();
@@ -69,16 +71,23 @@ router.get("/displayEmail", async (req, res) => {
 });
 
 router.post("/sendAllEmail", async (req, res) => {
-  var exp = await Email.find();
-  exp.map((item) => {
-    const mailOptions = {
-      from: req.body.from,
-      to: item.Email,
-      subject: req.body.subject,
-      text: req.body.message,
-    };
-    mailSender.transporter.sendMail(mailOptions);
-  });
+  try {
+    var exp = await Email.find();
+    exp.map((item) => {
+      console.log(item.Email);
+    });
+    exp.map(async (item) => {
+      const mailOptions = {
+        from: req.body.from,
+        to: item.Email,
+        subject: req.body.subject,
+        text: req.body.message,
+      };
+      await mailSender.transporter.sendMail(mailOptions);
+    });
+  } catch (e) {
+    console.log(e);
+  }
 
   res.status(200).send("OK");
 });

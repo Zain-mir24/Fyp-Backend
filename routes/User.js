@@ -44,8 +44,6 @@ router.post("/Signup", async (req, res, next) => {
     res.status(400).send(e);
   }
 });
-
-
 //  adding user in this route
 router.post("/signup/:_id/:token", async (req, res) => {
   const { _id, token } = req.params;

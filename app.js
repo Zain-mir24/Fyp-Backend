@@ -6,7 +6,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 var adminRouter = require("./routes/admin");
-
+var mainRouter=require("./routes/index")
 var apirouter = require("./routes/User");
 var beneficiaryRouter = require("./routes/Beneficiary");
 var adminPanelRouter = require("./routes/adminPanel");
@@ -23,7 +23,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use("/", mainRouter);
 app.use("/admin", adminRouter);
 app.use("/User", apirouter);
 app.use("/beneficiary", beneficiaryRouter);

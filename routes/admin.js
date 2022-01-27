@@ -148,7 +148,8 @@ router.get("/viewCampaigns", async (req, res) => {
     if (!campaign) {
       res.status(401).send();
     }
-    res.status(200).send(campaign);
+   
+     res.status(200).send({campaign});
   } catch (e) {
     console.log(e);
   }
