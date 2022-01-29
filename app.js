@@ -10,7 +10,7 @@ var mainRouter=require("./routes/index")
 var apirouter = require("./routes/User");
 var beneficiaryRouter = require("./routes/Beneficiary");
 var adminPanelRouter = require("./routes/adminPanel");
-
+var stripe=require("./routes/stripe-route")
 var app = express();
 
 // view engine setup
@@ -28,6 +28,7 @@ app.use("/admin", adminRouter);
 app.use("/User", apirouter);
 app.use("/beneficiary", beneficiaryRouter);
 app.use("/adminPanel", adminPanelRouter);
+app.use("/stripe",stripe);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
