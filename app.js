@@ -11,6 +11,7 @@ var apirouter = require("./routes/User");
 var beneficiaryRouter = require("./routes/Beneficiary");
 var adminPanelRouter = require("./routes/adminPanel");
 var stripe=require("./routes/stripe-route")
+var donation=require("./routes/Donation")
 var app = express();
 
 // view engine setup
@@ -29,6 +30,7 @@ app.use("/User", apirouter);
 app.use("/beneficiary", beneficiaryRouter);
 app.use("/adminPanel", adminPanelRouter);
 app.use("/stripe",stripe);
+app.use("/donation",donation)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
