@@ -9,6 +9,9 @@ const DonationSchema = new mongoose.Schema({
     type:String,
     required:true
   },
+  // anonymous 
+  // registered 
+  // totaldonations  anonymous+registered 
   amount: {
     type: Number,
     required: true,

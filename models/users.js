@@ -69,7 +69,8 @@ userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
     { _id: user._id.toString() },
-    process.env.ACCESS_TOKEN_SECRET
+    process.env.ACCESS_TOKEN_SECRET,
+    {expiresIn:"24h"}
   );
   console.log(token);
   user.tokens = user.tokens.concat({ token });

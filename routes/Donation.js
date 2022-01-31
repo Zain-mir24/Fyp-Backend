@@ -4,7 +4,7 @@ let express = require("express");
 let router = express.Router();
 
 const Donation = require("../models/Donation");
-const donorDonation=require("../models/donorDonation")
+
 // Making view for donations recieved for each campaign
 router.get("/viewDonation/:cid",async (req, res, next) => {
     try{
@@ -21,4 +21,5 @@ router.get("/viewDonation/:cid",async (req, res, next) => {
     }
 
 })
+
 module.exports = router;
