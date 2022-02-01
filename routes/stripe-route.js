@@ -10,12 +10,13 @@ const Donation = require("../models/Donation");
 // const stripe = Stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
 router.post("/pay", async (req, res, next) => {
   console.log("my token", req.body);
-  const { token, amount, name, campaignId } = req.body;
+  const { token, amount, name, campaignId, userId } = req.body;
   const idempotencyKey = uuidv4();
   const body = {
     campaignid: campaignId,
     name,
     amount,
+    userId,
   };
   return stripe.customers
     .create({
@@ -26,7 +27,7 @@ router.post("/pay", async (req, res, next) => {
       stripe.charges.create(
         {
           amount: amount * 100,
-          currency: "usd",
+          currency: "pkr",
           customer: customer.id,
           receipt_email: token.email,
           description: `Donation to ${name}`,
@@ -36,23 +37,75 @@ router.post("/pay", async (req, res, next) => {
     })
     .then(async (result) => {
       try {
-        console.log(body);
-        const searchandadd = await Donation.findOneAndUpdate(
-          { campaignid: req.body.campaignId },
-          {
-            $inc: {
-              amount: req.body.amount,
-            },
+        if (req.body.userId == null) {
+          try {
+            const searchandadd = await Donation.findOneAndUpdate(
+              { campaignid: req.body.campaignId },
+              {
+                $push: {
+                  anonymousUser: {
+                    email: req.body.token.email,
+                    donation: req.body.amount,
+                  },
+                },
+                $inc: {
+                  totalamount: req.body.amount,
+                },
+              }
+            );
+            res.status(200).send(searchandadd)
+            console.log("success")
+            if (!searchandadd) {
+              try {
+                const donate = await Donation.create({
+                  campaignid: req.body.campaignId,
+                  campaignname: req.body.name,
+
+                  anonymousUser: {
+                    email: req.body.token.email,
+                    donation: req.body.amount,
+                  },
+
+                  totalamount: req.body.amount,
+                });
+                if (donate) {
+                  console.log(donate);
+                  console.log(
+                    "new entery addded for anonymous Charged successfully"
+                  );
+                  res.status(200).send(result);
+                }
+              } catch (e) {
+                console.log("error in inserting new anonymous data", e);
+              }
+            }
+          } catch (e) {
+            console.log("error", e);
           }
-        );
-        if (!searchandadd) {
-          const donate = await Donation.create(body);
-          console.log(donate);
-          console.log("Charged successfully");
+        } else {
+          const searchandadd = await Donation.findOneAndUpdate(
+            { campaignid: req.body.campaignId },
+            {
+              $push: {
+                registeredUser: {
+                  userId: req.body.userId,
+                  donation: req.body.amount,
+                },
+              },
+              $inc: {
+                totalamount: req.body.amount,
+              },
+            }
+          );
+          if (!searchandadd) {
+            const donate = await Donation.create(body);
+            console.log(donate);
+            console.log("Charged successfully");
+            res.status(200).send(result);
+          }
+          console.log("Already existing amount updated");
           res.status(200).send(result);
         }
-        console.log("Already existing amount updated");
-        res.status(200).send(result);
       } catch (e) {
         console.log(e);
       }

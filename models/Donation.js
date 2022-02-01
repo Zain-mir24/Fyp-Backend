@@ -5,14 +5,39 @@ const DonationSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     required: true,
   },
-  name:{
-    type:String,
-    required:true
+  campaignname: {
+    type: String,
+    required: true,
   },
-  // anonymous 
-  // registered 
-  // totaldonations  anonymous+registered 
-  amount: {
+   // anonymous user makes donation
+  anonymousUser: {
+    type: [
+      {
+        email: {
+          type: String,
+        },
+        donation: {
+          type: Number
+        },
+      },
+    ],
+  },
+  // registered
+  registeredUser:{
+    type:[
+      {
+        userId:{
+          type:mongoose.Types.ObjectId,
+          ref:"User"
+        },
+        donation:{
+          type:Number
+        }
+      }
+    ]
+  },
+  // total donations from  anonymous+registered 
+  totalamount: {
     type: Number,
     required: true,
   },
