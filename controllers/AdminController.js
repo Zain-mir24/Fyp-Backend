@@ -23,38 +23,40 @@ const updateChild = async (req, res, next) => {
 };
 const viewChildren = async (req, res, next) => {
   try {
-    const done = await children.find({});
+    const done = await children.find({}).exec((error, result) => {
+      console.log("result", result);
+      res.status(200).send(done);
+      if (error) {
+        console.log(error);
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+const deleteChildren = async (req, res, next) => {
+  try {
+    const done = await children.findByIdAndDelete({ _id: req.params.cid });
     res.status(200).send(done);
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
   }
 };
-const deleteChildren=async(req,res,next)=>{
-try{
-const done=await children.findByIdAndDelete({_id:req.params.cid})
-res.status(200).send(done)
-}
-catch(e){
-  console.log(e);
-  res.status(500).send(e);
-}
-
-}
-const specificChild=async(req,res,next)=>{
-  try{
-    const done = await children.findById({_id:req.params.cid})
-    res.status(200).send(done)
-
-  }catch(e){
+const specificChild = async (req, res, next) => {
+  try {
+    const done = await children.findById({ _id: req.params.cid });
+    res.status(200).send(done);
+  } catch (e) {
     console.log(e);
     res.status(500).send(e);
   }
-}
+};
 module.exports = {
   addChild,
   updateChild,
   viewChildren,
   deleteChildren,
-  specificChild
+  specificChild,
 };
