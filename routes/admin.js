@@ -15,6 +15,7 @@ const upload = require("../middleware/img");
 const Appeal = require("../models/appealedCampaign");
 const AppealLoan = require("../models/appealedLoans");
 const fs = require("fs");
+const adminController= require("../controllers/AdminController")
 const { response } = require("express");
 
 //Admin routes
@@ -323,5 +324,11 @@ router.delete("/deleteCategory/:id", async (req, res) => {
     }
   });
 });
+
+// Adopting Children
+router.post("/addchild",adminController.addChild)
+router.post("/updatechild/:cid",adminController.updateChild)
+router.post("/viewChildren",adminController.viewChildren)
+router.post("/deleteChildren/:cid",adminController.deleteChildren)
 
 module.exports = router;
