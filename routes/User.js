@@ -8,6 +8,8 @@ const User = require("../models/users");
 const mongoose = require("../db/mongoose");
 const mailSender = require("../email/account");
 const jwt = require("jsonwebtoken");
+var randtoken = require('rand-token')
+var refreshTokens={}
 
 //Reading users
 router.get("/users", auth, async (req, res, next) => {
@@ -44,8 +46,6 @@ router.post("/Signup", async (req, res, next) => {
     res.status(400).send(e);
   }
 });
-
-
 //  adding user in this route
 router.post("/signup/:_id/:token", async (req, res) => {
   const { _id, token } = req.params;

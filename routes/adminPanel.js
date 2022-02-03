@@ -11,8 +11,7 @@ const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
 const fs = require("fs");
-const jwt = require("jsonwebtoken");
-
+const { response } = require("express");
 const mailSender = require("../email/account");
 
 // Verifying Email for  Latest News
@@ -32,6 +31,8 @@ router.post("/saveEmail", async (req, res) => {
       };
       await mailSender.transporter.sendMail(mailOptions);
       res.status(201).send("Mailsent");
+    } else {
+      console.log("Mail exists");
     }
   } catch (e) {
     console.log(e);
