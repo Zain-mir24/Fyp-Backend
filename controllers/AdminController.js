@@ -41,9 +41,20 @@ catch(e){
 }
 
 }
+const specificChild=async(req,res,next)=>{
+  try{
+    const done = await children.findById({_id:req.params.cid})
+    res.status(200).send(done)
+
+  }catch(e){
+    console.log(e);
+    res.status(500).send(e);
+  }
+}
 module.exports = {
   addChild,
   updateChild,
   viewChildren,
-  deleteChildren
+  deleteChildren,
+  specificChild
 };
