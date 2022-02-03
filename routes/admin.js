@@ -326,7 +326,7 @@ router.delete("/deleteCategory/:id", async (req, res) => {
 });
 
 // Adopting Children
-router.post("/addchild",adminController.addChild)
+router.post("/addchild",upload.single("file"),adminController.addChild)
 router.post("/updatechild/:cid",adminController.updateChild)
 router.get("/viewChildren",adminController.viewChildren)
 router.post("/deleteChildren/:cid",adminController.deleteChildren)

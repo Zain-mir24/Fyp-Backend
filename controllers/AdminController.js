@@ -1,5 +1,6 @@
 const children = require("../models/Children");
 
+// Adding Children data to database
 const addChild = async (req, res, next) => {
   try {
     const done = await children.create(req.body);
@@ -9,6 +10,7 @@ const addChild = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+// Updating children database
 const updateChild = async (req, res, next) => {
   try {
     const done = await children.findByIdAndUpdate(
@@ -21,6 +23,7 @@ const updateChild = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+// Viewing children database
 const viewChildren = async (req, res, next) => {
   try {
     const done = await children.find({}).exec((error, result) => {
@@ -35,6 +38,7 @@ const viewChildren = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+// Deleting children database
 const deleteChildren = async (req, res, next) => {
   try {
     const done = await children.findByIdAndDelete({ _id: req.params.cid });
@@ -44,6 +48,7 @@ const deleteChildren = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+// Viewing specific child
 const specificChild = async (req, res, next) => {
   try {
     const done = await children.findById({ _id: req.params.cid });
