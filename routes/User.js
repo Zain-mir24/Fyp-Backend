@@ -8,8 +8,9 @@ const User = require("../models/users");
 const mongoose = require("../db/mongoose");
 const mailSender = require("../email/account");
 const jwt = require("jsonwebtoken");
-var randtoken = require('rand-token')
-var refreshTokens={}
+const userController=require("../controllers/UserController")
+// var randtoken = require('rand-token')
+// var refreshTokens={}
 
 //Reading users
 router.get("/users", auth, async (req, res, next) => {
@@ -182,5 +183,6 @@ router.post("/resetPassword/:_id/:token", async (req, res) => {
     res.send(e.message);
   }
 });
-
+// Scheduling meeting for child adoption
+router.get("/appointments",userController.scheduleMeeting)
 module.exports = router;
