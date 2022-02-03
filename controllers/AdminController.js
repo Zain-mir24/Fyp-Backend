@@ -26,7 +26,7 @@ const updateChild = async (req, res, next) => {
 // Viewing children database
 const viewChildren = async (req, res, next) => {
   try {
-    const done = await children.find({}).exec((error, result) => {
+     await children.find({}).exec((error, result) => {
       console.log("result", result);
       res.status(200).send(result);
       if (error) {
