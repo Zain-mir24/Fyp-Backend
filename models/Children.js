@@ -26,7 +26,7 @@ const childrenSchema = new mongoose.Schema({
   },
   fileName: {
     type: String,
-    required: true,
+    // required: true,
   },
 });
 const Children = mongoose.model("childrenSchema", childrenSchema);
