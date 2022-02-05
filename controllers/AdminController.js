@@ -1,5 +1,6 @@
 const children = require("../models/Children");
-
+const User = require("../models/users");
+const Donation =require("../models/Donation")
 // Adding Children data to database
 const addChild = async (req, res, next) => {
   try {
@@ -59,10 +60,26 @@ const specificChild = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+// View Donations for each campaign  and users name and email
+const donationDetails= async(req,res,next)=>{
+ try{
+  await  Donation.find({}).populate('registeredUser.userId').exec((error,result)=>{
+    if(error){
+      return next(error)
+    }
+    res.json(result)
+  })
+ }catch(e){
+   res.status(500).send(e)
+ }
+ 
+
+}
 module.exports = {
   addChild,
   updateChild,
   viewChildren,
   deleteChildren,
   specificChild,
+  donationDetails
 };

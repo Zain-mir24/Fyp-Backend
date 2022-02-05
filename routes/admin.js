@@ -14,7 +14,7 @@ const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
 const Appeal = require("../models/appealedCampaign");
 const AppealLoan = require("../models/appealedLoans");
-const fs = require("fs");
+
 const adminController= require("../controllers/AdminController")
 const { response } = require("express");
 
@@ -327,9 +327,14 @@ router.delete("/deleteCategory/:id", async (req, res) => {
 
 // Adopting Children
 router.post("/addchild",upload.single("file"),adminController.addChild)
-router.post("/updatechild/:cid",upload.single("file"),adminController.updateChild)
+router.patch("/updatechild/:cid",upload.single("file"),adminController.updateChild)
 router.get("/viewChildren",adminController.viewChildren)
-router.post("/deleteChildren/:cid",adminController.deleteChildren)
+router.delete("/deleteChildren/:cid",adminController.deleteChildren)
 router.get("/viewChild/:cid",adminController.specificChild)
+
+// Donation details through each campaign and donor name with each donation
+// Populating donors id
+
+router.get("/Donations",adminController.donationDetails)
 
 module.exports = router;
