@@ -327,9 +327,13 @@ router.delete("/deleteCategory/:id", async (req, res) => {
 
 // Adopting Children
 router.post("/addchild", upload.single("file"), adminController.addChild);
-router.patch("/updatechild/:cid", adminController.updateChild);
+router.post(
+  "/updatechild/:cid",
+  upload.single("file"),
+  adminController.updateChild
+);
 router.get("/viewChildren", adminController.viewChildren);
-router.post("/deleteChildren/:cid", adminController.deleteChildren);
+router.delete("/deleteChildren/:cid", adminController.deleteChildren);
 router.get("/viewChild/:cid", adminController.specificChild);
 
 module.exports = router;
