@@ -11,6 +11,11 @@ const meetingSchema=new mongoose.Schema({
     Date:{
         type:String,
         required:true
+    },
+    // The kid for which the appointment is for
+    childId:{
+        type: mongoose.Types.ObjectId,
+         ref:"childrenSchema"
     }
 })
 
