@@ -1,6 +1,7 @@
 const children = require("../models/Children");
 const User = require("../models/users");
-const Donation =require("../models/Donation")
+const Donation = require("../models/Donation");
+const approve = require("../models/approvedloans");
 // Adding Children data to database
 const addChild = async (req, res, next) => {
   try {
@@ -27,14 +28,13 @@ const updateChild = async (req, res, next) => {
 // Viewing children database
 const viewChildren = async (req, res, next) => {
   try {
-     await children.find({}).exec((error, result) => {
+    await children.find({}).exec((error, result) => {
       console.log("result", result);
       res.status(200).send(result);
       if (error) {
         console.log(error);
       }
     });
-
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
@@ -61,19 +61,66 @@ const specificChild = async (req, res, next) => {
   }
 };
 // View Donations for each campaign  and users name and email
-const donationDetails= async(req,res,next)=>{
- try{
-  await  Donation.find({}).populate('registeredUser.userId').exec((error,result)=>{
-    if(error){
-      return next(error)
+const donationDetails = async (req, res, next) => {
+  try {
+    await Donation.find({})
+      .populate("registeredUser.userId")
+      .exec((error, result) => {
+        if (error) {
+          return next(error);
+        }
+        res.json(result);
+      });
+  } catch (e) {
+    res.status(500).send(e);
+  }
+};
+// loan managment controllers
+const addLoanApproved = async (req, res, next) => {
+  try {
+    const add = await approve.save(req.body);
+    if (!add) {
+      res.status(500).send("error in adding");
     }
-    res.json(result)
-  })
- }catch(e){
-   res.status(500).send(e)
- }
- 
-
+    res.status(200).send(add);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+};
+// update loan
+const updateLoanApproved=async(req,res,next)=>{
+  try {
+    const add = await approve.findByIdAndUpdate(  { _id: req.params.Lid },
+      req.body);
+    if (!add) {
+      res.status(501).send("error in adding");
+    }
+    else res.status(200).send(add);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+}
+// view Loan approved
+const viewLoanApproved=async(req,res,next)=>{
+  try {
+    const add = await approve.find({});
+    if (!add) {
+      res.status(501).send("error in adding");
+    }
+    else res.status(200).send(add);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+}
+// delete loans
+const deleteLoanApproved=async(req,res,next)=>{
+  try {
+    const done = await approve.findByIdAndDelete({ _id: req.params.Lid });
+    res.status(200).send(done);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
 }
 module.exports = {
   addChild,
@@ -81,5 +128,9 @@ module.exports = {
   viewChildren,
   deleteChildren,
   specificChild,
-  donationDetails
+  donationDetails,
+  addLoanApproved,
+  updateLoanApproved,
+  viewLoanApproved,
+  deleteLoanApproved
 };

@@ -14,7 +14,6 @@ const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
 const Appeal = require("../models/appealedCampaign");
 const AppealLoan = require("../models/appealedLoans");
-
 const adminController= require("../controllers/AdminController")
 const { response } = require("express");
 
@@ -241,7 +240,6 @@ router.get("/LatestNews", async (req, res) => {
     console.log("errorrrr", e);
   }
 });
-
 router.get("/LatestNews/:id", async (req, res) => {
   try {
     const news = await News.find({ category: req.params.id });
@@ -261,7 +259,6 @@ router.delete("/deleteNews/:_id", async (req, res) => {
     log;
   }
 });
-
 router.patch("/updateNews/:_id", async (req, res) => {
   try {
     News.findOneAndUpdate({ _id: req.params._id }, req.body);
@@ -287,7 +284,6 @@ router.post("/addNews", upload.single("file"), async (req, res) => {
     res.status(401);
   }
 });
-
 router.post("/addCategory", async (req, res) => {
   try {
     await Category.create(req.body).then((response) => {
@@ -298,13 +294,11 @@ router.post("/addCategory", async (req, res) => {
     res.status(401);
   }
 });
-
 router.get("/sendCategory", async (req, res) => {
   Category.find().then(async (response) => {
     await res.send(response);
   });
 });
-
 router.get("/sendcategory/:id", async (req, res) => {
   Category.findOne({ _id: req.params.id }, (err, result) => {
     if (err) {
@@ -314,7 +308,6 @@ router.get("/sendcategory/:id", async (req, res) => {
     }
   });
 });
-
 router.delete("/deleteCategory/:id", async (req, res) => {
   Category.findByIdAndDelete({ _id: req.params.id }, (err, response) => {
     if (err) {
@@ -337,4 +330,10 @@ router.get("/viewChild/:cid",adminController.specificChild)
 
 router.get("/Donations",adminController.donationDetails)
 
+
+// loan management routes adding loan,updating ,deleting and viewing appeals
+router.post("/approveLoanaddition",adminController.addLoanApproved)
+router.patch("/approveLoanupdate/:Lid",adminController.updateLoanApproved)
+router.delete("/approveLoandelete/:Lid",adminController.deleteLoanApproved)
+router.get("/approveLoandelete",adminController.viewLoanApproved)
 module.exports = router;
