@@ -25,6 +25,10 @@ const appealloanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isApproved:{
+    type:Boolean,
+    required:true
+  }
 });
 const Loanappeal = mongoose.model("loanappeal", appealloanSchema);
 

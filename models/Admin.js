@@ -35,6 +35,10 @@ const adminSchema = new mongoose.Schema(
         }
       },
     },
+    subAdmin:{
+           type:Boolean,
+           required:true
+    },
     tokens: [
       {
         token: {
@@ -52,7 +56,7 @@ adminSchema.methods.generateAuthToken = async function () {
   const admin = this;
   const token = jwt.sign(
     { _id: admin._id.toString() },
-    process.env.ACCESS_TOKEN_SECRET
+    process.env.ADMIN_TOKEN_SECRET
   );
   console.log(token);
   admin.tokens = admin.tokens.concat({ token });
