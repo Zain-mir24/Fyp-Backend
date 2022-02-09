@@ -45,36 +45,12 @@ router.post("/Signup", async (req, res, next) => {
   }
 });
 // Post route
-router.post("/login", async (req, res) => {
-  try {
-    const user = await Admin.findByCredentials(
-      req.body.getEmail,
-      req.body.getPassword
-    );
-
-    const token = await Admin.generateAuthToken();
-    console.log(user);
-    console.log("tokeeen", token);
-    res.status(200).send({ user, token });
-  } catch (e) {
-    console.log(e);
-    res.status(400).send(e);
-  }
-});
+router.post("/login", adminController.login);
 //logout route for the user
 //post route for the user
-router.post("/logout", auth, async (req, res) => {
-  try {
-    req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token !== req.token;
-    });
-    await req.user.save();
-    res.status(200).send();
-  } catch (e) {
-    console.log(e);
-    res.status(500).send(e);
-  }
-});
+router.post("/logout", auth, adminController.logout);
+// adding admin
+router.post("/changepassword",adminController.changePassword)
 //reading the users
 router.get("/users", async (req, res) => {
   try {
@@ -169,10 +145,7 @@ router.delete("/Deletecampaign/:_id", async (req, res) => {
 });
 
 // Update campaigns
-router.patch(
-  "/updateCampaign/:_id",
-  upload.single("file"),
-  async (req, res) => {
+router.patch( "/updateCampaign/:_id",  upload.single("file"),  async (req, res) => {
     console.log(req.body, "Body coming from frontend");
     const campaign = await Campaign.findByIdAndUpdate(
       { _id: req.params._id },

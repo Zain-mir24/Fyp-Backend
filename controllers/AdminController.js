@@ -1,7 +1,54 @@
 const children = require("../models/Children");
 const User = require("../models/users");
 const Donation = require("../models/Donation");
-const approve = require("../models/approvedloans");
+const appeal =require("../models/appealedCampaign")
+const Admin =require("../models/Admin")
+// Admin signup routes and addition of admins
+const login= async(req,res,next)=>{
+  try {
+    const admin = await Admin.findByCredentials(
+      req.body.getEmail,
+      req.body.getPassword
+    );
+
+    const token = await user.generateAuthToken();
+    if(!admin){
+      res.send("not found")
+    }
+    console.log(admin);
+    console.log("tokeeen", token);
+    res.status(200).send({ admin, token });
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  }
+}
+const logout=async(req,res,next)=>{
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    });
+    await req.Admin.save();
+    res.status(200).send();
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+}
+// change password
+const changePassword=async(req,res,next)=>{
+  try {
+    const admin = await Admin.findOne({ email: req.body.email });
+    if (!admin) {
+      return res.status(400).send("user with given email does not exist");
+    }
+    admin.password = req.body.newpass;
+    await admin.save();
+    return res.status(201).send("admin's password has been changeds");
+  } catch (e) {
+    console.log("Couldnt change the password", e);
+  }
+}
 // Adding Children data to database
 const addChild = async (req, res, next) => {
   try {
@@ -78,7 +125,7 @@ const donationDetails = async (req, res, next) => {
 // loan managment controllers
 const addLoanApproved = async (req, res, next) => {
   try {
-    const add = await approve.save(req.body);
+    const add = await appealed.save(req.body);
     if (!add) {
       res.status(500).send("error in adding");
     }
@@ -90,7 +137,7 @@ const addLoanApproved = async (req, res, next) => {
 // update loan
 const updateLoanApproved=async(req,res,next)=>{
   try {
-    const add = await approve.findByIdAndUpdate(  { _id: req.params.Lid },
+    const add = await appealed.findByIdAndUpdate(  { _id: req.params.Lid },
       req.body);
     if (!add) {
       res.status(501).send("error in adding");
@@ -103,7 +150,7 @@ const updateLoanApproved=async(req,res,next)=>{
 // view Loan approved
 const viewLoanApproved=async(req,res,next)=>{
   try {
-    const add = await approve.find({});
+    const add = await appealed.find({});
     if (!add) {
       res.status(501).send("error in adding");
     }
@@ -111,11 +158,11 @@ const viewLoanApproved=async(req,res,next)=>{
   } catch (e) {
     res.status(500).send(e);
   }
-}
+} 
 // delete loans
 const deleteLoanApproved=async(req,res,next)=>{
   try {
-    const done = await approve.findByIdAndDelete({ _id: req.params.Lid });
+    const done = await appealed.findByIdAndDelete({ _id: req.params.Lid });
     res.status(200).send(done);
   } catch (e) {
     console.log(e);
@@ -123,6 +170,9 @@ const deleteLoanApproved=async(req,res,next)=>{
   }
 }
 module.exports = {
+  login,
+  logout,
+  changePassword,
   addChild,
   updateChild,
   viewChildren,
