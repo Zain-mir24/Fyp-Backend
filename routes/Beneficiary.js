@@ -30,6 +30,7 @@ router.post("/addloanappeal", upload.single("file"), async (req, res) => {
     Loanamount: req.body.Loanamount,
     loanType: req.body.loanType,
     file: req.body.fileName,
+    isApproved:false
   };
   const camp = new loanappeal(obj);
   try {

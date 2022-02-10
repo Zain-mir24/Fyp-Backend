@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const appealloanSchema = new mongoose.Schema({
   bid: {
     type: mongoose.Types.ObjectId,
-    required: true,
+    ref: "User",
   },
   name: {
     type: String,
@@ -17,6 +17,9 @@ const appealloanSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  LoanReturned: {
+    type: Number,
+  },
   loanType: {
     type: String,
     required: true,
@@ -25,10 +28,14 @@ const appealloanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isApproved:{
-    type:Boolean,
-    required:true
-  }
+  isApproved: {
+    type: Boolean,
+    required: true,
+  },
+  bankAcc: {
+    type: Number,
+    required: true,
+  },
 });
 const Loanappeal = mongoose.model("loanappeal", appealloanSchema);
 

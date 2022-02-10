@@ -183,21 +183,17 @@ router.get("/viewAppeals", async (req, res) => {
 });
 // Loan Section
 // View latest Loan Apeeals
-router.get("/viewLoanAppeals", async (req, res) => {
+router.get("/viewLoanAppeals", async (req, res,next) => {
   try {
-    const appeal = await AppealLoan.find();
-    var ids = appeal.map((i) => i.bid);
-    console.log(ids);
-    const beneficiary = await User.find({
-      _id: {
-        $in: ids,
-      },
-    }).exec();
-
-    if (!appeal) return Error;
-    res.status(200).send({ appeal, beneficiary });
-    console.log(appeal);
-  } catch (e) {
+     await AppealLoan.find({}).populate("bid").exec((error,result)=>{
+      if(error){
+        return next(error)
+      }
+      console.log(result)
+      res.status(200).send(result)
+    })
+   
+    } catch (e) {
     res.status(500).send(e);
   }
 });
@@ -308,5 +304,5 @@ router.get("/Donations",adminController.donationDetails)
 router.post("/approveLoanaddition",adminController.addLoanApproved)
 router.patch("/approveLoanupdate/:Lid",adminController.updateLoanApproved)
 router.delete("/approveLoandelete/:Lid",adminController.deleteLoanApproved)
-router.get("/approveLoandelete",adminController.viewLoanApproved)
+router.get("/approveLoanview0",adminController.viewLoanApproved)
 module.exports = router;
