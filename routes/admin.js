@@ -14,43 +14,44 @@ const News = require("../models/LatestNewsDB");
 const upload = require("../middleware/img");
 const Appeal = require("../models/appealedCampaign");
 const AppealLoan = require("../models/appealedLoans");
-const adminController= require("../controllers/AdminController")
+const adminController = require("../controllers/AdminController");
 const { response } = require("express");
 
 //Admin routes
-router.post("/Signup", async (req, res, next) => {
-  const admin = new Admin(req.body);
-  try {
-    await admin.save();
-    const token = await user.generateAuthToken();
-    const mailOptions = {
-      from: '"Our Code World " <zainzz123@outlook.com>',
-      to: email,
-      subject: "You have signedup as an admin for global reach",
-      text: "Welcome to global reach",
-    };
-    mailSender.transporter
-      .sendMail(mailOptions)
-      .then((result) => {
-        console.log("sent success");
-        console.log("result", result);
-      })
-      .catch((err) => {
-        console.log("error", err);
-      });
-    res.status(201).send({ user, token });
-  } catch (e) {
-    console.log("errrorr", e);
-    res.status(400).send(e);
-  }
-});
+// router.post("/Signup", async (req, res, next) => {
+//   const admin = new Admin(req.body);
+//   try {
+//     await admin.save();
+//     const token = await user.generateAuthToken();
+//     const mailOptions = {
+//       from: '"Our Code World " <zainzz123@outlook.com>',
+//       to: email,
+//       subject: "You have signedup as an admin for global reach",
+//       text: "Welcome to global reach",
+//     };
+//     mailSender.transporter
+//       .sendMail(mailOptions)
+//       .then((result) => {
+//         console.log("sent success");
+//         console.log("result", result);
+//       })
+//       .catch((err) => {
+//         console.log("error", err);
+//       });
+//     res.status(201).send({ user, token });
+//   } catch (e) {
+//     console.log("errrorr", e);
+//     res.status(400).send(e);
+//   }
+// });
 // Post route
+router.post("/SuperAdmin", adminController.SuperAdmin);
 router.post("/login", adminController.login);
 //logout route for the user
 //post route for the user
 router.post("/logout", auth, adminController.logout);
 // adding admin
-router.post("/changepassword",adminController.changePassword)
+router.post("/changepassword", adminController.changePassword);
 //reading the users
 router.get("/users", async (req, res) => {
   try {
@@ -124,8 +125,8 @@ router.get("/viewCampaigns", async (req, res) => {
     if (!campaign) {
       res.status(401).send();
     }
-   
-     res.status(200).send({campaign});
+
+    res.status(200).send({ campaign });
   } catch (e) {
     console.log(e);
   }
@@ -145,7 +146,10 @@ router.delete("/Deletecampaign/:_id", async (req, res) => {
 });
 
 // Update campaigns
-router.patch( "/updateCampaign/:_id",  upload.single("file"),  async (req, res) => {
+router.patch(
+  "/updateCampaign/:_id",
+  upload.single("file"),
+  async (req, res) => {
     console.log(req.body, "Body coming from frontend");
     const campaign = await Campaign.findByIdAndUpdate(
       { _id: req.params._id },
@@ -183,17 +187,18 @@ router.get("/viewAppeals", async (req, res) => {
 });
 // Loan Section
 // View latest Loan Apeeals
-router.get("/viewLoanAppeals", async (req, res,next) => {
+router.get("/viewLoanAppeals", async (req, res, next) => {
   try {
-     await AppealLoan.find({}).populate("bid").exec((error,result)=>{
-      if(error){
-        return next(error)
-      }
-      console.log(result)
-      res.status(200).send(result)
-    })
-   
-    } catch (e) {
+    await AppealLoan.find({})
+      .populate("bid")
+      .exec((error, result) => {
+        if (error) {
+          return next(error);
+        }
+        console.log(result);
+        res.status(200).send(result);
+      });
+  } catch (e) {
     res.status(500).send(e);
   }
 });
@@ -288,21 +293,24 @@ router.delete("/deleteCategory/:id", async (req, res) => {
 });
 
 // Adopting Children
-router.post("/addchild",upload.single("file"),adminController.addChild)
-router.patch("/updatechild/:cid",upload.single("file"),adminController.updateChild)
-router.get("/viewChildren",adminController.viewChildren)
-router.delete("/deleteChildren/:cid",adminController.deleteChildren)
-router.get("/viewChild/:cid",adminController.specificChild)
+router.post("/addchild", upload.single("file"), adminController.addChild);
+router.patch( "/updatechild/:cid",  upload.single("file"),  adminController.updateChild);
+router.get("/viewChildren", adminController.viewChildren);
+router.delete("/deleteChildren/:cid", adminController.deleteChildren);
+router.get("/viewChild/:cid", adminController.specificChild);
 
 // Donation details through each campaign and donor name with each donation
 // Populating donors id
 
-router.get("/Donations",adminController.donationDetails)
-
+router.get("/Donations", adminController.donationDetails);
 
 // loan management routes adding loan,updating ,deleting and viewing appeals
-router.post("/approveLoanaddition",adminController.addLoanApproved)
-router.patch("/approveLoanupdate/:Lid",adminController.updateLoanApproved)
-router.delete("/approveLoandelete/:Lid",adminController.deleteLoanApproved)
-router.get("/approveLoanview0",adminController.viewLoanApproved)
+router.patch("/approveLoanupdate/:Lid", adminController.updateLoanApproved);
+router.delete("/approveLoandelete/:Lid", adminController.deleteLoanApproved);
+router.get("/approveLoanview", adminController.viewLoanApproved);
+
+// SubAdmin Management Routes
+// router.post("/addingAdmin ", adminController.addAdmin);
+router.post("/SubAdminadd", adminController.addAdmin);
+
 module.exports = router;

@@ -15,29 +15,28 @@ const { response } = require("express");
 const mailSender = require("../email/account");
 
 // Verifying Email for  Latest News
-router.post("/saveEmail", async(req, res) => {
-  console.log(req.body,"frontend")
-  const email = new Email(req.body)
-  const email1=await Email.findOne({ Email: req.body.Email })
- try{ 
-  if(!email1){
-    const link= await email.verifyToken();
-    console.log(link)
-    const mailOptions = {
-      from: '"Our Code World " <zainzz123@outlook.com>',
-      to: email,
-      subject: "Verify your email",
-      text: `Here is your verification link ${link}`,
-    };
-    await mailSender.transporter.sendMail(mailOptions);
-    res.status(201).send("Mailsent");
-  }
-  else{
-    console.log("Mail exists")
-  }}
-  catch(e){
-    console.log(e)
-    res.status(500).send(e)
+router.post("/saveEmail", async (req, res) => {
+  console.log(req.body, "frontend");
+  const email = new Email(req.body);
+  const email1 = await Email.findOne({ Email: req.body.Email });
+  try {
+    if (!email1) {
+      const link = await email.verifyToken();
+      console.log(link);
+      const mailOptions = {
+        from: '"Our Code World " <zainzz123@outlook.com>',
+        to: email,
+        subject: "Verify your email",
+        text: `Here is your verification link ${link}`,
+      };
+      await mailSender.transporter.sendMail(mailOptions);
+      res.status(201).send("Mailsent");
+    } else {
+      console.log("Mail exists");
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
   }
 });
 // saving verified email

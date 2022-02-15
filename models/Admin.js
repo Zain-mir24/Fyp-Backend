@@ -35,9 +35,8 @@ const adminSchema = new mongoose.Schema(
         }
       },
     },
-    subAdmin:{
-           type:Boolean,
-           required:true
+    subAdmin: {
+      type: Boolean,
     },
     tokens: [
       {
@@ -63,6 +62,21 @@ adminSchema.methods.generateAuthToken = async function () {
   await admin.save();
 
   return token;
+};
+adminSchema.statics.findByCredentials = async (email, password) => {
+  const admin = await Admin.findOne({ email });
+
+  if (!admin) {
+    throw new Error("Unable to login");
+  }
+
+  // const isMatch = await bcrypt.compare(password, admin.password);
+
+  if (password !== admin.password) {
+    throw new Error("Unable to login");
+  }
+
+  return admin;
 };
 const Admin = mongoose.model("Admin", adminSchema);
 

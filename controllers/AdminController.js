@@ -1,19 +1,35 @@
 const children = require("../models/Children");
 const User = require("../models/users");
 const Donation = require("../models/Donation");
-const appeal =require("../models/appealedCampaign")
-const Admin =require("../models/Admin")
+const appeal = require("../models/appealedCampaign");
+const Admin = require("../models/Admin");
 // Admin signup routes and addition of admins
-const login= async(req,res,next)=>{
+const SuperAdmin = async (req, res, next) => {
+  const { email } = req.body;
+  const matchEmail = await Admin.findOne({ email });
+  try {
+    if (!matchEmail) {
+      const add = await Admin.create(req.body);
+      res.status(201).send(add);
+    } else {
+      res.send("ALready existing email");
+    }
+  } catch (e) {
+    console.log("errrorr", e);
+    next(e);
+    res.status(400).send(e);
+  }
+};
+const login = async (req, res, next) => {
   try {
     const admin = await Admin.findByCredentials(
       req.body.getEmail,
       req.body.getPassword
     );
 
-    const token = await user.generateAuthToken();
-    if(!admin){
-      res.send("not found")
+    const token = await admin.generateAuthToken();
+    if (!admin) {
+      res.send("not found");
     }
     console.log(admin);
     console.log("tokeeen", token);
@@ -22,8 +38,8 @@ const login= async(req,res,next)=>{
     console.log(e);
     res.status(400).send(e);
   }
-}
-const logout=async(req,res,next)=>{
+};
+const logout = async (req, res, next) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
       return token.token !== req.token;
@@ -34,9 +50,27 @@ const logout=async(req,res,next)=>{
     console.log(e);
     res.status(500).send(e);
   }
-}
+};
+
+// routes for adding
+const addAdmin = async (req, res, next) => {
+  const { email } = req.body;
+  const matchEmail = await Admin.findOne({ email });
+  try {
+    if (!matchEmail) {
+      const add=await Admin.create(req.body);
+      res.status(201).send(add);
+    } else {
+      res.status(203).send("ALready existing email");
+    }
+  } catch (e) {
+    console.log("errrorr", e);
+    next(e);
+    res.status(400).send(e);
+  }
+};
 // change password
-const changePassword=async(req,res,next)=>{
+const changePassword = async (req, res, next) => {
   try {
     const admin = await Admin.findOne({ email: req.body.email });
     if (!admin) {
@@ -48,7 +82,7 @@ const changePassword=async(req,res,next)=>{
   } catch (e) {
     console.log("Couldnt change the password", e);
   }
-}
+};
 // Adding Children data to database
 const addChild = async (req, res, next) => {
   try {
@@ -135,32 +169,32 @@ const addLoanApproved = async (req, res, next) => {
   }
 };
 // update loan
-const updateLoanApproved=async(req,res,next)=>{
+const updateLoanApproved = async (req, res, next) => {
   try {
-    const add = await appealed.findByIdAndUpdate(  { _id: req.params.Lid },
-      req.body);
+    const add = await appealed.findByIdAndUpdate(
+      { _id: req.params.Lid },
+      req.body
+    );
     if (!add) {
       res.status(501).send("error in adding");
-    }
-    else res.status(200).send(add);
+    } else res.status(200).send(add);
   } catch (e) {
     res.status(500).send(e);
   }
-}
+};
 // view Loan approved
-const viewLoanApproved=async(req,res,next)=>{
+const viewLoanApproved = async (req, res, next) => {
   try {
     const add = await appealed.find({});
     if (!add) {
       res.status(501).send("error in adding");
-    }
-    else res.status(200).send(add);
+    } else res.status(200).send(add);
   } catch (e) {
     res.status(500).send(e);
   }
-} 
+};
 // delete loans
-const deleteLoanApproved=async(req,res,next)=>{
+const deleteLoanApproved = async (req, res, next) => {
   try {
     const done = await appealed.findByIdAndDelete({ _id: req.params.Lid });
     res.status(200).send(done);
@@ -168,8 +202,10 @@ const deleteLoanApproved=async(req,res,next)=>{
     console.log(e);
     res.status(500).send(e);
   }
-}
+};
 module.exports = {
+  addAdmin,
+  SuperAdmin,
   login,
   logout,
   changePassword,
@@ -182,5 +218,5 @@ module.exports = {
   addLoanApproved,
   updateLoanApproved,
   viewLoanApproved,
-  deleteLoanApproved
+  deleteLoanApproved,
 };
