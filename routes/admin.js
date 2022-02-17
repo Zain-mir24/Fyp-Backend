@@ -311,6 +311,9 @@ router.get("/approveLoanview", adminController.viewLoanApproved);
 
 // SubAdmin Management Routes
 // router.post("/addingAdmin ", adminController.addAdmin);
-router.post("/SubAdminadd", adminController.addAdmin);
+router.post("/SubAdminadd", adminController.addsubAdmin);
+router.post("/updateAdminadd/:Sid", adminController.updatesubAdmin);
+router.post("/updateAdminadd/:Sid", adminController.deletesubAdmin);
+
 
 module.exports = router;

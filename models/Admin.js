@@ -38,6 +38,9 @@ const adminSchema = new mongoose.Schema(
     subAdmin: {
       type: Boolean,
     },
+    Location:{
+      type:String
+    },
     tokens: [
       {
         token: {

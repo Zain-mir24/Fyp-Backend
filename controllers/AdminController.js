@@ -53,7 +53,7 @@ const logout = async (req, res, next) => {
 };
 
 // routes for adding
-const addAdmin = async (req, res, next) => {
+const addsubAdmin = async (req, res, next) => {
   const { email } = req.body;
   const matchEmail = await Admin.findOne({ email });
   try {
@@ -67,6 +67,41 @@ const addAdmin = async (req, res, next) => {
     console.log("errrorr", e);
     next(e);
     res.status(400).send(e);
+  }
+};
+const updatesubAdmin=async(req,res,next)=>{
+  try {
+    const done = await Admin.findByIdAndUpdate(
+      { _id: req.params.Sid },
+      req.body
+    );
+    res.status(201).send(done);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+const deletesubAdmin=async(req,res,next)=>{
+  try {
+    const done = await Admin.findByIdAndDelete({ _id: req.params.Sid });
+    res.status(200).send(done);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+const viewsubAdmin=async(req,res,next)=>{
+  try {
+    await Admin.find({}).exec((error, result) => {
+      console.log("result", result);
+      res.status(200).send(result);
+      if (error) {
+        console.log(error);
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
   }
 };
 // change password
@@ -204,7 +239,10 @@ const deleteLoanApproved = async (req, res, next) => {
   }
 };
 module.exports = {
-  addAdmin,
+  addsubAdmin,
+  updatesubAdmin,
+  deletesubAdmin,
+  viewsubAdmin,
   SuperAdmin,
   login,
   logout,
