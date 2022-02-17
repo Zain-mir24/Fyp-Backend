@@ -33,7 +33,7 @@ const { response } = require("express");
 //       .sendMail(mailOptions)
 //       .then((result) => {
 //         console.log("sent success");
-//         console.log("result", result);
+//         console.log("result", result); 
 //       })
 //       .catch((err) => {
 //         console.log("error", err);
