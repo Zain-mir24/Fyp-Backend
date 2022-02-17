@@ -312,9 +312,9 @@ router.get("/approveLoanview", adminController.viewLoanApproved);
 // SubAdmin Management Routes
 // router.post("/addingAdmin ", adminController.addAdmin);
 router.post("/SubAdminadd", adminController.addsubAdmin);
-router.post("/updatesubAdmin/:Sid", adminController.updatesubAdmin);
-router.post("/deletesubAdmin/:Sid", adminController.deletesubAdmin);
-router.post("/viewsubAdmin", adminController.viewsubAdmin);
+router.patch("/updatesubAdmin/:Sid", adminController.updatesubAdmin);
+router.delete("/deletesubAdmin/:Sid", adminController.deletesubAdmin);
+router.get("/viewsubAdmin", adminController.viewsubAdmin);
 
 
 module.exports = router;
