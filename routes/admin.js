@@ -4,7 +4,7 @@ let express = require("express");
 let router = express.Router();
 const path = require("path");
 const Campaign = require("../models/CampaignDB");
-const auth = require("../middleware/auth");
+const adminAuth = require("../middleware/adminAuth");
 const Admin = require("../models/Admin");
 const User = require("../models/users");
 const Category = require("../models/Category");
@@ -49,7 +49,7 @@ router.post("/SuperAdmin", adminController.SuperAdmin);
 router.post("/login", adminController.login);
 //logout route for the user
 //post route for the user
-router.post("/logout", auth, adminController.logout);
+router.post("/logout", adminAuth, adminController.logout);
 // adding admin
 router.post("/changepassword", adminController.changePassword);
 //reading the users
@@ -105,7 +105,7 @@ router.delete("/users/:id", async (req, res) => {
 });
 
 //Adding campaigns
-router.post("/addCampaign", upload.single("file"), async (req, res) => {
+router.post("/addCampaign",adminAuth, upload.single("file"), async (req, res) => {
   const campaign = new Campaign(req.body);
   console.log(req.body, "Coming from the frontend");
   try {
@@ -119,7 +119,7 @@ router.post("/addCampaign", upload.single("file"), async (req, res) => {
 
 // View created campaigns
 
-router.get("/viewCampaigns", async (req, res) => {
+router.get("/viewCampaigns",adminAuth, async (req, res) => {
   try {
     const campaign = await Campaign.find({});
     if (!campaign) {
@@ -133,7 +133,7 @@ router.get("/viewCampaigns", async (req, res) => {
 });
 
 // Delete campaigns
-router.delete("/Deletecampaign/:_id", async (req, res) => {
+router.delete("/Deletecampaign/:_id",adminAuth, async (req, res) => {
   const campaign = await Campaign.findByIdAndDelete({ _id: req.params._id });
   try {
     if (!campaign) {
