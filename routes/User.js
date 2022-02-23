@@ -116,7 +116,6 @@ router.post("/logoutAll", auth, async (req, res) => {
 router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
-
 //Changing user's passowrd route
 router.post("/changepassword", async (req, res) => {
   try {
@@ -132,7 +131,6 @@ router.post("/changepassword", async (req, res) => {
   }
 });
 //Forgot password route
-
 router.post("/forgotpassword", async (req, res) => {
   const { email } = req.body;
   try {
@@ -185,4 +183,5 @@ router.post("/resetPassword/:_id/:token", async (req, res) => {
 });
 // Scheduling meeting for child adoption
 router.get("/appointments",userController.scheduleMeeting)
+router.get("/viewChildren",userController.viewChildren)
 module.exports = router;
