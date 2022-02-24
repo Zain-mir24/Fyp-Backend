@@ -16,6 +16,7 @@ const Appeal = require("../models/appealedCampaign");
 const AppealLoan = require("../models/appealedLoans");
 const adminController = require("../controllers/AdminController");
 const { response } = require("express");
+const { Console } = require("console");
 
 //Admin routes
 // router.post("/Signup", async (req, res, next) => {
@@ -203,6 +204,26 @@ router.get("/viewLoanAppeals", async (req, res, next) => {
   }
 });
 
+// UPDATE LOAN STATUS
+
+router.patch("/updateLoan/:id", async (req, res, next) => {
+  try {
+    const add = await AppealLoan.findByIdAndUpdate(
+      { _id: req.params.id },
+      { status: req.body.status },
+      (err, resp) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(resp);
+        }
+      }
+    );
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 //Latest news section
 
 //Reading the news data
@@ -294,7 +315,11 @@ router.delete("/deleteCategory/:id", async (req, res) => {
 
 // Adopting Children
 router.post("/addchild", upload.single("file"), adminController.addChild);
-router.patch( "/updatechild/:cid",  upload.single("file"),  adminController.updateChild);
+router.patch(
+  "/updatechild/:cid",
+  upload.single("file"),
+  adminController.updateChild
+);
 router.get("/viewChildren", adminController.viewChildren);
 router.delete("/deleteChildren/:cid", adminController.deleteChildren);
 router.get("/viewChild/:cid", adminController.specificChild);
@@ -315,6 +340,5 @@ router.post("/SubAdminadd", adminController.addsubAdmin);
 router.post("/updatesubAdmin/:Sid", adminController.updatesubAdmin);
 router.post("/deletesubAdmin/:Sid", adminController.deletesubAdmin);
 router.post("/viewsubAdmin", adminController.viewsubAdmin);
-
 
 module.exports = router;
