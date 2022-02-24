@@ -120,9 +120,12 @@ const changePassword = async (req, res, next) => {
 };
 // Adding Children data to database
 const addChild = async (req, res, next) => {
+  const myChild=new children(req.body)
+  console.log(myChild,"child's data coming from the frontend")
   try {
-    const done = await children.create(req.body);
-    res.status(200).send(done);
+    await myChild.save();
+    // const done = await children.create(req.body);
+    res.status(200).send("child added");
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
