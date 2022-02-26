@@ -1,22 +1,5 @@
 const mongoose = require("mongoose")
-
-const slotSchema = new Schema({
-    SlotTime: {
-        type: String,
-        required: true
-    },
-    SlotDate: {
-        type: String,
-        required: true
-    },
-    created_at: {
-        type: Date
-    }
-})
-
-export const Slot = mongoose.model("Slot", slotSchema)
-
-const appointmentSchema = new Schema({
+const appointmentSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -25,9 +8,18 @@ const appointmentSchema = new Schema({
         type: String,
         required: true
     },
-    slots: {
-        type: mongoose.Types.ObjectId,
+    SlotTime: {
+        type: String,
         required: true
+    },
+    SlotDate: {
+        type: String,
+        required: true
+    },
+    // The kid for which the appointment is for
+    childId: {
+        type: mongoose.Types.ObjectId,
+        ref: "childrenSchema"
     },
     created_at: {
         type: Date,
@@ -35,4 +27,8 @@ const appointmentSchema = new Schema({
     }
 })
 
-export const Appointment = mongoose.model("Appointment", appointmentSchema)
+const Appointment = mongoose.model("Appointment", appointmentSchema)
+module.exports = {
+    Appointment,
+
+}

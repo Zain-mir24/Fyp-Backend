@@ -1,4 +1,4 @@
-const { Appointment, Slot } = require("../models/Appointment")
+const { Appointment } = require("../models/Appointment")
 
 const appointmentController = {
     all(req, res) {
@@ -7,20 +7,14 @@ const appointmentController = {
     },
     create(req, res) {
         var requestBody = req.body;
-        var newslot = new Slot({
-            slot_time: requestBody.slot_time,
-            slot_date: requestBody.slot_date,
-            created_at: Date.now()
-        });
-        newslot.save();
         // Creates a new record from a submitted form
         var newappointment = new Appointment({
             name: requestBody.name,
             email: requestBody.email,
-
-            slots: newslot._id
+            SlotTime: requestBody.SlotTime,
+            SlotDate: requestBody.SlotDate,
+            childId: requestBody.childId
         });
-
         // and saves the record to
         // the data base
         newappointment.save((err, saved) => {
