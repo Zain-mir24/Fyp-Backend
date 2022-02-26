@@ -184,8 +184,8 @@ router.post("/resetPassword/:_id/:token", async (req, res) => {
   }
 });
 // Scheduling meeting for child adoption
-router.get("/appointments", appointmentController.all)
-router.post('/appointmentCreate', appointmentController.create);
+router.get("/appointments", appointmentController.viewMeeting.all)
+router.post('/appointmentCreate', appointmentController.createMeeting);
 router.get("/viewChildren", userController.viewChildren)
 
 module.exports = router;

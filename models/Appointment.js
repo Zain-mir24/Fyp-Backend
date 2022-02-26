@@ -20,11 +20,9 @@ const appointmentSchema = new mongoose.Schema({
     childId: {
         type: mongoose.Types.ObjectId,
         ref: "childrenSchema"
-    },
-    created_at: {
-        type: Date,
-        required: true
     }
+}, {
+    timestamps: true,
 })
 
 const Appointment = mongoose.model("Appointment", appointmentSchema)
