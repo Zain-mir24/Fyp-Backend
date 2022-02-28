@@ -8,6 +8,10 @@ const appointmentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    PhoneNumber: {
+        type: String,
+        required: true
+    },
     SlotTime: {
         type: String,
         required: true
