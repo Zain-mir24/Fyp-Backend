@@ -3,8 +3,8 @@
 /**
  * Module dependencies.
  */
- const dotenv = require("dotenv");
- dotenv.config();
+const dotenv = require("dotenv");
+dotenv.config();
 
 var app = require("../app");
 var debug = require("debug")("api:server");
@@ -22,6 +22,11 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
+
+// SOCKET IO CHAT SYSTEM
+
+const socketio = require("socket.io");
+const io = socketio(server);
 
 /**
  * Listen on provided port, on all network interfaces.
