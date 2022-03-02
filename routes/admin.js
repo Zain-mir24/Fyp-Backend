@@ -105,7 +105,7 @@ router.delete("/users/:id", async (req, res) => {
 });
 
 //Adding campaigns
-router.post("/addCampaign",adminAuth, upload.single("file"), async (req, res) => {
+router.post("/addCampaign", adminAuth, upload.single("file"), async (req, res) => {
   const campaign = new Campaign(req.body);
   console.log(req.body, "Coming from the frontend");
   try {
@@ -119,7 +119,7 @@ router.post("/addCampaign",adminAuth, upload.single("file"), async (req, res) =>
 
 // View created campaigns
 
-router.get("/viewCampaigns",adminAuth, async (req, res) => {
+router.get("/viewCampaigns", async (req, res) => {
   try {
     const campaign = await Campaign.find({});
     if (!campaign) {
@@ -133,7 +133,7 @@ router.get("/viewCampaigns",adminAuth, async (req, res) => {
 });
 
 // Delete campaigns
-router.delete("/Deletecampaign/:_id",adminAuth, async (req, res) => {
+router.delete("/Deletecampaign/:_id", adminAuth, async (req, res) => {
   const campaign = await Campaign.findByIdAndDelete({ _id: req.params._id });
   try {
     if (!campaign) {
@@ -294,7 +294,7 @@ router.delete("/deleteCategory/:id", async (req, res) => {
 
 // Adopting Children
 router.post("/addchild", upload.single("file"), adminController.addChild);
-router.patch( "/updatechild/:cid",  upload.single("file"),  adminController.updateChild);
+router.patch("/updatechild/:cid", upload.single("file"), adminController.updateChild);
 router.get("/viewChildren", adminController.viewChildren);
 router.delete("/deleteChildren/:cid", adminController.deleteChildren);
 router.get("/viewChild/:cid", adminController.specificChild);
