@@ -4,7 +4,7 @@ const Donation = require("../models/Donation");
 const appeal = require("../models/appealedCampaign");
 const Admin = require("../models/Admin");
 const Monthly = require("../models/MonthlySupport")
-
+const Amount = require("../models/AmountDetail")
 // Admin signup routes and addition of admins
 const SuperAdmin = async (req, res, next) => {
   const { email } = req.body;
@@ -254,7 +254,32 @@ const viewmonthlyAppeal = async (req, res, next) => {
 
   }
 }
+// Adding amount detail for  beneficiary
+const addamountDetail = async (req, res, next) => {
+  console.log(req.body)
+  try {
+    const Amountdetail = await Amount.create(req.body)
+    res.status(200).send(Amountdetail)
+  }
+  catch (e) {
+    res.status(500).send(e)
+
+  }
+}
+// viewing amount detail from each beneficiary
+const viewammountDetail = async (req, res, next) => {
+  try {
+    const view = await Amount.find({}).populate("bid")
+    res.status(200).send(view)
+  } catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+
+  }
+}
 module.exports = {
+  viewammountDetail,
+  addamountDetail,
   viewmonthlyAppeal,
   addsubAdmin,
   updatesubAdmin,

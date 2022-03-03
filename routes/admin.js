@@ -317,5 +317,8 @@ router.delete("/deletesubAdmin/:Sid", adminController.deletesubAdmin);
 router.get("/viewsubAdmin", adminController.viewsubAdmin);
 // View monthly support Appeals from beneficiary
 router.get("/viewmonthlyAppeal", adminController.viewmonthlyAppeal);
-//  Add amount detail rouutes for admin
+//  Add amount detail routes for admin
+router.post("/addAmountDetail", adminController.addamountDetail)
+// View amount detail for the beneficiary.
+router.get("/viewamountDetail", adminController.viewammountDetail)
 module.exports = router;
