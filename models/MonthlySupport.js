@@ -80,7 +80,23 @@ const MonthlySchema = new mongoose.Schema({
             type: Number
         }
     }],
-
+    widowsibilings: [{
+        name: {
+            type: String
+        },
+        age: {
+            type: Number
+        },
+        relation: {
+            type: String
+        },
+        activities: {
+            type: String
+        },
+        income: {
+            type: Number
+        }
+    }],
     medicineCost: {
         type: Number,
         required: true

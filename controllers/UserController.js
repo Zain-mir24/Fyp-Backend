@@ -41,7 +41,7 @@ const monthlyAppeal = async (req, res, next) => {
 // }
 module.exports = {
   viewChildren,
-  monthlyAppeal,
-  viewAppeal
+  monthlyAppeal
+  // viewAppeal
   // scheduleMeeting
 };
