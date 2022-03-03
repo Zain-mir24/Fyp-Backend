@@ -3,6 +3,8 @@ const User = require("../models/users");
 const Donation = require("../models/Donation");
 const appeal = require("../models/appealedCampaign");
 const Admin = require("../models/Admin");
+const Monthly = require("../models/MonthlySupport")
+
 // Admin signup routes and addition of admins
 const SuperAdmin = async (req, res, next) => {
   const { email } = req.body;
@@ -58,7 +60,7 @@ const addsubAdmin = async (req, res, next) => {
   const matchEmail = await Admin.findOne({ email });
   try {
     if (!matchEmail) {
-      const add=await Admin.create(req.body);
+      const add = await Admin.create(req.body);
       res.status(201).send(add);
     } else {
       res.status(203).send("ALready existing email");
@@ -69,7 +71,7 @@ const addsubAdmin = async (req, res, next) => {
     res.status(400).send(e);
   }
 };
-const updatesubAdmin=async(req,res,next)=>{
+const updatesubAdmin = async (req, res, next) => {
   try {
     const done = await Admin.findByIdAndUpdate(
       { _id: req.params.Sid },
@@ -81,7 +83,7 @@ const updatesubAdmin=async(req,res,next)=>{
     res.status(500).send(e);
   }
 };
-const deletesubAdmin=async(req,res,next)=>{
+const deletesubAdmin = async (req, res, next) => {
   try {
     const done = await Admin.findByIdAndDelete({ _id: req.params.Sid });
     res.status(200).send(done);
@@ -90,7 +92,7 @@ const deletesubAdmin=async(req,res,next)=>{
     res.status(500).send(e);
   }
 };
-const viewsubAdmin=async(req,res,next)=>{
+const viewsubAdmin = async (req, res, next) => {
   try {
     await Admin.find({}).exec((error, result) => {
       console.log("result", result);
@@ -120,8 +122,8 @@ const changePassword = async (req, res, next) => {
 };
 // Adding Children data to database
 const addChild = async (req, res, next) => {
-  const myChild=new children(req.body)
-  console.log(myChild,"child's data coming from the frontend")
+  const myChild = new children(req.body)
+  console.log(myChild, "child's data coming from the frontend")
   try {
     await myChild.save();
     // const done = await children.create(req.body);
@@ -241,7 +243,19 @@ const deleteLoanApproved = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+// view monthly support of beneficiary
+const viewmonthlyAppeal = async (req, res, next) => {
+  try {
+    const viewAppeal = await Monthly.find({}).populate("bid")
+    res.status(200).send(viewAppeal)
+  }
+  catch (e) {
+    res.status(500).send(e)
+
+  }
+}
 module.exports = {
+  viewmonthlyAppeal,
   addsubAdmin,
   updatesubAdmin,
   deletesubAdmin,

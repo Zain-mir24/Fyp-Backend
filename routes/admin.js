@@ -34,7 +34,7 @@ const { Console } = require("console");
 //       .sendMail(mailOptions)
 //       .then((result) => {
 //         console.log("sent success");
-//         console.log("result", result); 
+//         console.log("result", result);
 //       })
 //       .catch((err) => {
 //         console.log("error", err);
@@ -106,17 +106,22 @@ router.delete("/users/:id", async (req, res) => {
 });
 
 //Adding campaigns
-router.post("/addCampaign", adminAuth, upload.single("file"), async (req, res) => {
-  const campaign = new Campaign(req.body);
-  console.log(req.body, "Coming from the frontend");
-  try {
-    await campaign.save();
-    res.status(201).send("campaign added");
-  } catch (e) {
-    console.log(e);
-    res.status(401);
+router.post(
+  "/addCampaign",
+  adminAuth,
+  upload.single("file"),
+  async (req, res) => {
+    const campaign = new Campaign(req.body);
+    console.log(req.body, "Coming from the frontend");
+    try {
+      await campaign.save();
+      res.status(201).send("campaign added");
+    } catch (e) {
+      console.log(e);
+      res.status(401);
+    }
   }
-});
+);
 
 // View created campaigns
 
@@ -315,15 +320,11 @@ router.delete("/deleteCategory/:id", async (req, res) => {
 
 // Adopting Children
 router.post("/addchild", upload.single("file"), adminController.addChild);
-<<<<<<< HEAD
 router.patch(
   "/updatechild/:cid",
   upload.single("file"),
   adminController.updateChild
 );
-=======
-router.patch("/updatechild/:cid", upload.single("file"), adminController.updateChild);
->>>>>>> fd05cf5cfae32e241ef2144b4240a54da6367527
 router.get("/viewChildren", adminController.viewChildren);
 router.delete("/deleteChildren/:cid", adminController.deleteChildren);
 router.get("/viewChild/:cid", adminController.specificChild);
@@ -344,5 +345,6 @@ router.post("/SubAdminadd", adminController.addsubAdmin);
 router.patch("/updatesubAdmin/:Sid", adminController.updatesubAdmin);
 router.delete("/deletesubAdmin/:Sid", adminController.deletesubAdmin);
 router.get("/viewsubAdmin", adminController.viewsubAdmin);
-
+// View monthly support Appeals from beneficiary
+router.get("/viewmonthlAppeal", adminController.viewmonthlyAppeal);
 module.exports = router;

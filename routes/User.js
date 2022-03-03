@@ -21,7 +21,7 @@ router.get("/users", auth, async (req, res, next) => {
     console.log("its working");
     res.send(user);
   } catch (e) {
-    res.status(501).send();
+    res.status(501).send(e);
   }
 });
 /* POST Signup */
@@ -187,5 +187,10 @@ router.post("/resetPassword/:_id/:token", async (req, res) => {
 router.get("/appointments", appointmentController.viewMeeting.all)
 router.post('/appointmentCreate', appointmentController.createMeeting);
 router.get("/viewChildren", userController.viewChildren)
+
+// adding Monthly support 
+router.post("/MonthlyAppeal", userController.monthlyAppeal)
+// view monthly support of beneficiary
+// router.get("/viewMonthlyAppeal", userController.viewAppeal)
 
 module.exports = router;
