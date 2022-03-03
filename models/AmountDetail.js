@@ -1,6 +1,10 @@
 // This db will be altered by Admin
 const mongoose = require("mongoose");
 const AmountSchema = new mongoose.Schema({
+    bid: {
+        type: mongoose.Types.ObjectId,
+        ref: "User"
+    },
     Date: {
         type: String,
         required: true
