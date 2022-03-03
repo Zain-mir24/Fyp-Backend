@@ -8,6 +8,7 @@ const User = require("../models/users");
 const mongoose = require("../db/mongoose");
 const mailSender = require("../email/account");
 const jwt = require("jsonwebtoken");
+const upload = require("../middleware/img");
 const userController = require("../controllers/UserController")
 const appointmentController = require("../controllers/appointmentController")
 
@@ -189,7 +190,7 @@ router.post('/appointmentCreate', appointmentController.createMeeting);
 router.get("/viewChildren", userController.viewChildren)
 
 // adding Monthly support 
-router.post("/MonthlyAppeal", userController.monthlyAppeal)
+router.post("/MonthlyAppeal", upload.fields([{ name: "bform " }, { name: "deathcertificate" }]), userController.monthlyAppeal)
 // view monthly support of beneficiary
 // router.get("/viewMonthlyAppeal", userController.viewAppeal)
 
