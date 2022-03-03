@@ -316,5 +316,6 @@ router.patch("/updatesubAdmin/:Sid", adminController.updatesubAdmin);
 router.delete("/deletesubAdmin/:Sid", adminController.deletesubAdmin);
 router.get("/viewsubAdmin", adminController.viewsubAdmin);
 // View monthly support Appeals from beneficiary
-router.get("/viewmonthlAppeal", adminController.viewmonthlyAppeal);
+router.get("/viewmonthlyAppeal", adminController.viewmonthlyAppeal);
+//  Add amount detail rouutes for admin
 module.exports = router;
