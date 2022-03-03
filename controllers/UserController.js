@@ -1,26 +1,7 @@
-const Meeting = require("../models/Meeting");
+const Monthly = require("../models/MonthlySupport")
 const children = require("../models/Children");
 
-// Scheduling meeting for child adoption
-// const scheduleMeeting = async (req, res, next) => {
-//   const { appointmentDate, name, email } = req.body;
-//   if (!appointmentDate || !name || !email) {
-//     return res.status(400).json({
-//       message: "Appointment date, name and email are required",
-//     });
-//   }
-//   const payload = { appointmentDate, name, email };
-//   try {
-//     await Meeting.insertOne(payload).exec((error, result) => {
-//       res.status(200).send(result);
-//       if (error) {
-//         res.status(400).send(error);
-//       }
-//     });
-//   } catch (e) {
-//     res.status(400).send(e);
-//   }
-// };
+
 const viewChildren = async (req, res, next) => {
   try {
     await children.find({}).exec((error, result) => {
@@ -35,7 +16,32 @@ const viewChildren = async (req, res, next) => {
     res.status(500).send(e);
   }
 }
+const monthlyAppeal = async (req, res, next) => {
+  try {
+    const newAppeal = await Monthly.create(req.body)
+    if (!newAppeal) {
+      next("error while creating the appeal")
+    }
+    res.status(200).send(newAppeal)
+
+  }
+  catch (e) {
+    res.status(500).send(e)
+  }
+}
+// const viewAppeal = async (req, res, next) => {
+//   try {
+//     const viewAppeal = await Monthly.find({}).populate("bid")
+//     res.status(200).send(viewAppeal)
+//   }
+//   catch (e) {
+//     res.status(500).send(e)
+
+//   }
+// }
 module.exports = {
   viewChildren,
+  monthlyAppeal,
+  viewAppeal
   // scheduleMeeting
 };
