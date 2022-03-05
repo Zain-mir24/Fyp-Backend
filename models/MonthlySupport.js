@@ -36,17 +36,20 @@ const MonthlySchema = new mongoose.Schema({
         rent: {
             type: String,
         }
-    }, Sourceofincome: {
+    },
+    Sourceofincome: {
         type: String,
         required: true
     },
     Totalincome: {
         type: Number,
         required: true
-    }, Totalexpenses: {
+    },
+    Totalexpenses: {
         type: Number,
         required: true
-    }, Debt: {
+    },
+    Debt: {
         type: String
     },
     Assets: {
@@ -101,11 +104,11 @@ const MonthlySchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    bform: {
+    bformname: {
         type: String,
         required: true
     },
-    deathcertificate: {
+    deathcertificatename: {
         type: String,
     },
     totalamountdonation: {

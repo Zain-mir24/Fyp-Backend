@@ -3,7 +3,16 @@ const multer = require("multer");
 var storage = multer.diskStorage({
   destination: "public/uploads",
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    // console.log(file.originalname, "print?")
+    // if (file.fieldname === "bform") {
+    //   cb(null, file.originalname);
+
+    // }
+    // else if (file.fieldname === "deathcertificate") {
+    //   cb(null, file.originalname)
+    // } else {
+    cb(null, file.originalname)
+    // }
   },
 });
 
