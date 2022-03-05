@@ -28,7 +28,7 @@ const monthlyAppeal = async (req, res, next) => {
     Totalexpenses: req.body.Totalexpenses,
     NativeTown: req.body.NativeTown,
     Accomodation: {
-      self: req.body.Accomodation.self,
+      self: req.body.self,
       donated: req.body.Accomodation.donated,
       rental: req.body.Accomodation.rental,
       rent: req.body.Accomodation.rent,
@@ -63,6 +63,7 @@ const monthlyAppeal = async (req, res, next) => {
     if (!newAppeal) {
       next("error while creating the appeal")
     }
+    console.log(newAppeal)
     res.status(200).send(newAppeal)
 
   }
