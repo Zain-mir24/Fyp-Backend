@@ -247,6 +247,7 @@ const deleteLoanApproved = async (req, res, next) => {
 const viewmonthlyAppeal = async (req, res, next) => {
   try {
     const viewAppeal = await Monthly.find({}).populate("bid")
+    console.log(viewAppeal, "view")
     res.status(200).send(viewAppeal)
   }
   catch (e) {

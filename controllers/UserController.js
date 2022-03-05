@@ -17,7 +17,7 @@ const viewChildren = async (req, res, next) => {
   }
 }
 const monthlyAppeal = async (req, res, next) => {
-
+  console.log(req.body.bid)
   var obj = {
     bid: req.body.bid,
     phoneNumber: req.body.phoneNumber,
@@ -69,16 +69,7 @@ const monthlyAppeal = async (req, res, next) => {
     res.status(500).send(e)
   }
 }
-// const viewAppeal = async (req, res, next) => {
-//   try {
-//     const viewAppeal = await Monthly.find({}).populate("bid")
-//     res.status(200).send(viewAppeal)
-//   }
-//   catch (e) {
-//     res.status(500).send(e)
 
-//   }
-// }
 module.exports = {
   viewChildren,
   monthlyAppeal
