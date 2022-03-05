@@ -23,28 +23,28 @@ const MonthlySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    Accomodation: {
-        self: {
-            type: String,
-            required: true
 
-        },
-        donated: {
-            type: String,
-            required: true
+    accomodationself: {
+        type: String,
+        required: true
 
-        },
-        rental: {
-            type: String,
-            required: true
-
-        },
-        rent: {
-            type: String,
-            required: true
-
-        }
     },
+    accomodationdonated: {
+        type: String,
+        required: true
+
+    },
+    accomodationrental: {
+        type: String,
+        required: true
+
+    },
+    accomodationrent: {
+        type: String,
+        required: true
+
+    },
+
     Sourceofincome: {
         type: String,
         required: true

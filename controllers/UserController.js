@@ -27,12 +27,12 @@ const monthlyAppeal = async (req, res, next) => {
     Totalincome: req.body.Totalincome,
     Totalexpenses: req.body.Totalexpenses,
     NativeTown: req.body.NativeTown,
-    Accomodation: {
-      self: req.body.self,
-      donated: req.body.Accomodation.donated,
-      rental: req.body.Accomodation.rental,
-      rent: req.body.Accomodation.rent,
-    },
+
+    accomodationself: req.body.self,
+    accomodationdonated: req.body.donated,
+    accomodationrental: req.body.rental,
+    accomodationrent: req.body.rent,
+
     widowfamdetail: [
       {
         name: req.body.widowfamdetail[0].name,
@@ -59,6 +59,8 @@ const monthlyAppeal = async (req, res, next) => {
     totalamountdonation: req.body.totalamountdonation,
   }
   try {
+    console.log(req.body.widowfamdetail[0].name, "name pakarlo")
+
     const newAppeal = await Monthly.create(obj)
     if (!newAppeal) {
       next("error while creating the appeal")
