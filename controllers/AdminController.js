@@ -5,6 +5,7 @@ const appeal = require("../models/appealedCampaign");
 const Admin = require("../models/Admin");
 const Monthly = require("../models/MonthlySupport")
 const Amount = require("../models/AmountDetail")
+const Housing = require("../models/HousingScheme")
 // Admin signup routes and addition of admins
 const SuperAdmin = async (req, res, next) => {
   const { email } = req.body;
@@ -278,7 +279,35 @@ const viewammountDetail = async (req, res, next) => {
 
   }
 }
+
+// Adding housing Scheme for beneficiary
+const addHousingScheme = async (req, res, next) => {
+  try {
+    const add = await Housing.create(req.body)
+    if (!add) {
+      throw new Error("this format is wrong my man")
+    }
+    res.status(200).send(add)
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
+// viewing housing Scheme for beneficiary
+const viewHousingScheme = async (req, res, next) => {
+  try {
+    const view = await Housing.find({})
+    if (!view) {
+      throw new Error("this format is wrong my man")
+    }
+    res.status(200).send(views)
+
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
 module.exports = {
+  addHousingScheme,
+  viewHousingScheme,
   viewammountDetail,
   addamountDetail,
   viewmonthlyAppeal,

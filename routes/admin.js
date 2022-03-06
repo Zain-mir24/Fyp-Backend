@@ -298,17 +298,13 @@ router.patch("/updatechild/:cid", upload.single("file"), adminController.updateC
 router.get("/viewChildren", adminController.viewChildren);
 router.delete("/deleteChildren/:cid", adminController.deleteChildren);
 router.get("/viewChild/:cid", adminController.specificChild);
-
 // Donation details through each campaign and donor name with each donation
 // Populating donors id
-
 router.get("/Donations", adminController.donationDetails);
-
 // loan management routes adding loan,updating ,deleting and viewing appeals
 router.patch("/approveLoanupdate/:Lid", adminController.updateLoanApproved);
 router.delete("/approveLoandelete/:Lid", adminController.deleteLoanApproved);
 router.get("/approveLoanview", adminController.viewLoanApproved);
-
 // SubAdmin Management Routes
 // router.post("/addingAdmin ", adminController.addAdmin);
 router.post("/SubAdminadd", adminController.addsubAdmin);
@@ -317,10 +313,12 @@ router.delete("/deletesubAdmin/:Sid", adminController.deletesubAdmin);
 router.get("/viewsubAdmin", adminController.viewsubAdmin);
 // View monthly support Appeals from beneficiary
 router.get("/viewmonthlyAppeal", adminController.viewmonthlyAppeal);
-
 //  Add amount detail routes for admin
 router.post("/addAmountDetail", adminController.addamountDetail)
 // View amount detail for the beneficiary.
 router.get("/viewamountDetail", adminController.viewammountDetail)
-
+// Housing Scheme for beneficiary
+router.post("/addhousingScheme", adminController.addHousingScheme)
+// viewing all the scheme for beneficiary
+router.get("/viewhousingscheme", adminController.viewHousingScheme)
 module.exports = router;
