@@ -54,7 +54,7 @@ router.post("/pay", async (req, res, next) => {
               }
             );
             res.status(200).send(searchandadd)
-            console.log("success")
+            console.log(searchandadd, "success")
             if (!searchandadd) {
               try {
                 const donate = await Donation.create({

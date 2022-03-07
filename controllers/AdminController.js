@@ -6,6 +6,7 @@ const Admin = require("../models/Admin");
 const Monthly = require("../models/MonthlySupport")
 const Amount = require("../models/AmountDetail")
 const Housing = require("../models/HousingScheme")
+const Estimation = require("../models/Estimationperforma")
 // Admin signup routes and addition of admins
 const SuperAdmin = async (req, res, next) => {
   const { email } = req.body;
@@ -299,7 +300,30 @@ const viewHousingScheme = async (req, res, next) => {
     if (!view) {
       throw new Error("this format is wrong my man")
     }
-    res.status(200).send(views)
+    res.status(200).send(view)
+
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
+const addEstimation = async (req, res, next) => {
+  try {
+    const add = await Estimation.create(req.body)
+    if (!add) {
+      throw new Error("this format is wrong ")
+    }
+    res.status(200).send(add)
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
+const viewEstimation = async (req, res, next) => {
+  try {
+    const view = await Estimation.find({})
+    if (!view) {
+      throw new Error("this format is wrong my man")
+    }
+    res.status(200).send(view)
 
   } catch (e) {
     res.status(500).send(e)
@@ -307,6 +331,8 @@ const viewHousingScheme = async (req, res, next) => {
 }
 module.exports = {
   addHousingScheme,
+  addEstimation,
+  viewEstimation,
   viewHousingScheme,
   viewammountDetail,
   addamountDetail,

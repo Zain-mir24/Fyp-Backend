@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 let express = require("express");
 let router = express.Router();
-const path = require("path");
+// const path = require("path");
 const Campaign = require("../models/CampaignDB");
 const adminAuth = require("../middleware/adminAuth");
 const Admin = require("../models/Admin");
@@ -15,7 +15,7 @@ const upload = require("../middleware/img");
 const Appeal = require("../models/appealedCampaign");
 const AppealLoan = require("../models/appealedLoans");
 const adminController = require("../controllers/AdminController");
-const { response } = require("express");
+// const { response } = require("express");
 
 //Admin routes
 // router.post("/Signup", async (req, res, next) => {
@@ -321,4 +321,7 @@ router.get("/viewamountDetail", adminController.viewammountDetail)
 router.post("/addhousingScheme", adminController.addHousingScheme)
 // viewing all the scheme for beneficiary
 router.get("/viewhousingscheme", adminController.viewHousingScheme)
+// Estimation performa route for admin
+router.post("/addEstimation", adminController.addEstimation)
+router.get("/addEstimation", adminController.viewEstimation)
 module.exports = router;
