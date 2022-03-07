@@ -27,35 +27,31 @@ const EstimationSchema = new mongoose.Schema({
         Rate: { type: Number, require: true, },
         Cost: { type: Number, reqired: true }
     }],
-    Mason: {
-        charges: {
-            type: Number
-        }
+    Masoncharges: {
+
+        type: Number
+
     },
-    Labour: {
-        charges: {
-            type: Number
-        }
+    Labourcharges: {
+
+        type: Number
+
     },
-    Electrician: {
-        charges: {
-            type: Number
-        }
+    Electriciancharges: {
+        type: Number
+
     },
-    Plumber: {
-        charges: {
-            type: Number
-        }
+    Plumbercharges: {
+        type: Number
     },
-    Shuttering: {
-        charges: {
-            type: Number
-        }
+    Shutteringcharges: {
+
+        type: Number
+
     },
-    Painter: {
-        charges: {
-            type: Number
-        }
+    Paintercharges: {
+        type: Number
+
     },
     Total: {
         type: Number,
