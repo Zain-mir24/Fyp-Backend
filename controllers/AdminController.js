@@ -5,6 +5,8 @@ const appeal = require("../models/appealedCampaign");
 const Admin = require("../models/Admin");
 const Monthly = require("../models/MonthlySupport")
 const Amount = require("../models/AmountDetail")
+const Housing = require("../models/HousingScheme")
+const Estimation = require("../models/Estimationperforma")
 // Admin signup routes and addition of admins
 const SuperAdmin = async (req, res, next) => {
   const { email } = req.body;
@@ -247,6 +249,7 @@ const deleteLoanApproved = async (req, res, next) => {
 const viewmonthlyAppeal = async (req, res, next) => {
   try {
     const viewAppeal = await Monthly.find({}).populate("bid")
+    console.log(viewAppeal, "view")
     res.status(200).send(viewAppeal)
   }
   catch (e) {
@@ -277,7 +280,60 @@ const viewammountDetail = async (req, res, next) => {
 
   }
 }
+
+// Adding housing Scheme for beneficiary
+const addHousingScheme = async (req, res, next) => {
+  try {
+    const add = await Housing.create(req.body)
+    if (!add) {
+      throw new Error("this format is wrong my man")
+    }
+    res.status(200).send(add)
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
+// viewing housing Scheme for beneficiary
+const viewHousingScheme = async (req, res, next) => {
+  try {
+    const view = await Housing.find({})
+    if (!view) {
+      throw new Error("this format is wrong my man")
+    }
+    res.status(200).send(view)
+
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
+const addEstimation = async (req, res, next) => {
+  try {
+    const add = await Estimation.create(req.body)
+    if (!add) {
+      throw new Error("this format is wrong ")
+    }
+    res.status(200).send(add)
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
+const viewEstimation = async (req, res, next) => {
+  try {
+    const view = await Estimation.find({})
+    if (!view) {
+      throw new Error("this format is wrong my man")
+    }
+    res.status(200).send(view)
+
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
 module.exports = {
+  addHousingScheme,
+  addEstimation,
+  viewEstimation,
+  viewHousingScheme,
   viewammountDetail,
   addamountDetail,
   viewmonthlyAppeal,

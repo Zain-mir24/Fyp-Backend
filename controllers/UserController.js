@@ -16,8 +16,7 @@ const viewChildren = async (req, res, next) => {
   }
 };
 const monthlyAppeal = async (req, res, next) => {
-  console.log(JSON.parse(req.body.widowfamdetail));
-  const widowFamily = JSON.parse(req.body.widowfamdetail).map((i) => {});
+  console.log(req.body.bid);
   var obj = {
     bid: req.body.bid,
     phoneNumber: req.body.phoneNumber,
@@ -28,22 +27,24 @@ const monthlyAppeal = async (req, res, next) => {
     Totalincome: req.body.Totalincome,
     Totalexpenses: req.body.Totalexpenses,
     NativeTown: req.body.NativeTown,
-
     accomodationself: req.body.self,
     accomodationdonated: req.body.donated,
     accomodationrental: req.body.rental,
     accomodationrent: req.body.rent,
-
-    widowfamdetail: widowFamily,
-    widowsibilings: [
-      {
-        name: req.body.widowsibilings[0].name,
-        age: req.body.widowsibilings[0].age,
-        relation: req.body.widowsibilings[0].relation,
-        activities: req.body.widowsibilings[0].activities,
-        income: req.body.widowsibilings[0].income,
-      },
-    ],
+    widowfamdetail: JSON.parse(req.body.widowfamdetail).map((i) => ({
+      name: i.name,
+      age: i.age,
+      relation: i.relation,
+      activities: i.activities,
+      income: i.income,
+    })),
+    widowsibilings: JSON.parse(req.body.widowsibilings).map((i) => ({
+      name: i.name,
+      age: i.age,
+      relation: i.relation,
+      activities: i.activities,
+      income: i.income,
+    })),
     medicineCost: req.body.medicineCost,
 
     bformname: req.body.bformname,
@@ -63,16 +64,7 @@ const monthlyAppeal = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
-// const viewAppeal = async (req, res, next) => {
-//   try {
-//     const viewAppeal = await Monthly.find({}).populate("bid")
-//     res.status(200).send(viewAppeal)
-//   }
-//   catch (e) {
-//     res.status(500).send(e)
 
-//   }
-// }
 module.exports = {
   viewChildren,
   monthlyAppeal,

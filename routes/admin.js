@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 let express = require("express");
 let router = express.Router();
-const path = require("path");
+// const path = require("path");
 const Campaign = require("../models/CampaignDB");
 const adminAuth = require("../middleware/adminAuth");
 const Admin = require("../models/Admin");
@@ -15,8 +15,7 @@ const upload = require("../middleware/img");
 const Appeal = require("../models/appealedCampaign");
 const AppealLoan = require("../models/appealedLoans");
 const adminController = require("../controllers/AdminController");
-const { response } = require("express");
-const { Console } = require("console");
+// const { response } = require("express");
 
 //Admin routes
 // router.post("/Signup", async (req, res, next) => {
@@ -328,17 +327,13 @@ router.patch(
 router.get("/viewChildren", adminController.viewChildren);
 router.delete("/deleteChildren/:cid", adminController.deleteChildren);
 router.get("/viewChild/:cid", adminController.specificChild);
-
 // Donation details through each campaign and donor name with each donation
 // Populating donors id
-
 router.get("/Donations", adminController.donationDetails);
-
 // loan management routes adding loan,updating ,deleting and viewing appeals
 router.patch("/approveLoanupdate/:Lid", adminController.updateLoanApproved);
 router.delete("/approveLoandelete/:Lid", adminController.deleteLoanApproved);
 router.get("/approveLoanview", adminController.viewLoanApproved);
-
 // SubAdmin Management Routes
 // router.post("/addingAdmin ", adminController.addAdmin);
 router.post("/SubAdminadd", adminController.addsubAdmin);
@@ -347,10 +342,15 @@ router.delete("/deletesubAdmin/:Sid", adminController.deletesubAdmin);
 router.get("/viewsubAdmin", adminController.viewsubAdmin);
 // View monthly support Appeals from beneficiary
 router.get("/viewmonthlyAppeal", adminController.viewmonthlyAppeal);
-
 //  Add amount detail routes for admin
-router.post("/addAmountDetail", adminController.addamountDetail)
+router.post("/addAmountDetail", adminController.addamountDetail);
 // View amount detail for the beneficiary.
-router.get("/viewamountDetail", adminController.viewammountDetail)
-
+router.get("/viewamountDetail", adminController.viewammountDetail);
+// Housing Scheme for beneficiary
+router.post("/addhousingScheme", adminController.addHousingScheme);
+// viewing all the scheme for beneficiary
+router.get("/viewhousingscheme", adminController.viewHousingScheme);
+// Estimation performa route for admin
+router.post("/addEstimation", adminController.addEstimation);
+router.get("/addEstimation", adminController.viewEstimation);
 module.exports = router;
