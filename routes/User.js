@@ -190,7 +190,8 @@ router.post('/appointmentCreate', appointmentController.createMeeting);
 router.get("/viewChildren", userController.viewChildren)
 
 // adding Monthly support 
-router.post("/MonthlyAppeal", upload.fields([{ name: "bform " }, { name: "deathcertificate" }]), userController.monthlyAppeal)
+router.post("/MonthlyAppeal", upload.fields([{ name: "bform", maxCount: 1 },
+{ name: "deathcertificate", maxCount: 1 }]), userController.monthlyAppeal)
 // view monthly support of beneficiary
 // router.get("/viewMonthlyAppeal", userController.viewAppeal)
 

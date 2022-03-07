@@ -23,30 +23,41 @@ const MonthlySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    Accomodation: {
-        self: {
-            type: String,
-        },
-        donated: {
-            type: String,
-        },
-        rental: {
-            type: String,
-        },
-        rent: {
-            type: String,
-        }
-    }, Sourceofincome: {
+
+    accomodationself: {
+        type: String,
+        required: true
+
+    },
+    accomodationdonated: {
+        type: String,
+        required: true
+
+    },
+    accomodationrental: {
+        type: String,
+        required: true
+
+    },
+    accomodationrent: {
+        type: String,
+        required: true
+
+    },
+
+    Sourceofincome: {
         type: String,
         required: true
     },
     Totalincome: {
         type: Number,
         required: true
-    }, Totalexpenses: {
+    },
+    Totalexpenses: {
         type: Number,
         required: true
-    }, Debt: {
+    },
+    Debt: {
         type: String
     },
     Assets: {
@@ -101,11 +112,11 @@ const MonthlySchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    bform: {
+    bformname: {
         type: String,
         required: true
     },
-    deathcertificate: {
+    deathcertificatename: {
         type: String,
     },
     totalamountdonation: {
