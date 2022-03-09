@@ -30,16 +30,22 @@ const ExpenseSchema = new mongoose.Schema({
         },
     ],
     LabourCharges: [{
-        name: {
+        labourname: {
             type: String,
             required: true
         },
-        Cellno: {
+        labourCellno: {
             type: Number,
             required: true,
         },
-        natureofwork: { type: String, required: true },
-        LabourCharges: { type: Number, required: true }
+        natureofwork: {
+            type: String,
+            required: true
+        },
+        LabourChargesPaid: {
+            type: Number,
+            required: true
+        }
     }],
     MaterialTotal: {
         type: Number,

@@ -10,12 +10,12 @@ const Donation = require("../models/Donation");
 // const stripe = Stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
 router.post("/pay", async (req, res, next) => {
   console.log("my token", req.body);
-  const { token, amount, name, campaignId, userId } = req.body;
+  const { token, totalamount, campaignname, campaignId, userId } = req.body;
   const idempotencyKey = uuidv4();
   const body = {
     campaignid: campaignId,
-    name,
-    amount,
+    campaignname,
+    totalamount,
     userId,
   };
   return stripe.customers
@@ -26,11 +26,11 @@ router.post("/pay", async (req, res, next) => {
     .then((customer) => {
       stripe.charges.create(
         {
-          amount: amount * 100,
+          amount: totalamount * 100,
           currency: "pkr",
           customer: customer.id,
           receipt_email: token.email,
-          description: `Donation to ${name}`,
+          description: `Donation to ${campaignname}`,
         },
         { idempotencyKey }
       );
@@ -49,7 +49,7 @@ router.post("/pay", async (req, res, next) => {
                   },
                 },
                 $inc: {
-                  totalamount: req.body.amount,
+                  totalamount: req.body.totalamount,
                 },
               }
             );
@@ -63,10 +63,10 @@ router.post("/pay", async (req, res, next) => {
 
                   anonymousUser: {
                     email: req.body.token.email,
-                    donation: req.body.amount,
+                    donation: req.body.totalamount,
                   },
 
-                  totalamount: req.body.amount,
+                  totalamount: req.body.totalamount,
                 });
                 if (donate) {
                   console.log(donate);
@@ -89,16 +89,26 @@ router.post("/pay", async (req, res, next) => {
               $push: {
                 registeredUser: {
                   userId: req.body.userId,
-                  donation: req.body.amount,
+                  donation: req.body.totalamount,
                 },
               },
               $inc: {
-                totalamount: req.body.amount,
+                totalamount: req.body.totalamount,
               },
             }
           );
           if (!searchandadd) {
-            const donate = await Donation.create(body);
+            const donate = await Donation.create({
+              campaignid: req.body.campaignId,
+              campaignname: req.body.campaignname,
+
+              registeredUser: {
+                userId: req.body.userId,
+                donation: req.body.totalamount,
+              },
+
+              totalamount: req.body.totalamount,
+            });
             console.log(donate);
             console.log("Charged successfully");
             res.status(200).send(result);
