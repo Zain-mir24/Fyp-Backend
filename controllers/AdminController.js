@@ -279,19 +279,61 @@ const viewammountDetail = async (req, res, next) => {
 // Adding housing Scheme for beneficiary
 const addHousingScheme = async (req, res, next) => {
   try {
-    const add = await Housing.create(req.body);
+    console.log(JSON.parse(req.body.family), "HELLO");
+    const add = await Housing.create({
+      Deservername: req.body.Deservername,
+      Guardian: req.body.Guardian,
+      Status: req.body.Status,
+      cnic: req.body.cnic,
+      cell: req.body.cell,
+      Dependents: req.body.Dependents,
+      Sourceofincome: req.body.Sourceofincome,
+      Monthlyincome: req.body.Monthlyincome,
+      address: req.body.address,
+      accomodationself: req.body.accomodationself,
+      accomodationdonated: req.body.accomodationdonated,
+      accomodationrental: req.body.accomodationrental,
+      ownerofland: req.body.ownerofland,
+      PlotDimensions: req.body.PlotDimensions,
+      EstimatedCost: req.body.EstimatedCost,
+      EstimatedTimeFrame: req.body.EstimatedTimeFrame,
+      contructionDetail: req.body.contructionDetail,
+      images: req.body.fileName,
+      family: JSON.parse(req.body.family),
+    });
     if (!add) {
       throw new Error("this format is wrong my man");
     }
     res.status(200).send(add);
   } catch (e) {
-    res.status(500).send(e);
+    console.log(e);
   }
 };
 // viewing housing Scheme for beneficiary
 const viewHousingScheme = async (req, res, next) => {
   try {
     const view = await Housing.find({});
+    if (!view) {
+      throw new Error("this format is wrong my man");
+    }
+    res.status(200).send(view);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+};
+// UPDATE HOUSING SCHEME
+const updateHousingScheme = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const view = await Housing.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        ProposalNo: req.body.ProposalNo,
+        needs: req.body.needs,
+        outcomes: req.body.outcomes,
+        communicationFeedback: req.body.communicationFeedback,
+      }
+    );
     if (!view) {
       throw new Error("this format is wrong my man");
     }
@@ -343,6 +385,7 @@ const viewEstimation = async (req, res, next) => {
   }
 };
 module.exports = {
+  updateHousingScheme,
   addHousingScheme,
   addEstimation,
   viewEstimation,

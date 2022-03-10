@@ -347,7 +347,13 @@ router.post("/addAmountDetail", adminController.addamountDetail);
 // View amount detail for the beneficiary.
 router.get("/viewamountDetail", adminController.viewammountDetail);
 // Housing Scheme for beneficiary
-router.post("/addhousingScheme", adminController.addHousingScheme);
+router.post(
+  "/addhousingScheme",
+  upload.single("images"),
+  adminController.addHousingScheme
+);
+// Update Housing Scheme from Admin Panel
+router.patch("/updatehousingscheme/:id", adminController.updateHousingScheme);
 // viewing all the scheme for beneficiary
 router.get("/viewhousingscheme", adminController.viewHousingScheme);
 // Estimation performa route for admin
