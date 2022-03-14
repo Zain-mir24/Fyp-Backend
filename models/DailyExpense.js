@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 const ExpenseSchema = new mongoose.Schema({
-    Project: {
-        type: String,
-        required: "true",
-    },
-    Location: {
+    project: {
         type: String,
         required: true,
     },
-    Caretaker: {
+    location: {
         type: String,
         required: true,
     },
-    Cellno: {
+    caretaker: {
+        type: String,
+        required: true,
+    },
+    cellno: {
         type: Number,
         required: true,
     },

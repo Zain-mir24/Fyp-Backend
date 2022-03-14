@@ -172,9 +172,9 @@ router.patch(
   }
 );
 //View campaigns appealed
-router.get("/viewAppeals", async (req, res) => {
+router.get("/viewcampaignAppeals", async (req, res) => {
   try {
-    const appeal = await Appeal.find();
+    const appeal = await Appeal.find({});
     var ids = appeal.map((i) => i.bid);
     console.log(ids);
     const beneficiary = await User.find({

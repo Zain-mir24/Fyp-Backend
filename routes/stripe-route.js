@@ -124,4 +124,5 @@ router.post("/pay", async (req, res, next) => {
       console.log(err);
     });
 });
+// We are making stripe donations
 module.exports = router;
