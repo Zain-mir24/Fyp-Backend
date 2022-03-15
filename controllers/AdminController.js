@@ -7,16 +7,16 @@ const Monthly = require("../models/MonthlySupport");
 const Amount = require("../models/AmountDetail");
 const Housing = require("../models/HousingScheme");
 const Estimation = require("../models/Estimationperforma");
-const Expense = require("../models/DailyExpense")
+const Expense = require("../models/DailyExpense");
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
   try {
-    const user = await User.find({ "userType": "beneficiary" });
+    const user = await User.find({ userType: "beneficiary" });
     res.send(user);
   } catch (e) {
     res.send("Error found");
   }
-}
+};
 
 // Admin signup routes and addition of admins
 const SuperAdmin = async (req, res, next) => {
@@ -290,8 +290,28 @@ const viewammountDetail = async (req, res, next) => {
 // Adding housing Scheme for beneficiary
 const addHousingScheme = async (req, res, next) => {
   try {
-    console.log(req.body)
-    const add = await Housing.create(req.body);
+    console.log(JSON.parse(req.body.family), "HELLO");
+    const add = await Housing.create({
+      Deservername: req.body.Deservername,
+      Guardian: req.body.Guardian,
+      Status: req.body.Status,
+      cnic: req.body.cnic,
+      cell: req.body.cell,
+      Dependents: req.body.Dependents,
+      Sourceofincome: req.body.Sourceofincome,
+      Monthlyincome: req.body.Monthlyincome,
+      address: req.body.address,
+      accomodationself: req.body.accomodationself,
+      accomodationdonated: req.body.accomodationdonated,
+      accomodationrental: req.body.accomodationrental,
+      ownerofland: req.body.ownerofland,
+      PlotDimensions: req.body.PlotDimensions,
+      EstimatedCost: req.body.EstimatedCost,
+      EstimatedTimeFrame: req.body.EstimatedTimeFrame,
+      contructionDetail: req.body.contructionDetail,
+      images: req.body.fileName,
+      family: JSON.parse(req.body.family),
+    });
     if (!add) {
       throw new Error("this format is wrong my man");
     }
@@ -305,6 +325,27 @@ const addHousingScheme = async (req, res, next) => {
 const viewHousingScheme = async (req, res, next) => {
   try {
     const view = await Housing.find({});
+    if (!view) {
+      throw new Error("this format is wrong my man");
+    }
+    res.status(200).send(view);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+};
+// UPDATE HOUSING SCHEME
+const updateHousingScheme = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const view = await Housing.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        ProposalNo: req.body.ProposalNo,
+        needs: req.body.needs,
+        outcomes: req.body.outcomes,
+        communicationFeedback: req.body.communicationFeedback,
+      }
+    );
     if (!view) {
       throw new Error("this format is wrong my man");
     }
@@ -357,28 +398,28 @@ const viewEstimation = async (req, res, next) => {
 };
 const addExpense = async (req, res, next) => {
   try {
-    const add = await Expense.create(req.body)
+    const add = await Expense.create(req.body);
     if (!add) {
-      throw new Error("this format is wrong")
+      throw new Error("this format is wrong");
     }
-    res.status(200).send(add)
+    res.status(200).send(add);
   } catch (e) {
-    res.status(500).send(e)
-    console.log(e)
+    res.status(500).send(e);
+    console.log(e);
   }
-}
+};
 const viewExpense = async (req, res, next) => {
   try {
-    const view = await Expense.find({})
+    const view = await Expense.find({});
     if (!view) {
-      throw new Error("this format is wrong")
+      throw new Error("this format is wrong");
     }
-    res.status(200).send(view)
+    res.status(200).send(view);
   } catch (e) {
-    res.status(500).send(e)
-    console.log(e)
+    res.status(500).send(e);
+    console.log(e);
   }
-}
+};
 module.exports = {
   readBeneficiary,
   addHousingScheme,
@@ -408,4 +449,5 @@ module.exports = {
   updateLoanApproved,
   viewLoanApproved,
   deleteLoanApproved,
+  updateHousingScheme,
 };

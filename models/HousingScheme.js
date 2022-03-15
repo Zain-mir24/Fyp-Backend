@@ -1,88 +1,101 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const HousingSchema = new mongoose.Schema({
     ProposalNo: {
         type: String,
-        required: true
     },
     Deservername: {
         type: String,
-        required: true
+        required: true,
     },
     Guardian: {
-        type: String
+        type: String,
     },
     Status: {
         type: String,
-        required: true
+        required: true,
     },
     cnic: {
         type: Number,
-        required: true
+        required: true,
     },
     cell: {
         type: Number,
-        required: true
+        required: true,
     },
     Dependents: {
         type: String,
-        required: true
+        required: true,
     },
     Sourceofincome: {
         type: String,
-        required: true
+        required: true,
     },
     Monthlyincome: {
         type: Number,
-        required: true
+        required: true,
     },
     address: {
         type: String,
-        required: true
+        required: true,
     },
     accomodationself: {
         type: String,
-        required: true
-
+        required: true,
     },
     accomodationdonated: {
         type: String,
-        required: true
-
+        required: true,
     },
     accomodationrental: {
         type: String,
-        required: true
-
-    },
-    accomodationrent: {
-        type: String,
-        required: true
-
+        required: true,
     },
     ownerofland: {
         type: String,
-        required: true
+        required: true,
     },
     PlotDimensions: {
         type: String,
-        required: true
+        required: true,
     },
     EstimatedCost: {
         type: Number,
-        required: true
+        required: true,
     },
     EstimatedTimeFrame: {
         type: String,
-        required: true
+        required: true,
     },
     contructionDetail: {
         type: String,
-        required: true
-    }, plan: {
-        type: String
-    }
+        required: true,
+    },
+    images: {
+        type: String,
+    },
 
-})
+    family: [
+        {
+            name: { type: String },
+            age: { type: Number },
+            study: { type: Boolean },
+            alive: { type: Boolean },
+        },
+    ],
+
+    needs: {
+        type: String,
+    },
+    outcomes: {
+        type: String,
+    },
+
+    communicationFeedback: {
+        Phone: {
+            type: String,
+        },
+    },
+});
 const Housing = mongoose.model("HousingScheme", HousingSchema);
 
 module.exports = Housing;

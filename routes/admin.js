@@ -11,7 +11,7 @@ const Category = require("../models/Category");
 
 const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
-const upload = require("../middleware/img");
+const upload = require("../middleware/img").upload;
 const Appeal = require("../models/appealedCampaign");
 const AppealLoan = require("../models/appealedLoans");
 const adminController = require("../controllers/AdminController");
@@ -61,7 +61,7 @@ router.get("/users", async (req, res) => {
     res.send("Error found");
   }
 });
-router.get("/readBeneficiary", adminController.readBeneficiary)
+router.get("/readBeneficiary", adminController.readBeneficiary);
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);
@@ -348,13 +348,19 @@ router.post("/addAmountDetail", adminController.addamountDetail);
 // View amount detail for the beneficiary.
 router.get("/viewamountDetail", adminController.viewammountDetail);
 // Housing Scheme for beneficiary
-router.post("/addhousingScheme", adminController.addHousingScheme);
+router.post(
+  "/addhousingScheme",
+  upload.single("images"),
+  adminController.addHousingScheme
+);
+// Update Housing Scheme from Admin Panel
+router.patch("/updatehousingscheme/:id", adminController.updateHousingScheme);
 // viewing all the scheme for beneficiary
 router.get("/viewhousingscheme", adminController.viewHousingScheme);
 // Estimation performa route for admin
 router.post("/addEstimation", adminController.addEstimation);
 router.get("/viewEstimation", adminController.viewEstimation);
 // Daily Expenses Sheet
-router.get("/viewExpense", adminController.viewExpense)
-router.post("/addExpense", adminController.addExpense)
+router.get("/viewExpense", adminController.viewExpense);
+router.post("/addExpense", adminController.addExpense);
 module.exports = router;

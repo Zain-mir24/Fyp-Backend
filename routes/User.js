@@ -8,9 +8,9 @@ const User = require("../models/users");
 const mongoose = require("../db/mongoose");
 const mailSender = require("../email/account");
 const jwt = require("jsonwebtoken");
-const upload = require("../middleware/img");
-const userController = require("../controllers/UserController")
-const appointmentController = require("../controllers/appointmentController")
+const upload = require("../middleware/img").upload;
+const userController = require("../controllers/UserController");
+const appointmentController = require("../controllers/appointmentController");
 
 // var randtoken = require('rand-token')
 // var refreshTokens={}
@@ -81,7 +81,7 @@ router.post("/login", async (req, res) => {
 
     const token = await user.generateAuthToken();
     if (!user) {
-      res.send("not found")
+      res.send("not found");
     }
     console.log(user);
     console.log("tokeeen", token);
@@ -186,13 +186,19 @@ router.post("/resetPassword/:_id/:token", async (req, res) => {
   }
 });
 // Scheduling meeting for child adoption
-router.get("/appointments", appointmentController.viewMeeting.all)
-router.post('/appointmentCreate', appointmentController.createMeeting);
-router.get("/viewChildren", userController.viewChildren)
+router.get("/appointments", appointmentController.viewMeeting.all);
+router.post("/appointmentCreate", appointmentController.createMeeting);
+router.get("/viewChildren", userController.viewChildren);
 
-// adding Monthly support 
-router.post("/MonthlyAppeal", upload.fields([{ name: "bform", maxCount: 1 },
-{ name: "deathcertificate", maxCount: 1 }]), userController.monthlyAppeal)
+// adding Monthly support
+router.post(
+  "/MonthlyAppeal",
+  upload.fields([
+    { name: "bform", maxCount: 1 },
+    { name: "deathcertificate", maxCount: 1 },
+  ]),
+  userController.monthlyAppeal
+);
 // view monthly support of beneficiary
 // router.get("/viewMonthlyAppeal", userController.viewAppeal)
 
