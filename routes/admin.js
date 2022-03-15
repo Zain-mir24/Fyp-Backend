@@ -353,7 +353,7 @@ router.post("/addhousingScheme", adminController.addHousingScheme);
 router.get("/viewhousingscheme", adminController.viewHousingScheme);
 // Estimation performa route for admin
 router.post("/addEstimation", adminController.addEstimation);
-router.get("/addEstimation", adminController.viewEstimation);
+router.get("/viewEstimation", adminController.viewEstimation);
 // Daily Expenses Sheet
 router.get("/viewExpense", adminController.viewExpense)
 router.post("/addExpense", adminController.addExpense)
