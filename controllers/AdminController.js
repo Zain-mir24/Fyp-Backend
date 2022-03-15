@@ -7,6 +7,17 @@ const Monthly = require("../models/MonthlySupport");
 const Amount = require("../models/AmountDetail");
 const Housing = require("../models/HousingScheme");
 const Estimation = require("../models/Estimationperforma");
+const Expense = require("../models/DailyExpense");
+// Read beneficiaries
+const readBeneficiary = async (req, res, next) => {
+  try {
+    const user = await User.find({ userType: "beneficiary" });
+    res.send(user);
+  } catch (e) {
+    res.send("Error found");
+  }
+};
+
 // Admin signup routes and addition of admins
 const SuperAdmin = async (req, res, next) => {
   const { email } = req.body;
@@ -384,9 +395,35 @@ const viewEstimation = async (req, res, next) => {
     console.log(e);
   }
 };
+const addExpense = async (req, res, next) => {
+  try {
+    const add = await Expense.create(req.body);
+    if (!add) {
+      throw new Error("this format is wrong");
+    }
+    res.status(200).send(add);
+  } catch (e) {
+    res.status(500).send(e);
+    console.log(e);
+  }
+};
+const viewExpense = async (req, res, next) => {
+  try {
+    const view = await Expense.find({});
+    if (!view) {
+      throw new Error("this format is wrong");
+    }
+    res.status(200).send(view);
+  } catch (e) {
+    res.status(500).send(e);
+    console.log(e);
+  }
+};
 module.exports = {
-  updateHousingScheme,
+  readBeneficiary,
   addHousingScheme,
+  addExpense,
+  viewExpense,
   addEstimation,
   viewEstimation,
   viewHousingScheme,

@@ -61,6 +61,7 @@ router.get("/users", async (req, res) => {
     res.send("Error found");
   }
 });
+router.get("/readBeneficiary", adminController.readBeneficiary)
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);
@@ -172,9 +173,9 @@ router.patch(
   }
 );
 //View campaigns appealed
-router.get("/viewAppeals", async (req, res) => {
+router.get("/viewcampaignAppeals", async (req, res) => {
   try {
-    const appeal = await Appeal.find();
+    const appeal = await Appeal.find({});
     var ids = appeal.map((i) => i.bid);
     console.log(ids);
     const beneficiary = await User.find({
@@ -359,4 +360,7 @@ router.get("/viewhousingscheme", adminController.viewHousingScheme);
 // Estimation performa route for admin
 router.post("/addEstimation", adminController.addEstimation);
 router.get("/addEstimation", adminController.viewEstimation);
+// Daily Expenses Sheet
+router.get("/viewExpense", adminController.viewExpense)
+router.post("/addExpense", adminController.addExpense)
 module.exports = router;
