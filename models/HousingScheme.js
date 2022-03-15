@@ -79,8 +79,7 @@ const HousingSchema = new mongoose.Schema({
         type: String,
         required: true
     }, plan: {
-        type: String,
-        required: true
+        type: String
     }
 
 })

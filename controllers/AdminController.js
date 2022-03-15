@@ -290,12 +290,14 @@ const viewammountDetail = async (req, res, next) => {
 // Adding housing Scheme for beneficiary
 const addHousingScheme = async (req, res, next) => {
   try {
+    console.log(req.body)
     const add = await Housing.create(req.body);
     if (!add) {
       throw new Error("this format is wrong my man");
     }
     res.status(200).send(add);
   } catch (e) {
+    console.log(e)
     res.status(500).send(e);
   }
 };
