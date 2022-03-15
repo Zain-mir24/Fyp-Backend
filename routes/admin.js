@@ -11,7 +11,7 @@ const Category = require("../models/Category");
 
 const mongoose = require("../db/mongoose");
 const News = require("../models/LatestNewsDB");
-const upload = require("../middleware/img");
+const upload = require("../middleware/img").upload;
 const Appeal = require("../models/appealedCampaign");
 const AppealLoan = require("../models/appealedLoans");
 const adminController = require("../controllers/AdminController");
@@ -61,7 +61,7 @@ router.get("/users", async (req, res) => {
     res.send("Error found");
   }
 });
-router.get("/readBeneficiary", adminController.readBeneficiary)
+router.get("/readBeneficiary", adminController.readBeneficiary);
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);
@@ -361,6 +361,6 @@ router.get("/viewhousingscheme", adminController.viewHousingScheme);
 router.post("/addEstimation", adminController.addEstimation);
 router.get("/addEstimation", adminController.viewEstimation);
 // Daily Expenses Sheet
-router.get("/viewExpense", adminController.viewExpense)
-router.post("/addExpense", adminController.addExpense)
+router.get("/viewExpense", adminController.viewExpense);
+router.post("/addExpense", adminController.addExpense);
 module.exports = router;

@@ -448,4 +448,5 @@ module.exports = {
   updateLoanApproved,
   viewLoanApproved,
   deleteLoanApproved,
+  updateHousingScheme,
 };
