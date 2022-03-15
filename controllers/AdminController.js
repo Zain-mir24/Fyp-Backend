@@ -107,7 +107,7 @@ const deletesubAdmin = async (req, res, next) => {
 };
 const viewsubAdmin = async (req, res, next) => {
   try {
-    await Admin.find({}).exec((error, result) => {
+    await Admin.find({ subAdmin: true }).exec((error, result) => {
       console.log("result", result);
       res.status(200).send(result);
       if (error) {
