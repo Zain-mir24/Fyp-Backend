@@ -61,6 +61,7 @@ router.get("/users", async (req, res) => {
     res.send("Error found");
   }
 });
+router.get("/readBeneficiary", adminController.readBeneficiary)
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);

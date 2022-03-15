@@ -8,6 +8,16 @@ const Amount = require("../models/AmountDetail");
 const Housing = require("../models/HousingScheme");
 const Estimation = require("../models/Estimationperforma");
 const Expense = require("../models/DailyExpense")
+// Read beneficiaries
+const readBeneficiary = async (req, res, next) => {
+  try {
+    const user = await User.find({ "userType": "beneficiary" });
+    res.send(user);
+  } catch (e) {
+    res.send("Error found");
+  }
+}
+
 // Admin signup routes and addition of admins
 const SuperAdmin = async (req, res, next) => {
   const { email } = req.body;
@@ -368,6 +378,7 @@ const viewExpense = async (req, res, next) => {
   }
 }
 module.exports = {
+  readBeneficiary,
   addHousingScheme,
   addExpense,
   viewExpense,
