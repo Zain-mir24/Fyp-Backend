@@ -363,8 +363,9 @@ router.post("/addEstimation", adminController.addEstimation);
 router.get("/viewEstimation", adminController.viewEstimation);
 // Daily Expenses Sheet
 router.get("/viewExpense", adminController.viewExpense);
-router.post("/addExpense", adminController.addExpense)
+router.post("/addExpense", adminController.addExpense);
 // Masjid donation by donor scehma
-router.post("/masjidDonation", adminController.addMasjid)
-router.get("/masjidDonation", adminController.viewMasjid)
+router.post("/masjidDonation", adminController.addMasjid);
+router.get("/masjidDonation", adminController.viewMasjid);
+router.get("/donor", adminController.getDonor);
 module.exports = router;

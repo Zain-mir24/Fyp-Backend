@@ -319,7 +319,7 @@ const addHousingScheme = async (req, res, next) => {
     }
     res.status(200).send(add);
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(500).send(e);
   }
 };
@@ -383,7 +383,7 @@ const addEstimation = async (req, res, next) => {
         }
       }
     );
-    console.log(add)
+    console.log(add);
   } catch (e) {
     res.status(500).send(e);
   }
@@ -426,58 +426,68 @@ const viewExpense = async (req, res, next) => {
 // Adding masijid donation in this schema
 const addMasjid = async (req, res, next) => {
   try {
-    console.log(req.body, "print data")
+    console.log(req.body, "print data");
     const add = await Masjid.findOneAndUpdate(
       { Uid: req.body.Uid },
       {
         $push: {
-          Donation: [{
-            Date: req.body.Date,
-            credited: req.body.credited,
-            debited: req.body.debited,
-            balance: req.body.balance,
-            Remarks: req.body.Remarks
-
-          }]
-        }
+          Donation: [
+            {
+              Date: req.body.Date,
+              credited: req.body.credited,
+              debited: req.body.debited,
+              balance: req.body.balance,
+              Remarks: req.body.Remarks,
+            },
+          ],
+        },
       }
-    )
+    );
     if (add) {
-      console.log(add, "Pushing data to already existing person")
-      res.status(200).send(add)
+      console.log(add, "Pushing data to already existing person");
+      res.status(200).send(add);
     }
     if (!add) {
-      const newEntry = await Masjid.create(
-        {
-          Uid: req.body.Uid,
-          Donation: {
-            Date: req.body.Date,
-            credited: req.body.credited,
-            debited: req.body.debited,
-            balance: req.body.balance,
-            Remarks: req.body.Remarks
-          }
-        }
-      )
-      console.log(newEntry, "Entring new Data")
-      res.status(200).send(newEntry)
+      const newEntry = await Masjid.create({
+        Uid: req.body.Uid,
+        Donation: {
+          Date: req.body.Date,
+          credited: req.body.credited,
+          debited: req.body.debited,
+          balance: req.body.balance,
+          Remarks: req.body.Remarks,
+        },
+      });
+      console.log(newEntry, "Entring new Data");
+      res.status(200).send(newEntry);
     }
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
   }
-}
+};
 const viewMasjid = async (req, res, next) => {
   try {
     const view = await Masjid.find({}).populate("Uid");
-    console.log(view, "Masjid Data")
-    res.status(200).send(view)
+    console.log(view, "Masjid Data");
+    res.status(200).send(view);
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
   }
-}
+};
+const getDonor = async (req, res, next) => {
+  try {
+    const view = await User.find({ userType: "donor" });
+    console.log(view, "Masjid Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
 module.exports = {
+  getDonor,
   addMasjid,
   viewMasjid,
   readBeneficiary,
