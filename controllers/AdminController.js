@@ -509,7 +509,18 @@ const viewCowDetail = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+const viewDonorCowDetail = async (req, res, next) => {
+  try {
+    const view = await Cow.find({ Uid: req.params.id });
+    console.log(view, "Cow Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
 module.exports = {
+  viewDonorCowDetail,
   viewCowDetail,
   addCowDetail,
   getDonor,

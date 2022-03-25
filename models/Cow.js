@@ -5,6 +5,10 @@ const CowSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  donatedAmount: {
+    type: Number,
+    required: true,
+  },
   deserverName: {
     type: String,
     required: true,
@@ -25,8 +29,8 @@ const CowSchema = new mongoose.Schema({
     {
       name: { type: String },
       age: { type: Number },
-      study: { type: Boolean },
-      alive: { type: Boolean },
+      study: { type: String },
+      alive: { type: String },
     },
   ],
   accountNo: {

@@ -369,5 +369,6 @@ router.post("/masjidDonation", adminController.addMasjid);
 router.get("/masjidDonation", adminController.viewMasjid);
 router.get("/donor", adminController.getDonor);
 router.get("/viewCowDetail", adminController.viewCowDetail);
+router.get("/viewDonorCowDetail/:id", adminController.viewDonorCowDetail);
 router.post("/addCowDetail", adminController.addCowDetail);
 module.exports = router;
