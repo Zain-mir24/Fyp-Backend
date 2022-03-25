@@ -368,6 +368,6 @@ router.post("/addExpense", adminController.addExpense)
 router.post("/masjidDonation", adminController.addMasjid)
 router.get("/masjidDonation", adminController.viewMasjid)
 // Rickshaw recovery scheme
-router.post("/addRickshawScheme")
+router.post("/addRickshawScheme", adminController.addRickshaw)
 router.get("/viewRickshaw")
 module.exports = router;

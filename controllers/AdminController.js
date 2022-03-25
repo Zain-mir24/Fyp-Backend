@@ -9,7 +9,7 @@ const Housing = require("../models/HousingScheme");
 const Estimation = require("../models/Estimationperforma");
 const Expense = require("../models/DailyExpense");
 const Masjid = require("../models/Masjid");
-
+const Recovery = require("../models/Recovery")
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
   try {
@@ -478,7 +478,56 @@ const viewMasjid = async (req, res, next) => {
   }
 }
 // Adding rickshaw scheme
+const addRickshaw = async (req, res, next) => {
+  try {
+    console.log(req.body, "print data")
+    const add = await Recovery.findOneAndUpdate(
+      { Uid: req.body.Uid },
+      {
+        name: req.body.name,
+        cell: req.body.cell,
+        DateofPurchase: req.body.DateofPurchase,
+        Installment: req.body.Installment,
+        TotalAmount: req.body.TotalAmount,
+        $push: {
+          Recovery: [{
+            Month: req.body.Month,
+            amount: req.body.amount,
+            balance: req.body.balance,
+          }]
+        }
+      }
+    )
+    if (add) {
+      console.log(add, "Pushing data to already existing person")
+      res.status(200).send(add)
+    }
+    if (!add) {
+      const newEntry = await Recovery.create(
+        {
+          Uid: req.body.Uid,
+          name: req.body.name,
+          cell: req.body.cell,
+          DateofPurchase: req.body.DateofPurchase,
+          Installment: req.body.Installment,
+          TotalAmount: req.body.TotalAmount,
+          Recovery: {
+            Month: req.body.Month,
+            amount: req.body.amount,
+            balance: req.body.balance,
+          }
+        }
+      )
+      console.log(newEntry, "Entring new Data")
+      res.status(200).send(newEntry)
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+  }
+}
 module.exports = {
+  addRickshaw,
   addMasjid,
   viewMasjid,
   readBeneficiary,

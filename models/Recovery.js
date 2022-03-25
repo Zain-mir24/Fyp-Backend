@@ -36,6 +36,6 @@ const recoverySchema = new mongoose.Schema({
 })
 
 
-const Recovery = mongoose.model("Meeting", recoverySchema);
+const Recovery = mongoose.model("Recovery", recoverySchema);
 
 module.exports = Recovery;
