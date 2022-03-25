@@ -367,4 +367,7 @@ router.post("/addExpense", adminController.addExpense)
 // Masjid donation by donor scehma
 router.post("/masjidDonation", adminController.addMasjid)
 router.get("/masjidDonation", adminController.viewMasjid)
+// Rickshaw recovery scheme
+router.post("/addRickshawScheme")
+router.get("/viewRickshaw")
 module.exports = router;

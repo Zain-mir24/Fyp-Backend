@@ -477,6 +477,7 @@ const viewMasjid = async (req, res, next) => {
     res.status(500).send(e)
   }
 }
+// Adding rickshaw scheme
 module.exports = {
   addMasjid,
   viewMasjid,
