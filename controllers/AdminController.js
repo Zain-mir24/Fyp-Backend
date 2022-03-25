@@ -9,6 +9,7 @@ const Housing = require("../models/HousingScheme");
 const Estimation = require("../models/Estimationperforma");
 const Expense = require("../models/DailyExpense");
 const Masjid = require("../models/Masjid");
+const Cow = require("../models/Cow");
 
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
@@ -486,7 +487,31 @@ const getDonor = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+const addCowDetail = async (req, res, next) => {
+  try {
+    const add = await Cow.create(req.body);
+    if (!add) {
+      throw new Error("this format is wrong");
+    }
+    res.status(200).send(add);
+  } catch (e) {
+    res.status(500).send(e);
+    console.log(e);
+  }
+};
+const viewCowDetail = async (req, res, next) => {
+  try {
+    const view = await Cow.find({}).populate("Uid");
+    console.log(view, "Cow Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
 module.exports = {
+  viewCowDetail,
+  addCowDetail,
   getDonor,
   addMasjid,
   viewMasjid,

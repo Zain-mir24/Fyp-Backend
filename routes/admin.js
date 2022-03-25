@@ -368,4 +368,6 @@ router.post("/addExpense", adminController.addExpense);
 router.post("/masjidDonation", adminController.addMasjid);
 router.get("/masjidDonation", adminController.viewMasjid);
 router.get("/donor", adminController.getDonor);
+router.get("/viewCowDetail", adminController.viewCowDetail);
+router.post("/addCowDetail", adminController.addCowDetail);
 module.exports = router;
