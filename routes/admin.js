@@ -363,11 +363,16 @@ router.post("/addEstimation", adminController.addEstimation);
 router.get("/viewEstimation", adminController.viewEstimation);
 // Daily Expenses Sheet
 router.get("/viewExpense", adminController.viewExpense);
-router.post("/addExpense", adminController.addExpense)
+router.post("/addExpense", adminController.addExpense);
 // Masjid donation by donor scehma
 router.post("/masjidDonation", adminController.addMasjid)
 router.get("/masjidDonation", adminController.viewMasjid)
 // Rickshaw recovery scheme
 router.post("/addRickshawScheme", adminController.addRickshaw)
 router.get("/viewRickshaw")
+// Ahmed routes
+router.get("/donor", adminController.getDonor);
+router.get("/viewCowDetail", adminController.viewCowDetail);
+router.get("/viewDonorCowDetail/:id", adminController.viewDonorCowDetail);
+router.post("/addCowDetail", adminController.addCowDetail);
 module.exports = router;

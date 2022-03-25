@@ -10,6 +10,8 @@ const Estimation = require("../models/Estimationperforma");
 const Expense = require("../models/DailyExpense");
 const Masjid = require("../models/Masjid");
 const Recovery = require("../models/Recovery")
+const Cow = require("../models/Cow");
+
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
   try {
@@ -319,7 +321,7 @@ const addHousingScheme = async (req, res, next) => {
     }
     res.status(200).send(add);
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(500).send(e);
   }
 };
@@ -383,7 +385,7 @@ const addEstimation = async (req, res, next) => {
         }
       }
     );
-    console.log(add)
+    console.log(add);
   } catch (e) {
     res.status(500).send(e);
   }
@@ -426,55 +428,86 @@ const viewExpense = async (req, res, next) => {
 // Adding masijid donation in this schema
 const addMasjid = async (req, res, next) => {
   try {
-    console.log(req.body, "print data")
+    console.log(req.body, "print data");
     const add = await Masjid.findOneAndUpdate(
       { Uid: req.body.Uid },
       {
         $push: {
-          Donation: [{
-            Date: req.body.Date,
-            credited: req.body.credited,
-            debited: req.body.debited,
-            balance: req.body.balance,
-            Remarks: req.body.Remarks
-
-          }]
-        }
+          Donation: [
+            {
+              Date: req.body.Date,
+              credited: req.body.credited,
+              debited: req.body.debited,
+              balance: req.body.balance,
+              Remarks: req.body.Remarks,
+            },
+          ],
+        },
       }
-    )
+    );
     if (add) {
-      console.log(add, "Pushing data to already existing person")
-      res.status(200).send(add)
+      console.log(add, "Pushing data to already existing person");
+      res.status(200).send(add);
     }
     if (!add) {
-      const newEntry = await Masjid.create(
-        {
-          Uid: req.body.Uid,
-          Donation: {
-            Date: req.body.Date,
-            credited: req.body.credited,
-            debited: req.body.debited,
-            balance: req.body.balance,
-            Remarks: req.body.Remarks
-          }
-        }
-      )
-      console.log(newEntry, "Entring new Data")
-      res.status(200).send(newEntry)
+      const newEntry = await Masjid.create({
+        Uid: req.body.Uid,
+        Donation: {
+          Date: req.body.Date,
+          credited: req.body.credited,
+          debited: req.body.debited,
+          balance: req.body.balance,
+          Remarks: req.body.Remarks,
+        },
+      });
+      console.log(newEntry, "Entring new Data");
+      res.status(200).send(newEntry);
     }
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
   }
-}
+};
 const viewMasjid = async (req, res, next) => {
   try {
     const view = await Masjid.find({}).populate("Uid");
-    console.log(view, "Masjid Data")
-    res.status(200).send(view)
+    console.log(view, "Masjid Data");
+    res.status(200).send(view);
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+const getDonor = async (req, res, next) => {
+  try {
+    const view = await User.find({ userType: "donor" });
+    console.log(view, "Masjid Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+const addCowDetail = async (req, res, next) => {
+  try {
+    const add = await Cow.create(req.body);
+    if (!add) {
+      throw new Error("this format is wrong");
+    }
+    res.status(200).send(add);
+  } catch (e) {
+    res.status(500).send(e);
+    console.log(e);
+  }
+};
+const viewCowDetail = async (req, res, next) => {
+  try {
+    const view = await Cow.find({}).populate("Uid");
+    console.log(view, "Cow Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
   }
 }
 // Adding rickshaw scheme
@@ -528,6 +561,22 @@ const addRickshaw = async (req, res, next) => {
 }
 module.exports = {
   addRickshaw,
+};
+const viewDonorCowDetail = async (req, res, next) => {
+  try {
+    const view = await Cow.find({ Uid: req.params.id });
+    console.log(view, "Cow Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+module.exports = {
+  viewDonorCowDetail,
+  viewCowDetail,
+  addCowDetail,
+  getDonor,
   addMasjid,
   viewMasjid,
   readBeneficiary,
