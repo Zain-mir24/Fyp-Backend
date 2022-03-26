@@ -369,8 +369,9 @@ router.post("/masjidDonation", adminController.addMasjid)
 router.get("/masjidDonation", adminController.viewMasjid)
 // Rickshaw recovery scheme
 router.post("/addRickshawScheme", adminController.addRickshaw)
-router.get("/viewRickshaw")
-// Ahmed routes
+router.get("/viewRickshawdetail/:id", adminController.viewDonorRickshawDetail)
+router.get("/viewRickshawdetail", adminController.viewRickshawDetail)
+// Ahmed routes of cow details
 router.get("/donor", adminController.getDonor);
 router.get("/viewCowDetail", adminController.viewCowDetail);
 router.get("/viewDonorCowDetail/:id", adminController.viewDonorCowDetail);

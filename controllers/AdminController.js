@@ -510,6 +510,17 @@ const viewCowDetail = async (req, res, next) => {
     res.status(500).send(e);
   }
 }
+// Cow donation details
+const viewDonorCowDetail = async (req, res, next) => {
+  try {
+    const view = await Cow.find({ Uid: req.params.id });
+    console.log(view, "Cow Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
 // Adding rickshaw scheme
 const addRickshaw = async (req, res, next) => {
   try {
@@ -559,20 +570,31 @@ const addRickshaw = async (req, res, next) => {
     res.status(500).send(e)
   }
 }
-module.exports = {
-  addRickshaw,
-};
-const viewDonorCowDetail = async (req, res, next) => {
+const viewDonorRickshawDetail = async (req, res, next) => {
   try {
-    const view = await Cow.find({ Uid: req.params.id });
-    console.log(view, "Cow Data");
+    const view = await Recovery.find({ Uid: req.params.id });
+    console.log(view, "Rickshaw Donor Data");
     res.status(200).send(view);
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
   }
-};
+}
+const viewRickshawDetail = async (req, res, next) => {
+  try {
+    const view = await Recovery.find({}).populate("Uid");
+    console.log(view, "Rickshaw Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+}
+
 module.exports = {
+  viewRickshawDetail,
+  viewDonorRickshawDetail,
+  addRickshaw,
   viewDonorCowDetail,
   viewCowDetail,
   addCowDetail,
