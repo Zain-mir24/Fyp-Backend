@@ -11,7 +11,7 @@ const Expense = require("../models/DailyExpense");
 const Masjid = require("../models/Masjid");
 const Recovery = require("../models/Recovery")
 const Cow = require("../models/Cow");
-
+const Audit = require("../models/Audit")
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
   try {
@@ -360,7 +360,7 @@ const updateHousingScheme = async (req, res, next) => {
 };
 const addEstimation = async (req, res, next) => {
   try {
-    console.log(req.body);
+
     const add = await Estimation.create(
       {
         Project: req.body.project,
@@ -591,7 +591,76 @@ const viewRickshawDetail = async (req, res, next) => {
   }
 }
 
+const CreateAuditTeam = async (req, res, next) => {
+  try {
+    const add = await Audit.create({
+      auditTeamname: req.body.auditTeamname,
+      subAdmins: {
+        Sid: req.body.Sid,
+        Sid2: req.body.Sid2,
+        Sid3: req.body.Sid3,
+      },
+
+      Cid: req.body.Cid,
+    })
+    console.log(add, "Create Audit")
+    res.status(200).send(add)
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
+
+const updateAuditTeam = async (req, res, next) => {
+  try {
+    const add = await Audit.findByIdAndUpdate({ _id: req.body._id }, {
+      auditTeamname: req.body.auditTeamname,
+      subAdmins: {
+        Sid: req.body.Sid,
+        Sid2: req.body.Sid2,
+        Sid3: req.body.Sid3,
+      },
+      Cid: req.body.Cid
+
+
+    })
+    console.log(add, "Create Audit")
+    res.status(200).send(add)
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
+
+const viewAudit = async (req, res, next) => {
+  try {
+    const view = await Audit.find({})
+    res.status(200).send(view)
+  }
+  catch (e) {
+    res.status(500).send(e)
+  }
+}
+// subadmin functions will be here at this point
+const uploadReport = async (req, res, next) => {
+  try {
+    const upload = await Audit.findByIdAndUpdate(
+      {
+        _id: req.body._id
+      },
+      {
+        fileName: req.body.fileName
+      })
+    res.status(200).send(upload)
+  }
+  catch (e) {
+    res.status(500).send(e)
+  }
+}
+
 module.exports = {
+  CreateAuditTeam,
+  updateAuditTeam,
+  viewAudit,
+  uploadReport,
   viewRickshawDetail,
   viewDonorRickshawDetail,
   addRickshaw,

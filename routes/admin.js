@@ -19,31 +19,7 @@ const adminController = require("../controllers/AdminController");
 // const { response } = require("express");
 
 //Admin routes
-// router.post("/Signup", async (req, res, next) => {
-//   const admin = new Admin(req.body);
-//   try {
-//     await admin.save();
-//     const token = await user.generateAuthToken();
-//     const mailOptions = {
-//       from: '"Our Code World " <zainzz123@outlook.com>',
-//       to: email,
-//       subject: "You have signedup as an admin for global reach",
-//       text: "Welcome to global reach",
-//     };
-//     mailSender.transporter
-//       .sendMail(mailOptions)
-//       .then((result) => {
-//         console.log("sent success");
-//         console.log("result", result);
-//       })
-//       .catch((err) => {
-//         console.log("error", err);
-//       });
-//     res.status(201).send({ user, token });
-//   } catch (e) {
-//     console.log("errrorr", e);
-//     res.status(400).send(e);
-//   }
+
 // });
 // Post route
 router.post("/SuperAdmin", adminController.SuperAdmin);
@@ -349,11 +325,7 @@ router.post("/addAmountDetail", adminController.addamountDetail);
 // View amount detail for the beneficiary.
 router.get("/viewamountDetail", adminController.viewammountDetail);
 // Housing Scheme for beneficiary
-router.post(
-  "/addhousingScheme",
-  upload.single("images"),
-  adminController.addHousingScheme
-);
+router.post("/addhousingScheme", upload.single("images"), adminController.addHousingScheme);
 // Update Housing Scheme from Admin Panel
 router.patch("/updatehousingscheme/:id", adminController.updateHousingScheme);
 // viewing all the scheme for beneficiary
@@ -365,15 +337,23 @@ router.get("/viewEstimation", adminController.viewEstimation);
 router.get("/viewExpense", adminController.viewExpense);
 router.post("/addExpense", adminController.addExpense);
 // Masjid donation by donor scehma
-router.post("/masjidDonation", adminController.addMasjid)
-router.get("/masjidDonation", adminController.viewMasjid)
+router.post("/masjidDonation", adminController.addMasjid);
+router.get("/masjidDonation", adminController.viewMasjid);
 // Rickshaw recovery scheme
-router.post("/addRickshawScheme", adminController.addRickshaw)
-router.get("/viewRickshawdetail/:id", adminController.viewDonorRickshawDetail)
-router.get("/viewRickshawdetail", adminController.viewRickshawDetail)
+router.post("/addRickshawScheme", adminController.addRickshaw);
+router.get("/viewRickshawdetail/:id", adminController.viewDonorRickshawDetail);
+router.get("/viewRickshawdetail", adminController.viewRickshawDetail);
 // Ahmed routes of cow details
 router.get("/donor", adminController.getDonor);
 router.get("/viewCowDetail", adminController.viewCowDetail);
 router.get("/viewDonorCowDetail/:id", adminController.viewDonorCowDetail);
 router.post("/addCowDetail", adminController.addCowDetail);
+// Super Admin Audit routes
+router.post("/createAudit", adminController.CreateAuditTeam);
+router.patch("/updateTeam/:id", adminController.updateAuditTeam);
+router.get("/viewAudits", adminController.viewAudit);
+
+// subAdmin routes
+router.post("/UploadReport", adminController.uploadReport)
+
 module.exports = router;
