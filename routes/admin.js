@@ -354,6 +354,6 @@ router.patch("/updateTeam/:id", adminController.updateAuditTeam);
 router.get("/viewAudits", adminController.viewAudit);
 
 // subAdmin routes
-router.post("/UploadReport", adminController.uploadReport)
+router.post("/UploadReport", upload.single("file"), adminController.uploadReport)
 
 module.exports = router;

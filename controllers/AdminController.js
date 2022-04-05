@@ -632,11 +632,12 @@ const updateAuditTeam = async (req, res, next) => {
 
 const viewAudit = async (req, res, next) => {
   try {
-    const view = await Audit.find({})
+    const view = await Audit.find({}).populate(["subAdmins.Sid", "subAdmins.Sid2", "subAdmins.Sid3"])
     res.status(200).send(view)
   }
   catch (e) {
     res.status(500).send(e)
+    console.log(e)
   }
 }
 // subadmin functions will be here at this point
