@@ -12,7 +12,8 @@ const auditSchema = new mongoose.Schema({
             {
                 Sid: {
                     type: mongoose.Types.ObjectId,
-                    ref: "Admin"
+                    ref: "Admin",
+                    required: true
                 },
                 Sid2: {
                     type: mongoose.Types.ObjectId,
@@ -27,7 +28,7 @@ const auditSchema = new mongoose.Schema({
 
     Cid: {
         type: mongoose.Types.ObjectId,
-        ref: "campaigns"
+        ref: "Campaign"
     },
     fileName: {
         type: String

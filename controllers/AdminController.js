@@ -606,6 +606,7 @@ const CreateAuditTeam = async (req, res, next) => {
     console.log(add, "Create Audit")
     res.status(200).send(add)
   } catch (e) {
+    console.log(e)
     res.status(500).send(e)
   }
 }
@@ -632,8 +633,8 @@ const updateAuditTeam = async (req, res, next) => {
 
 const viewAudit = async (req, res, next) => {
   try {
-    const view = await Audit.find({}).populate(["subAdmins.Sid", "subAdmins.Sid2", "subAdmins.Sid3"])
-    res.status(200).send(view)
+    const view = await Audit.find({}).populate(["subAdmins.Sid", "subAdmins.Sid2", "subAdmins.Sid3", "Cid"])
+    res.status(200).send({ view })
   }
   catch (e) {
     res.status(500).send(e)
