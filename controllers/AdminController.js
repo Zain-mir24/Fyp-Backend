@@ -643,6 +643,7 @@ const viewAudit = async (req, res, next) => {
 }
 // subadmin functions will be here at this point
 const uploadReport = async (req, res, next) => {
+  console.log(req.body)
   try {
     const upload = await Audit.findByIdAndUpdate(
       {
@@ -657,6 +658,7 @@ const uploadReport = async (req, res, next) => {
     res.status(500).send(e)
   }
 }
+
 
 module.exports = {
   CreateAuditTeam,

@@ -356,4 +356,5 @@ router.get("/viewAudits", adminController.viewAudit);
 // subAdmin routes
 router.post("/UploadReport", upload.single("file"), adminController.uploadReport)
 
+
 module.exports = router;

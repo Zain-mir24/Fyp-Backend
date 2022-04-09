@@ -201,5 +201,7 @@ router.post(
 );
 // view monthly support of beneficiary
 // router.get("/viewMonthlyAppeal", userController.viewAppeal)
+// View Audit Reports
+router.get("/viewAudit/:cid", userController.SpecificAudit);
 
 module.exports = router;

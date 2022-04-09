@@ -1,5 +1,7 @@
 const Monthly = require("../models/MonthlySupport");
 const children = require("../models/Children");
+const Audit = require("../models/Audit")
+
 
 const viewChildren = async (req, res, next) => {
   try {
@@ -64,10 +66,25 @@ const monthlyAppeal = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+const SpecificAudit = async (req, res, next) => {
+  try {
+    console.log(req.params.cid)
+    const find = await Audit.findOne({
+      Cid: req.params.cid
+    })
+    res.status(200).send(find)
+    console.log(find)
 
+  } catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+
+  }
+}
 module.exports = {
   viewChildren,
   monthlyAppeal,
+  SpecificAudit
   // viewAppeal
   // scheduleMeeting
 };
