@@ -204,4 +204,8 @@ router.post(
 // View Audit Reports
 router.get("/viewAudit/:cid", userController.SpecificAudit);
 
+// Notification Routes
+
+router.post("/sendnotification", userController.sendnotification)
+router.get("/viewnotification", userController.viewnotification)
 module.exports = router;
