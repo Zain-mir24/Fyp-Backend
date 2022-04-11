@@ -107,22 +107,17 @@ router.delete("/users/:id", async (req, res) => {
 });
 
 //Adding campaigns
-router.post(
-  "/addCampaign",
-  adminAuth,
-  upload.single("file"),
-  async (req, res) => {
-    const campaign = new Campaign(req.body);
-    console.log(req.body, "Coming from the frontend");
-    try {
-      await campaign.save();
-      res.status(201).send("campaign added");
-    } catch (e) {
-      console.log(e);
-      res.status(401);
-    }
+router.post("/addCampaign", upload.single("file"), async (req, res) => {
+  const campaign = new Campaign(req.body);
+  console.log(req.body, "Coming from the frontend");
+  try {
+    await campaign.save();
+    res.status(201).send("campaign added");
+  } catch (e) {
+    console.log(e);
+    res.status(401);
   }
-);
+});
 
 // View created campaigns
 
@@ -365,15 +360,19 @@ router.get("/viewEstimation", adminController.viewEstimation);
 router.get("/viewExpense", adminController.viewExpense);
 router.post("/addExpense", adminController.addExpense);
 // Masjid donation by donor scehma
-router.post("/masjidDonation", adminController.addMasjid)
-router.get("/masjidDonation", adminController.viewMasjid)
+router.post("/masjidDonation", adminController.addMasjid);
+router.get("/masjidDonation", adminController.viewMasjid);
 // Rickshaw recovery scheme
-router.post("/addRickshawScheme", adminController.addRickshaw)
-router.get("/viewRickshawdetail/:id", adminController.viewDonorRickshawDetail)
-router.get("/viewRickshawdetail", adminController.viewRickshawDetail)
+router.post("/addRickshawScheme", adminController.addRickshaw);
+router.get("/viewRickshawdetail/:id", adminController.viewDonorRickshawDetail);
+router.get("/viewRickshawdetail", adminController.viewRickshawDetail);
 // Ahmed routes of cow details
 router.get("/donor", adminController.getDonor);
 router.get("/viewCowDetail", adminController.viewCowDetail);
 router.get("/viewDonorCowDetail/:id", adminController.viewDonorCowDetail);
 router.post("/addCowDetail", adminController.addCowDetail);
+router.post("/addYoutubeDetail", adminController.addYoutubeDetail);
+router.get("/viewYoutubeDetail", adminController.viewYoutubeDetail);
+router.delete("/deleteYoutubeDetail/:id", adminController.deleteYoutubeDetail);
+router.get("/viewCampaign/:id", adminController.viewBeneficiaryCampaign);
 module.exports = router;

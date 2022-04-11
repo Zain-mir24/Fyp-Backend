@@ -9,8 +9,10 @@ const Housing = require("../models/HousingScheme");
 const Estimation = require("../models/Estimationperforma");
 const Expense = require("../models/DailyExpense");
 const Masjid = require("../models/Masjid");
-const Recovery = require("../models/Recovery")
+const Recovery = require("../models/Recovery");
 const Cow = require("../models/Cow");
+const Youtube = require("../models/Youtube");
+const Campaign = require("../models/CampaignDB");
 
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
@@ -488,6 +490,7 @@ const getDonor = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+
 const addCowDetail = async (req, res, next) => {
   try {
     const add = await Cow.create(req.body);
@@ -509,7 +512,7 @@ const viewCowDetail = async (req, res, next) => {
     console.log(e);
     res.status(500).send(e);
   }
-}
+};
 // Cow donation details
 const viewDonorCowDetail = async (req, res, next) => {
   try {
@@ -521,10 +524,21 @@ const viewDonorCowDetail = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+
+const viewBeneficiaryCampaign = async (req, res, next) => {
+  try {
+    const view = await Campaign.find({ Uid: req.params.id });
+    console.log(view, "Campaign Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
 // Adding rickshaw scheme
 const addRickshaw = async (req, res, next) => {
   try {
-    console.log(req.body, "print data")
+    console.log(req.body, "print data");
     const add = await Recovery.findOneAndUpdate(
       { Uid: req.body.Uid },
       {
@@ -534,42 +548,42 @@ const addRickshaw = async (req, res, next) => {
         Installment: req.body.Installment,
         TotalAmount: req.body.TotalAmount,
         $push: {
-          Recovery: [{
-            Month: req.body.Month,
-            amount: req.body.amount,
-            balance: req.body.balance,
-          }]
-        }
+          Recovery: [
+            {
+              Month: req.body.Month,
+              amount: req.body.amount,
+              balance: req.body.balance,
+            },
+          ],
+        },
       }
-    )
+    );
     if (add) {
-      console.log(add, "Pushing data to already existing person")
-      res.status(200).send(add)
+      console.log(add, "Pushing data to already existing person");
+      res.status(200).send(add);
     }
     if (!add) {
-      const newEntry = await Recovery.create(
-        {
-          Uid: req.body.Uid,
-          name: req.body.name,
-          cell: req.body.cell,
-          DateofPurchase: req.body.DateofPurchase,
-          Installment: req.body.Installment,
-          TotalAmount: req.body.TotalAmount,
-          Recovery: {
-            Month: req.body.Month,
-            amount: req.body.amount,
-            balance: req.body.balance,
-          }
-        }
-      )
-      console.log(newEntry, "Entring new Data")
-      res.status(200).send(newEntry)
+      const newEntry = await Recovery.create({
+        Uid: req.body.Uid,
+        name: req.body.name,
+        cell: req.body.cell,
+        DateofPurchase: req.body.DateofPurchase,
+        Installment: req.body.Installment,
+        TotalAmount: req.body.TotalAmount,
+        Recovery: {
+          Month: req.body.Month,
+          amount: req.body.amount,
+          balance: req.body.balance,
+        },
+      });
+      console.log(newEntry, "Entring new Data");
+      res.status(200).send(newEntry);
     }
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
   }
-}
+};
 const viewDonorRickshawDetail = async (req, res, next) => {
   try {
     const view = await Recovery.find({ Uid: req.params.id });
@@ -579,7 +593,7 @@ const viewDonorRickshawDetail = async (req, res, next) => {
     console.log(e);
     res.status(500).send(e);
   }
-}
+};
 const viewRickshawDetail = async (req, res, next) => {
   try {
     const view = await Recovery.find({}).populate("Uid");
@@ -589,9 +603,46 @@ const viewRickshawDetail = async (req, res, next) => {
     console.log(e);
     res.status(500).send(e);
   }
-}
+};
+
+const addYoutubeDetail = async (req, res, next) => {
+  try {
+    const add = await Youtube.create(req.body);
+    if (!add) {
+      throw new Error("this format is wrong");
+    }
+    res.status(200).send(add);
+  } catch (e) {
+    res.status(500).send(e);
+    console.log(e);
+  }
+};
+const viewYoutubeDetail = async (req, res, next) => {
+  try {
+    const view = await Youtube.find({});
+    console.log(view, "Youtube Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+const deleteYoutubeDetail = async (req, res, next) => {
+  try {
+    const view = await Youtube.deleteOne({ _id: req.params.id });
+    console.log(view, "Youtube Delete Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
 
 module.exports = {
+  viewBeneficiaryCampaign,
+  deleteYoutubeDetail,
+  viewYoutubeDetail,
+  addYoutubeDetail,
   viewRickshawDetail,
   viewDonorRickshawDetail,
   addRickshaw,
