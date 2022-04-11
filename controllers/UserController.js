@@ -96,8 +96,7 @@ const viewnotification = async (req, res, next) => {
     const sorted = view.sort(function (x, y) {
       return y.createdAt - x.createdAt;
     })
-
-    res.status(200).send(sorted)
+    res.status(200).send(sorted[0])
   } catch (e) {
     console.log(e)
     res.status(500).send(e)
