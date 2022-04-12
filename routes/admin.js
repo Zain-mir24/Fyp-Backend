@@ -356,5 +356,8 @@ router.get("/viewAudits", adminController.viewAudit);
 // subAdmin routes
 router.post("/UploadReport", upload.single("file"), adminController.uploadReport)
 
+// Analytics routes
+router.post("/Citydonation", adminController.addAnalytics)
+router.get("/Citydonation", adminController.getAnalytics)
 
 module.exports = router;

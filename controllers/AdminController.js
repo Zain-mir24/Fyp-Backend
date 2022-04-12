@@ -12,6 +12,7 @@ const Masjid = require("../models/Masjid");
 const Recovery = require("../models/Recovery")
 const Cow = require("../models/Cow");
 const Audit = require("../models/Audit")
+const donationMonth = require("../models/DonationMonth")
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
   try {
@@ -658,9 +659,37 @@ const uploadReport = async (req, res, next) => {
     res.status(500).send(e)
   }
 }
+// Application Analytics
+const addAnalytics = async (req, res, next) => {
+  try {
+    const add = await donationMonth.create({
 
+      Month: req.body.Month,
+      Donation: req.body.Donation
+
+    }
+    )
+    res.status(200).send(add)
+  }
+  catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+  }
+}
+const getAnalytics = async (req, res, next) => {
+  try {
+    const view = await donationMonth.find({})
+    res.status(200).send(view)
+  }
+  catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+  }
+}
 
 module.exports = {
+  addAnalytics,
+  getAnalytics,
   CreateAuditTeam,
   updateAuditTeam,
   viewAudit,
