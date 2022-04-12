@@ -13,6 +13,8 @@ const Recovery = require("../models/Recovery")
 const Cow = require("../models/Cow");
 const Audit = require("../models/Audit")
 const donationMonth = require("../models/DonationMonth")
+const Youtube = require("../models/Youtube");
+const Campaign = require("../models/CampaignDB");
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
   try {
@@ -510,12 +512,22 @@ const viewCowDetail = async (req, res, next) => {
     console.log(e);
     res.status(500).send(e);
   }
-}
+};
 // Cow donation details
 const viewDonorCowDetail = async (req, res, next) => {
   try {
     const view = await Cow.find({ Uid: req.params.id });
     console.log(view, "Cow Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+const viewBeneficiaryCampaign = async (req, res, next) => {
+  try {
+    const view = await Campaign.find({ Uid: req.params.id });
+    console.log(view, "Campaign Data");
     res.status(200).send(view);
   } catch (e) {
     console.log(e);
@@ -570,7 +582,7 @@ const addRickshaw = async (req, res, next) => {
     console.log(e)
     res.status(500).send(e)
   }
-}
+};
 const viewDonorRickshawDetail = async (req, res, next) => {
   try {
     const view = await Recovery.find({ Uid: req.params.id });
@@ -580,7 +592,7 @@ const viewDonorRickshawDetail = async (req, res, next) => {
     console.log(e);
     res.status(500).send(e);
   }
-}
+};
 const viewRickshawDetail = async (req, res, next) => {
   try {
     const view = await Recovery.find({}).populate("Uid");
@@ -590,7 +602,39 @@ const viewRickshawDetail = async (req, res, next) => {
     console.log(e);
     res.status(500).send(e);
   }
-}
+};
+const addYoutubeDetail = async (req, res, next) => {
+  try {
+    const add = await Youtube.create(req.body);
+    if (!add) {
+      throw new Error("this format is wrong");
+    }
+    res.status(200).send(add);
+  } catch (e) {
+    res.status(500).send(e);
+    console.log(e);
+  }
+};
+const viewYoutubeDetail = async (req, res, next) => {
+  try {
+    const view = await Youtube.find({});
+    console.log(view, "Youtube Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+const deleteYoutubeDetail = async (req, res, next) => {
+  try {
+    const view = await Youtube.deleteOne({ _id: req.params.id });
+    console.log(view, "Youtube Delete Data");
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
 
 const CreateAuditTeam = async (req, res, next) => {
   try {
@@ -694,6 +738,10 @@ module.exports = {
   updateAuditTeam,
   viewAudit,
   uploadReport,
+  viewBeneficiaryCampaign,
+  deleteYoutubeDetail,
+  viewYoutubeDetail,
+  addYoutubeDetail,
   viewRickshawDetail,
   viewDonorRickshawDetail,
   addRickshaw,
