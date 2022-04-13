@@ -352,9 +352,18 @@ router.get("/viewAudits", adminController.viewAudit);
 router.post("/UploadReport", upload.single("file"), adminController.uploadReport)
 
 // Analytics routes
-router.post("/Citydonation", adminController.addAnalytics)
-router.get("/Citydonation", adminController.getAnalytics)
+router.post("/Monthlydonation", adminController.addAnalytics)
+router.get("/Monthlydonation", adminController.getAnalytics)
 
+// City Donations routes
+
+
+// UserAnalytics Routes
+
+
+
+
+// Social media routes
 router.post("/addYoutubeDetail", adminController.addYoutubeDetail);
 router.get("/viewYoutubeDetail", adminController.viewYoutubeDetail);
 router.delete("/deleteYoutubeDetail/:id", adminController.deleteYoutubeDetail);
