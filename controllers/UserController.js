@@ -1,6 +1,7 @@
 const Monthly = require("../models/MonthlySupport");
 const children = require("../models/Children");
-
+const Audit = require("../models/Audit")
+const notification = require("../models/Notification")
 const viewChildren = async (req, res, next) => {
   try {
     await children.find({}).exec((error, result) => {
@@ -64,10 +65,47 @@ const monthlyAppeal = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+const SpecificAudit = async (req, res, next) => {
+  try {
+    console.log(req.params.cid)
+    const find = await Audit.findOne({
+      Cid: req.params.cid
+    })
+    res.status(200).send(find)
+    console.log(find)
 
+  } catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+
+  }
+}
+const sendnotification = async (req, res, next) => {
+  try {
+    const add = await notification.create(req.body)
+    res.status(200).send(add)
+  } catch (e) {
+    console.log(e, "error")
+    res.status(500).send(e)
+  }
+}
+const viewnotification = async (req, res, next) => {
+  try {
+    const view = await notification.find({})
+
+    const sorted = view.sort(function (x, y) {
+      return y.createdAt - x.createdAt;
+    })
+    res.status(200).send(sorted[0])
+  } catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+  }
+}
 module.exports = {
   viewChildren,
   monthlyAppeal,
-  // viewAppeal
-  // scheduleMeeting
+  SpecificAudit,
+  sendnotification,
+  viewnotification
 };
