@@ -15,6 +15,7 @@ const Audit = require("../models/Audit")
 const donationMonth = require("../models/DonationMonth")
 const Youtube = require("../models/Youtube");
 const Campaign = require("../models/CampaignDB");
+const City = require("../models/City")
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
   try {
@@ -730,8 +731,36 @@ const getAnalytics = async (req, res, next) => {
     res.status(500).send(e)
   }
 }
+// City Analytics
+const addCityAnalysis = async (req, res, next) => {
+  try {
+    const add = await City.create({
 
+      City: req.body.City,
+      Donation: req.body.Donation
+    }
+    )
+    res.status(200).send(add)
+  }
+  catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+  }
+}
+
+const viewCityAnalysis = async (req, res, next) => {
+  try {
+    const view = await City.find({})
+    res.status(200).send(view)
+  }
+  catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+  }
+}
 module.exports = {
+  addCityAnalysis,
+  viewCityAnalysis,
   addAnalytics,
   getAnalytics,
   CreateAuditTeam,

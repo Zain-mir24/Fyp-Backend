@@ -356,11 +356,10 @@ router.post("/Monthlydonation", adminController.addAnalytics)
 router.get("/Monthlydonation", adminController.getAnalytics)
 
 // City Donations routes
-
+router.post("/Citydonation", adminController.addCityAnalysis)
+router.get("/Citydonation", adminController.viewCityAnalysis)
 
 // UserAnalytics Routes
-
-
 
 
 // Social media routes
