@@ -316,9 +316,9 @@ router.get("/viewsubAdmin", adminController.viewsubAdmin);
 // View monthly support Appeals from beneficiary
 router.get("/viewmonthlyAppeal", adminController.viewmonthlyAppeal);
 //  Add amount detail routes for admin
-router.post("/addAmountDetail", adminController.addamountDetail);
+router.post("/addAmountDetail/:id", adminController.addamountDetail);
 // View amount detail for the beneficiary.
-router.get("/viewamountDetail", adminController.viewammountDetail);
+router.get("/viewamountDetail/:id", adminController.viewammountDetail);
 // Housing Scheme for beneficiary
 router.post(
   "/addhousingScheme",
@@ -347,10 +347,6 @@ router.get("/donor", adminController.getDonor);
 router.get("/viewCowDetail", adminController.viewCowDetail);
 router.get("/viewDonorCowDetail/:id", adminController.viewDonorCowDetail);
 router.post("/addCowDetail", adminController.addCowDetail);
-router.post("/addYoutubeDetail", adminController.addYoutubeDetail);
-router.get("/viewYoutubeDetail", adminController.viewYoutubeDetail);
-router.delete("/deleteYoutubeDetail/:id", adminController.deleteYoutubeDetail);
-router.get("/viewCampaign/:id", adminController.viewBeneficiaryCampaign);
 // Super Admin Audit routes
 router.post("/createAudit", adminController.CreateAuditTeam);
 router.patch("/updateTeam/:id", adminController.updateAuditTeam);
@@ -363,4 +359,17 @@ router.post(
   adminController.uploadReport
 );
 
+// Analytics routes
+router.post("/Monthlydonation", adminController.addAnalytics);
+router.get("/Monthlydonation", adminController.getAnalytics);
+
+// City Donations routes
+
+// UserAnalytics Routes
+
+// Social media routes
+router.post("/addYoutubeDetail", adminController.addYoutubeDetail);
+router.get("/viewYoutubeDetail", adminController.viewYoutubeDetail);
+router.delete("/deleteYoutubeDetail/:id", adminController.deleteYoutubeDetail);
+router.get("/viewCampaign/:id", adminController.viewBeneficiaryCampaign);
 module.exports = router;

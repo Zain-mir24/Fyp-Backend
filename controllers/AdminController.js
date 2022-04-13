@@ -11,10 +11,10 @@ const Expense = require("../models/DailyExpense");
 const Masjid = require("../models/Masjid");
 const Recovery = require("../models/Recovery");
 const Cow = require("../models/Cow");
+const Audit = require("../models/Audit");
+const donationMonth = require("../models/DonationMonth");
 const Youtube = require("../models/Youtube");
 const Campaign = require("../models/CampaignDB");
-
-const Audit = require("../models/Audit");
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
   try {
@@ -276,17 +276,38 @@ const viewmonthlyAppeal = async (req, res, next) => {
 // Adding amount detail for  beneficiary
 const addamountDetail = async (req, res, next) => {
   console.log(req.body);
+  update = {
+    bid: req.body.bid,
+    $push: {
+      LoanDetail: {
+        Date: req.body.Date,
+        AmountReceivedpound: req.body.AmountReceivedpound,
+        Rate: req.body.Rate,
+        AmountRecievedpkr: req.body.AmountRecievedpkr,
+        amountsentDate: req.body.amountsentDate,
+        giventobeneficiary: req.body.giventobeneficiary,
+        Balance: req.body.Balance,
+        Sourcedelivery: req.body.Sourcedelivery,
+      },
+    },
+  };
+  options = { upsert: true, new: true, setDefaultsOnInsert: true };
   try {
-    const Amountdetail = await Amount.create(req.body);
+    const Amountdetail = await Amount.findOneAndUpdate(
+      { _id: req.params.id },
+      update,
+      options
+    );
     res.status(200).send(Amountdetail);
   } catch (e) {
+    console.log(e);
     res.status(500).send(e);
   }
 };
 // viewing amount detail from each beneficiary
 const viewammountDetail = async (req, res, next) => {
   try {
-    const view = await Amount.find({}).populate("bid");
+    const view = await Amount.findOne({ bid: req.params.id }).populate("bid");
     res.status(200).send(view);
   } catch (e) {
     console.log(e);
@@ -490,7 +511,6 @@ const getDonor = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
-
 const addCowDetail = async (req, res, next) => {
   try {
     const add = await Cow.create(req.body);
@@ -524,7 +544,6 @@ const viewDonorCowDetail = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
-
 const viewBeneficiaryCampaign = async (req, res, next) => {
   try {
     const view = await Campaign.find({ Uid: req.params.id });
@@ -604,7 +623,6 @@ const viewRickshawDetail = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
-
 const addYoutubeDetail = async (req, res, next) => {
   try {
     const add = await Youtube.create(req.body);
@@ -710,8 +728,36 @@ const uploadReport = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+// Application Analytics
+const addAnalytics = async (req, res, next) => {
+  try {
+    const add = await donationMonth.create({
+      Month: req.body.Month,
+      Donation: req.body.Donation,
+    });
+    res.status(200).send(add);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+const getAnalytics = async (req, res, next) => {
+  try {
+    const view = await donationMonth.find({});
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
 
 module.exports = {
+  addAnalytics,
+  getAnalytics,
+  CreateAuditTeam,
+  updateAuditTeam,
+  viewAudit,
+  uploadReport,
   viewBeneficiaryCampaign,
   deleteYoutubeDetail,
   viewYoutubeDetail,
