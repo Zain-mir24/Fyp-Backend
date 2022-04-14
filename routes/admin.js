@@ -39,6 +39,7 @@ router.get("/users", async (req, res) => {
   }
 });
 router.get("/readBeneficiary", adminController.readBeneficiary);
+router.get("/readDonor", adminController.readDonor);
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);

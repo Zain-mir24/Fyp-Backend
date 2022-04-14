@@ -6,7 +6,7 @@ const CitySchema = new mongoose.Schema({
         required: true
     },
     Donation: {
-        type: String,
+        type: Number,
         required: true
     }
 
