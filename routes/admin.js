@@ -368,4 +368,11 @@ router.post("/addYoutubeDetail", adminController.addYoutubeDetail);
 router.get("/viewYoutubeDetail", adminController.viewYoutubeDetail);
 router.delete("/deleteYoutubeDetail/:id", adminController.deleteYoutubeDetail);
 router.get("/viewCampaign/:id", adminController.viewBeneficiaryCampaign);
+
+//  In this file we will get api from django
+// Random data generator will also be here
+router.post("/generateddata", adminController.generateRandomData)
+
+
+
 module.exports = router;
