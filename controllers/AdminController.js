@@ -827,7 +827,7 @@ const generateRandomData = async (req, res, next) => {
     var data = []
     const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-    for (var i = 0; i < 10000; i++) {
+    for (var i = 0; i < 100000; i++) {
       data.push({
         Month: parseInt(Math.random() * (12 - 1) + 1),
         Salary: Math.floor(Math.random() * (150000 - 120000)) + 120000,
