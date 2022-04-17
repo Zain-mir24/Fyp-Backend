@@ -317,11 +317,15 @@ router.get("/viewsubAdmin", adminController.viewsubAdmin);
 // View monthly support Appeals from beneficiary
 router.get("/viewmonthlyAppeal", adminController.viewmonthlyAppeal);
 //  Add amount detail routes for admin
-router.post("/addAmountDetail", adminController.addamountDetail);
+router.post("/addAmountDetail/:id", adminController.addamountDetail);
 // View amount detail for the beneficiary.
-router.get("/viewamountDetail", adminController.viewammountDetail);
+router.get("/viewamountDetail/:id", adminController.viewammountDetail);
 // Housing Scheme for beneficiary
-router.post("/addhousingScheme", upload.single("images"), adminController.addHousingScheme);
+router.post(
+  "/addhousingScheme",
+  upload.single("images"),
+  adminController.addHousingScheme
+);
 // Update Housing Scheme from Admin Panel
 router.patch("/updatehousingscheme/:id", adminController.updateHousingScheme);
 // viewing all the scheme for beneficiary
@@ -350,11 +354,15 @@ router.patch("/updateTeam/:id", adminController.updateAuditTeam);
 router.get("/viewAudits", adminController.viewAudit);
 
 // subAdmin routes
-router.post("/UploadReport", upload.single("file"), adminController.uploadReport)
+router.post(
+  "/UploadReport",
+  upload.single("file"),
+  adminController.uploadReport
+);
 
 // Analytics routes
-router.post("/Monthlydonation", adminController.addAnalytics)
-router.get("/Monthlydonation", adminController.getAnalytics)
+router.post("/Monthlydonation", adminController.addAnalytics);
+router.get("/Monthlydonation", adminController.getAnalytics);
 
 // City Donations routes
 router.post("/Citydonation", adminController.addCityAnalysis)

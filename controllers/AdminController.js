@@ -9,10 +9,10 @@ const Housing = require("../models/HousingScheme");
 const Estimation = require("../models/Estimationperforma");
 const Expense = require("../models/DailyExpense");
 const Masjid = require("../models/Masjid");
-const Recovery = require("../models/Recovery")
+const Recovery = require("../models/Recovery");
 const Cow = require("../models/Cow");
-const Audit = require("../models/Audit")
-const donationMonth = require("../models/DonationMonth")
+const Audit = require("../models/Audit");
+const donationMonth = require("../models/DonationMonth");
 const Youtube = require("../models/Youtube");
 const Campaign = require("../models/CampaignDB");
 const City = require("../models/City")
@@ -290,17 +290,38 @@ const viewmonthlyAppeal = async (req, res, next) => {
 // Adding amount detail for  beneficiary
 const addamountDetail = async (req, res, next) => {
   console.log(req.body);
+  update = {
+    bid: req.body.bid,
+    $push: {
+      LoanDetail: {
+        Date: req.body.Date,
+        AmountReceivedpound: req.body.AmountReceivedpound,
+        Rate: req.body.Rate,
+        AmountRecievedpkr: req.body.AmountRecievedpkr,
+        amountsentDate: req.body.amountsentDate,
+        giventobeneficiary: req.body.giventobeneficiary,
+        Balance: req.body.Balance,
+        Sourcedelivery: req.body.Sourcedelivery,
+      },
+    },
+  };
+  options = { upsert: true, new: true, setDefaultsOnInsert: true };
   try {
-    const Amountdetail = await Amount.create(req.body);
+    const Amountdetail = await Amount.findOneAndUpdate(
+      { _id: req.params.id },
+      update,
+      options
+    );
     res.status(200).send(Amountdetail);
   } catch (e) {
+    console.log(e);
     res.status(500).send(e);
   }
 };
 // viewing amount detail from each beneficiary
 const viewammountDetail = async (req, res, next) => {
   try {
-    const view = await Amount.find({}).populate("bid");
+    const view = await Amount.findOne({ bid: req.params.id }).populate("bid");
     res.status(200).send(view);
   } catch (e) {
     console.log(e);
@@ -377,7 +398,6 @@ const updateHousingScheme = async (req, res, next) => {
 };
 const addEstimation = async (req, res, next) => {
   try {
-
     const add = await Estimation.create(
       {
         Project: req.body.project,
@@ -551,7 +571,7 @@ const viewBeneficiaryCampaign = async (req, res, next) => {
 // Adding rickshaw scheme
 const addRickshaw = async (req, res, next) => {
   try {
-    console.log(req.body, "print data")
+    console.log(req.body, "print data");
     const add = await Recovery.findOneAndUpdate(
       { Uid: req.body.Uid },
       {
@@ -561,40 +581,40 @@ const addRickshaw = async (req, res, next) => {
         Installment: req.body.Installment,
         TotalAmount: req.body.TotalAmount,
         $push: {
-          Recovery: [{
-            Month: req.body.Month,
-            amount: req.body.amount,
-            balance: req.body.balance,
-          }]
-        }
+          Recovery: [
+            {
+              Month: req.body.Month,
+              amount: req.body.amount,
+              balance: req.body.balance,
+            },
+          ],
+        },
       }
-    )
+    );
     if (add) {
-      console.log(add, "Pushing data to already existing person")
-      res.status(200).send(add)
+      console.log(add, "Pushing data to already existing person");
+      res.status(200).send(add);
     }
     if (!add) {
-      const newEntry = await Recovery.create(
-        {
-          Uid: req.body.Uid,
-          name: req.body.name,
-          cell: req.body.cell,
-          DateofPurchase: req.body.DateofPurchase,
-          Installment: req.body.Installment,
-          TotalAmount: req.body.TotalAmount,
-          Recovery: {
-            Month: req.body.Month,
-            amount: req.body.amount,
-            balance: req.body.balance,
-          }
-        }
-      )
-      console.log(newEntry, "Entring new Data")
-      res.status(200).send(newEntry)
+      const newEntry = await Recovery.create({
+        Uid: req.body.Uid,
+        name: req.body.name,
+        cell: req.body.cell,
+        DateofPurchase: req.body.DateofPurchase,
+        Installment: req.body.Installment,
+        TotalAmount: req.body.TotalAmount,
+        Recovery: {
+          Month: req.body.Month,
+          amount: req.body.amount,
+          balance: req.body.balance,
+        },
+      });
+      console.log(newEntry, "Entring new Data");
+      res.status(200).send(newEntry);
     }
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
   }
 };
 const viewDonorRickshawDetail = async (req, res, next) => {
@@ -661,62 +681,67 @@ const CreateAuditTeam = async (req, res, next) => {
       },
 
       Cid: req.body.Cid,
-    })
-    console.log(add, "Create Audit")
-    res.status(200).send(add)
+    });
+    console.log(add, "Create Audit");
+    res.status(200).send(add);
   } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    console.log(e);
+    res.status(500).send(e);
   }
-}
+};
 
 const updateAuditTeam = async (req, res, next) => {
   try {
-    const add = await Audit.findByIdAndUpdate({ _id: req.body._id }, {
-      auditTeamname: req.body.auditTeamname,
-      subAdmins: {
-        Sid: req.body.Sid,
-        Sid2: req.body.Sid2,
-        Sid3: req.body.Sid3,
-      },
-      Cid: req.body.Cid
-
-
-    })
-    console.log(add, "Create Audit")
-    res.status(200).send(add)
+    const add = await Audit.findByIdAndUpdate(
+      { _id: req.body._id },
+      {
+        auditTeamname: req.body.auditTeamname,
+        subAdmins: {
+          Sid: req.body.Sid,
+          Sid2: req.body.Sid2,
+          Sid3: req.body.Sid3,
+        },
+        Cid: req.body.Cid,
+      }
+    );
+    console.log(add, "Create Audit");
+    res.status(200).send(add);
   } catch (e) {
-    res.status(500).send(e)
+    res.status(500).send(e);
   }
-}
+};
 
 const viewAudit = async (req, res, next) => {
   try {
-    const view = await Audit.find({}).populate(["subAdmins.Sid", "subAdmins.Sid2", "subAdmins.Sid3", "Cid"])
-    res.status(200).send({ view })
+    const view = await Audit.find({}).populate([
+      "subAdmins.Sid",
+      "subAdmins.Sid2",
+      "subAdmins.Sid3",
+      "Cid",
+    ]);
+    res.status(200).send({ view });
+  } catch (e) {
+    res.status(500).send(e);
+    console.log(e);
   }
-  catch (e) {
-    res.status(500).send(e)
-    console.log(e)
-  }
-}
+};
 // subadmin functions will be here at this point
 const uploadReport = async (req, res, next) => {
-  console.log(req.body)
+  console.log(req.body);
   try {
     const upload = await Audit.findByIdAndUpdate(
       {
-        _id: req.body._id
+        _id: req.body._id,
       },
       {
-        fileName: req.body.fileName
-      })
-    res.status(200).send(upload)
+        fileName: req.body.fileName,
+      }
+    );
+    res.status(200).send(upload);
+  } catch (e) {
+    res.status(500).send(e);
   }
-  catch (e) {
-    res.status(500).send(e)
-  }
-}
+};
 // Application Analytics
 const addAnalytics = async (req, res, next) => {
   try {
@@ -753,7 +778,7 @@ const addAnalytics = async (req, res, next) => {
     console.log(e)
     res.status(500).send(e)
   }
-}
+};
 const getAnalytics = async (req, res, next) => {
   try {
     const view = await donationMonth.find({})
@@ -819,7 +844,7 @@ const viewCityAnalysis = async (req, res, next) => {
     console.log(e)
     res.status(500).send(e)
   }
-}
+};
 
 
 const generateRandomData = async (req, res, next) => {
