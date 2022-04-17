@@ -10,6 +10,9 @@ var mainRouter = require("./routes/index");
 var apirouter = require("./routes/User");
 var beneficiaryRouter = require("./routes/Beneficiary");
 var adminPanelRouter = require("./routes/adminPanel");
+var conversationRouter = require("./routes/Conversation");
+var messageRouter = require("./routes/Messages");
+
 var stripe = require("./routes/stripe-route");
 var donation = require("./routes/Donation");
 var app = express();
@@ -31,6 +34,8 @@ app.use("/beneficiary", beneficiaryRouter);
 app.use("/adminPanel", adminPanelRouter);
 app.use("/stripe", stripe);
 app.use("/donation", donation);
+app.use("/conversation", conversationRouter);
+app.use("/message", messageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
