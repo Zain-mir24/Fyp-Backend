@@ -39,6 +39,7 @@ router.get("/users", async (req, res) => {
   }
 });
 router.get("/readBeneficiary", adminController.readBeneficiary);
+router.get("/readDonor", adminController.readDonor);
 //updating the user in the database
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);
@@ -364,6 +365,8 @@ router.post("/Monthlydonation", adminController.addAnalytics);
 router.get("/Monthlydonation", adminController.getAnalytics);
 
 // City Donations routes
+router.post("/Citydonation", adminController.addCityAnalysis);
+router.get("/Citydonation", adminController.viewCityAnalysis);
 
 // UserAnalytics Routes
 
@@ -372,4 +375,9 @@ router.post("/addYoutubeDetail", adminController.addYoutubeDetail);
 router.get("/viewYoutubeDetail", adminController.viewYoutubeDetail);
 router.delete("/deleteYoutubeDetail/:id", adminController.deleteYoutubeDetail);
 router.get("/viewCampaign/:id", adminController.viewBeneficiaryCampaign);
+
+//  In this file we will get api from django
+// Random data generator will also be here
+router.post("/generateddata", adminController.generateRandomData);
+
 module.exports = router;

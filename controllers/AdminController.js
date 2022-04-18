@@ -15,6 +15,13 @@ const Audit = require("../models/Audit");
 const donationMonth = require("../models/DonationMonth");
 const Youtube = require("../models/Youtube");
 const Campaign = require("../models/CampaignDB");
+const City = require("../models/City");
+const ObjectsToCsv = require("objects-to-csv");
+const MonthlyPrediction = require("../models/predictDonation");
+// import { randMonth } from ;
+// const randMonth = require('@ngneat/falso')
+const faker = require("@faker-js/faker");
+
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
   try {
@@ -24,7 +31,14 @@ const readBeneficiary = async (req, res, next) => {
     res.send("Error found");
   }
 };
-
+const readDonor = async (req, res, next) => {
+  try {
+    const user = await User.find({ userType: "donor" });
+    res.send(user);
+  } catch (e) {
+    res.send("Error found");
+  }
+};
 // Admin signup routes and addition of admins
 const SuperAdmin = async (req, res, next) => {
   const { email } = req.body;
@@ -731,11 +745,28 @@ const uploadReport = async (req, res, next) => {
 // Application Analytics
 const addAnalytics = async (req, res, next) => {
   try {
-    const add = await donationMonth.create({
-      Month: req.body.Month,
-      Donation: req.body.Donation,
-    });
-    res.status(200).send(add);
+    const find = await donationMonth.findOneAndUpdate(
+      { Month: req.body.Month },
+      {
+        $inc: {
+          Donation: req.body.Donation,
+        },
+      }
+    );
+
+    if (!find) {
+      try {
+        const add = await donationMonth.create({
+          Month: req.body.Month,
+          Donation: req.body.Donation,
+        });
+        res.status(200).send(add);
+      } catch (e) {
+        res.status(500).send(e);
+      }
+    } else {
+      res.status(200).send(find);
+    }
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
@@ -744,6 +775,69 @@ const addAnalytics = async (req, res, next) => {
 const getAnalytics = async (req, res, next) => {
   try {
     const view = await donationMonth.find({});
+
+    function sortByMonth(arr) {
+      var months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      arr.sort(function (a, b) {
+        return months.indexOf(a.Month) - months.indexOf(b.Month);
+      });
+    }
+    sortByMonth(view);
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+// City Analytics
+const addCityAnalysis = async (req, res, next) => {
+  try {
+    console.log(req.body, "city data");
+    const find = await City.findOneAndUpdate(
+      { City: req.body.City },
+      {
+        $inc: {
+          Donation: req.body.Donation,
+        },
+      }
+    );
+
+    if (!find) {
+      try {
+        const add = await City.create({
+          City: req.body.City,
+          Donation: req.body.Donation,
+        });
+        res.status(200).send(add);
+      } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+      }
+    } else {
+      res.status(200).send(find);
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+
+const viewCityAnalysis = async (req, res, next) => {
+  try {
+    const view = await City.find({});
     res.status(200).send(view);
   } catch (e) {
     console.log(e);
@@ -751,7 +845,47 @@ const getAnalytics = async (req, res, next) => {
   }
 };
 
+const generateRandomData = async (req, res, next) => {
+  try {
+    var data = [];
+    const month = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    for (var i = 0; i < 100000; i++) {
+      data.push({
+        Month: parseInt(Math.random() * (12 - 1) + 1),
+        Salary: Math.floor(Math.random() * (150000 - 120000)) + 120000,
+        expenses: Math.floor(Math.random() * (80000 - 70000)) + 70000,
+        donation: Math.floor(Math.random() * (70000 - 30000)) + 30000,
+      });
+    }
+    const csv = new ObjectsToCsv(data);
+    await csv.toDisk("public/test.csv");
+    res.status(200).send(data);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+
 module.exports = {
+  generateRandomData,
+
+  readDonor,
+  addCityAnalysis,
+  viewCityAnalysis,
   addAnalytics,
   getAnalytics,
   CreateAuditTeam,
