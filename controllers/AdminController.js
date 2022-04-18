@@ -16,11 +16,8 @@ const donationMonth = require("../models/DonationMonth");
 const Youtube = require("../models/Youtube");
 const Campaign = require("../models/CampaignDB");
 const City = require("../models/City")
-const ObjectsToCsv = require('objects-to-csv');
+// const ObjectsToCsv = require('objects-to-csv');
 const MonthlyPrediction = require("../models/predictDonation")
-// import { randMonth } from ;
-// const randMonth = require('@ngneat/falso')
-const faker = require("@faker-js/faker")
 
 // Read beneficiaries
 const readBeneficiary = async (req, res, next) => {
@@ -845,34 +842,66 @@ const viewCityAnalysis = async (req, res, next) => {
     res.status(500).send(e)
   }
 };
-
-
-const generateRandomData = async (req, res, next) => {
+//Prediction Analytics
+const addPredictionAnalysis = async (req, res, next) => {
   try {
-    var data = []
-    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-    for (var i = 0; i < 10000; i++) {
-      data.push({
-        Month: parseInt(Math.random() * (12 - 1) + 1),
-        Salary: Math.floor(Math.random() * (150000 - 120000)) + 120000,
-        expenses: Math.floor(Math.random() * (80000 - 70000)) + 70000,
-        donation: Math.floor(Math.random() * (70000 - 30000)) + 30000,
-      })
+    const find = await MonthlyPrediction.findOneAndUpdate(
+      { Month: req.body.Month }, {
+      $push: [{
+        Donation: req.body.Donation
+      }]
+    })
+
+    if (!find) {
+      try {
+        const add = await MonthlyPrediction.create({
+          Month: req.body.Month,
+          Donation: req.body.Donation
+        }
+        )
+        res.status(200).send(add)
+      } catch (e) {
+        res.status(500).send(e)
+      }
+
+    } else {
+      res.status(200).send(find)
 
     }
-    const csv = new ObjectsToCsv(data)
-    await csv.toDisk('public/test.csv')
-    res.status(200).send(data)
-  } catch (e) {
+  }
+  catch (e) {
     console.log(e)
     res.status(500).send(e)
   }
 }
 
+// const generateRandomData = async (req, res, next) => {
+//   try {
+//     var data = []
+//     const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+//     for (var i = 0; i < 10000; i++) {
+//       data.push({
+//         Month: parseInt(Math.random() * (12 - 1) + 1),
+//         Salary: Math.floor(Math.random() * (150000 - 120000)) + 120000,
+//         expenses: Math.floor(Math.random() * (80000 - 70000)) + 70000,
+//         donation: Math.floor(Math.random() * (70000 - 30000)) + 30000,
+//       })
+
+//     }
+//     const csv = new ObjectsToCsv(data)
+//     await csv.toDisk('public/test.csv')
+//     res.status(200).send(data)
+//   } catch (e) {
+//     console.log(e)
+//     res.status(500).send(e)
+//   }
+// }
+
 
 module.exports = {
-  generateRandomData,
+  addPredictionAnalysis,
   readDonor,
   addCityAnalysis,
   viewCityAnalysis,

@@ -1,14 +1,14 @@
 const mongoose = require("mongoose")
 const MonthlySchema = new mongoose.Schema({
 
-    Monthly: {
+    Month: {
         type: String,
         required: true
     },
-    Donation: {
+    Donation: [{
         type: Number,
         required: true
-    }
+    }]
 
 })
 const MonthlyPrediction = mongoose.model("MonthlyPreidctionAnalysis", MonthlySchema)
