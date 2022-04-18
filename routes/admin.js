@@ -383,6 +383,7 @@ router.get("/viewCampaign/:id", adminController.viewBeneficiaryCampaign);
 
 // Prediction analysis
 router.post("/Predictionanalysis", adminController.addPredictionAnalysis);
+router.get("/Predictionanalysis", adminController.viewPredictionData);
 
 
 

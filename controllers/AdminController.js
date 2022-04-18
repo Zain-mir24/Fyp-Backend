@@ -875,6 +875,16 @@ const addPredictionAnalysis = async (req, res, next) => {
     res.status(500).send(e)
   }
 }
+const viewPredictionData = async (req, res, next) => {
+  try {
+    const view = await MonthlyPrediction.find({})
+    res.status(200).send(view)
+  }
+  catch (e) {
+    console.log(e)
+    res.status(500).send(e)
+  }
+};
 
 // const generateRandomData = async (req, res, next) => {
 //   try {
@@ -902,6 +912,7 @@ const addPredictionAnalysis = async (req, res, next) => {
 
 module.exports = {
   addPredictionAnalysis,
+  viewPredictionData,
   readDonor,
   addCityAnalysis,
   viewCityAnalysis,
