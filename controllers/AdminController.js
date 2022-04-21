@@ -742,104 +742,103 @@ const uploadReport = async (req, res, next) => {
 // Application Analytics
 const addAnalytics = async (req, res, next) => {
   try {
-
     const find = await donationMonth.findOneAndUpdate(
-      { Month: req.body.Month }, {
-      $inc: {
-        Donation: req.body.Donation
+      { Month: req.body.Month },
+      {
+        $inc: {
+          Donation: req.body.Donation,
+        },
       }
-    })
+    );
 
     if (!find) {
       try {
         const add = await donationMonth.create({
           Month: req.body.Month,
-          Donation: req.body.Donation
-        }
-        )
-        res.status(200).send(add)
+          Donation: req.body.Donation,
+        });
+        res.status(200).send(add);
       } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send(e);
       }
-
     } else {
-      res.status(200).send(find)
-
+      res.status(200).send(find);
     }
-
-
-
-
-  }
-  catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
   }
 };
 const getAnalytics = async (req, res, next) => {
   try {
-    const view = await donationMonth.find({})
+    const view = await donationMonth.find({});
 
     function sortByMonth(arr) {
-      var months = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"];
+      var months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
       arr.sort(function (a, b) {
-        return months.indexOf(a.Month)
-          - months.indexOf(b.Month);
+        return months.indexOf(a.Month) - months.indexOf(b.Month);
       });
     }
     sortByMonth(view);
-    res.status(200).send(view)
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
   }
-  catch (e) {
-    console.log(e)
-    res.status(500).send(e)
-  }
-}
+};
 // City Analytics
 const addCityAnalysis = async (req, res, next) => {
   try {
-    console.log(req.body, "city data")
+    console.log(req.body, "city data");
     const find = await City.findOneAndUpdate(
-      { City: req.body.City }, {
-      $inc: {
-        Donation: req.body.Donation
+      { City: req.body.City },
+      {
+        $inc: {
+          Donation: req.body.Donation,
+        },
       }
-    })
+    );
 
     if (!find) {
       try {
         const add = await City.create({
           City: req.body.City,
-          Donation: req.body.Donation
-        }
-        )
-        res.status(200).send(add)
+          Donation: req.body.Donation,
+        });
+        res.status(200).send(add);
       } catch (e) {
-        console.log(e)
-        res.status(500).send(e)
+        console.log(e);
+        res.status(500).send(e);
       }
-
     } else {
-      res.status(200).send(find)
-
+      res.status(200).send(find);
     }
-
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
   }
-  catch (e) {
-    console.log(e)
-    res.status(500).send(e)
-  }
-}
+};
 
 const viewCityAnalysis = async (req, res, next) => {
   try {
-    const view = await City.find({})
-    res.status(200).send(view)
-  }
-  catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+    const view = await City.find({});
+    res.status(200).send(view);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
   }
 };
 //Prediction Analytics
