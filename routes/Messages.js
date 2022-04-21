@@ -5,10 +5,10 @@ const Messages = require("../models/Message");
 // add Conversation
 router.post("/", async (req, res) => {
   try {
-    const saveMessage = Message.save(req.body);
+    const saveMessage = await Messages.create(req.body);
     res.status(200).send(saveMessage);
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).json(e);
   }
 });
 
