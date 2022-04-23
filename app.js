@@ -21,6 +21,51 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
+const io = require("socket.io")(4000, {
+  allowEIO3: true,
+  cors: {
+    // origin: "http://localhost:3000",
+    origin: true,
+    credentials: true,
+  },
+});
+
+let users = [];
+const addUser = (userId, socketId) => {
+  !users.some((user) => user.userId === userId) &&
+    users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId !== socketId);
+};
+
+io.on("connection", (socket) => {
+  console.log("A User Connected");
+  // Take userID and socketId from user
+  socket.on("addUser", (userId) => {
+    addUser(userId, socket.id);
+    io.emit("getUsers", users);
+  });
+
+  // Send And Get Messages
+  socket.on("sendMessage", ({ userId, receiverId, text }) => {
+    console.log(userId);
+  });
+
+  // Disconnect Handling
+  socket.on("disconnect", () => {
+    console.log("Some One Has Left The Chat");
+    removeUser(socket.id);
+    io.emit("getUsers", users);
+  });
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cors());

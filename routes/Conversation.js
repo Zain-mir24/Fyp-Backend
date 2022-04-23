@@ -4,6 +4,7 @@ const Conversation = require("../models/Conversation");
 
 // add Conversation
 router.post("/", async (req, res) => {
+  // Admin.find()
   const newConversation = new Conversation({
     member: [req.body.senderId, req.body.receiverId],
   });
