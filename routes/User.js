@@ -64,9 +64,9 @@ router.post("/signup/:_id/:token", async (req, res) => {
       return res.render("doesnt work");
     }
     const response = await user.save();
-    console.log(response, "User saved");
+    console.log(response._id.toString(), "User saved");
     const newConversation = new Conversation({
-      member: [response._id, "620baeeab232720e2c73d30e"],
+      member: [response._id.toString(), "620baeeab232720e2c73d30e"],
     });
     const savedConversation = await newConversation.save();
     console.log("conversation created");
