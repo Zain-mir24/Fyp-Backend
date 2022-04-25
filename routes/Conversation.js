@@ -28,4 +28,13 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const conversation = await Conversation.find();
+    res.status(200).send(conversation);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
 module.exports = router;

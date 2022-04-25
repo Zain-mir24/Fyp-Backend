@@ -13,6 +13,9 @@ var adminPanelRouter = require("./routes/adminPanel");
 var conversationRouter = require("./routes/Conversation");
 var messageRouter = require("./routes/Messages");
 
+var user = require("./models/users");
+var admin = require("./models/Admin");
+
 var stripe = require("./routes/stripe-route");
 var donation = require("./routes/Donation");
 var app = express();
@@ -40,19 +43,38 @@ const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
+const getUser = (userId) => {
+  return users.find((user) => user.userId === userId);
+};
+
 io.on("connection", (socket) => {
   console.log("A User Connected");
   // Take userID and socketId from user
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
+    console.log(users);
     io.emit("getUsers", users);
   });
 
   // Send And Get Messages
-  socket.on("sendMessage", ({ userId, receiverId, text }) => {
-    console.log(userId);
+  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    const user = getUser(receiverId);
+
+    io.to(user.socketId).emit("getMessage", {
+      senderId,
+      text,
+    });
   });
 
+  // socket.on("sendAdminMessage", ({ senderId, receiverId, text }) => {
+  //   const user = getUser(receiverId);
+  //   // console.log(user.socketId, "HELLO WORKK");
+
+  //   io.to(user.socketId).emit("getAdminMessage", {
+  //     senderId,
+  //     text,
+  //   });
+  // });
   // Disconnect Handling
   socket.on("disconnect", () => {
     console.log("Some One Has Left The Chat");
