@@ -66,6 +66,21 @@ io.on("connection", (socket) => {
     });
   });
 
+  // get name and send campaign notification
+  socket.on("sendnotification", ({ name }) => {
+    io.emit("getnotification", {
+      name
+    })
+  })
+
+
+  // get name and send campaign notification
+  socket.on("sendDonation", ({ userName, campaignname }) => {
+    io.emit("getDonation", {
+      userName,
+      campaignname
+    })
+  })
   // socket.on("sendAdminMessage", ({ senderId, receiverId, text }) => {
   //   const user = getUser(receiverId);
   //   // console.log(user.socketId, "HELLO WORKK");
