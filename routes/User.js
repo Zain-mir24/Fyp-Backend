@@ -66,6 +66,16 @@ router.post("/signup/:_id/:token", async (req, res) => {
     await user.save();
     res.status(201).send({ user, token });
     console.log("User saved");
+
+    const newConversation = new Conversation({
+      member: [user._id, "620baeeab232720e2c73d30e"],
+    });
+    try {
+      const savedConversation = newConversation.save();
+      res.status(200).json(savedConversation);
+    } catch (err) {
+      res.status(500).json(err);
+    }
   } catch (e) {
     console.log(e, "error while saving");
   }
@@ -135,7 +145,7 @@ router.post("/changepassword", async (req, res) => {
 });
 //Forgot password route
 router.post("/forgotpassword", async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -206,6 +216,6 @@ router.get("/viewAudit/:cid", userController.SpecificAudit);
 
 // Notification Routes
 
-router.post("/sendnotification", userController.sendnotification)
-router.get("/viewnotification", userController.viewnotification)
+router.post("/sendnotification", userController.sendnotification);
+router.get("/viewnotification", userController.viewnotification);
 module.exports = router;
