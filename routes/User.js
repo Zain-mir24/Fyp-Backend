@@ -141,7 +141,7 @@ router.post("/changepassword", async (req, res) => {
 });
 //Forgot password route
 router.post("/forgotpassword", async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -212,6 +212,6 @@ router.get("/viewAudit/:cid", userController.SpecificAudit);
 
 // Notification Routes
 
-router.post("/sendnotification", userController.sendnotification)
-router.get("/viewnotification", userController.viewnotification)
+router.post("/sendnotification", userController.sendnotification);
+router.get("/viewnotification", userController.viewnotification);
 module.exports = router;
