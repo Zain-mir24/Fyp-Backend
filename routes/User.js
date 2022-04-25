@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 const upload = require("../middleware/img").upload;
 const userController = require("../controllers/UserController");
 const appointmentController = require("../controllers/appointmentController");
-
+const Conversation = require("../models/Conversation");
 // var randtoken = require('rand-token')
 // var refreshTokens={}
 
@@ -63,19 +63,14 @@ router.post("/signup/:_id/:token", async (req, res) => {
       console.log("user not saved because token was not verified");
       return res.render("doesnt work");
     }
-    await user.save();
-    res.status(201).send({ user, token });
-    console.log("User saved");
-
+    const response = await user.save();
+    console.log(response, "User saved");
     const newConversation = new Conversation({
-      member: [user._id, "620baeeab232720e2c73d30e"],
+      member: [response._id, "620baeeab232720e2c73d30e"],
     });
-    try {
-      const savedConversation = newConversation.save();
-      res.status(200).json(savedConversation);
-    } catch (err) {
-      res.status(500).json(err);
-    }
+    const savedConversation = await newConversation.save();
+    console.log("conversation created");
+    if (savedConversation) res.status(201).send({ user, token });
   } catch (e) {
     console.log(e, "error while saving");
   }

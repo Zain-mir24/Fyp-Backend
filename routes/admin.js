@@ -378,5 +378,12 @@ router.get("/viewCampaign/:id", adminController.viewBeneficiaryCampaign);
 
 //  In this file we will get api from django
 // Random data generator will also be here
+// router.post("/generateddata", adminController.generateRandomData);
+
+// Prediction analysis
+router.post("/Predictionanalysis", adminController.addPredictionAnalysis);
+router.get("/Predictionanalysis", adminController.viewPredictionData);
+
+
 
 module.exports = router;
