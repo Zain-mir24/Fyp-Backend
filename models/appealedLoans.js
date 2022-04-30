@@ -24,16 +24,12 @@ const appealloanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  file: {
+  fileName: {
     type: String,
     required: true,
   },
   isApproved: {
     type: Boolean,
-    required: true,
-  },
-  bankAcc: {
-    type: Number,
     required: true,
   },
   status: {

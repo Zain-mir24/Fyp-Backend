@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 const upload = require("../middleware/img").upload;
 const userController = require("../controllers/UserController");
 const appointmentController = require("../controllers/appointmentController");
-const Conversation = require("../models/Conversation")
+const Conversation = require("../models/Conversation");
 // var randtoken = require('rand-token')
 // var refreshTokens={}
 
@@ -69,9 +69,8 @@ router.post("/signup/:_id/:token", async (req, res) => {
       member: [response._id.toString(), "620baeeab232720e2c73d30e"],
     });
     const savedConversation = await newConversation.save();
-    console.log("conversation created")
+    console.log("conversation created");
     if (savedConversation) res.status(201).send({ user, token });
-
   } catch (e) {
     console.log(e, "error while saving");
   }

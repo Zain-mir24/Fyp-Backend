@@ -25,13 +25,14 @@ router.post("/addCampaignappeal", upload.single("file"), async (req, res) => {
   }
 });
 router.post("/addloanappeal", upload.single("file"), async (req, res) => {
+  console.log(req.body, "body")
   var obj = {
     bid: req.body.bid,
     name: req.body.name,
     loandescription: req.body.loandescription,
     Loanamount: req.body.Loanamount,
     loanType: req.body.loanType,
-    file: req.body.fileName,
+    fileName: req.body.fileName,
     isApproved: false,
   };
   const camp = new loanappeal(obj);
