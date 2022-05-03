@@ -4,12 +4,13 @@ const appealcampaignSchema = new mongoose.Schema({
   bid: {
     type: mongoose.Types.ObjectId,
     required: true,
+    ref: "User",
   },
   name: {
     type: String,
     required: true,
   },
-  
+
   description: {
     type: String,
     required: true,
@@ -18,9 +19,9 @@ const appealcampaignSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  amountneeded:{
-    type:Number,
-    required:true
+  amountneeded: {
+    type: Number,
+    required: true
   }
 });
 const Campaignappeal = mongoose.model("Campaignappeal", appealcampaignSchema);

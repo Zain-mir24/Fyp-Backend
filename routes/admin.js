@@ -148,7 +148,7 @@ router.patch(
 //View campaigns appealed
 router.get("/viewcampaignAppeals", async (req, res) => {
   try {
-    const appeal = await Appeal.find({});
+    const appeal = await Appeal.find({}).populate("bid");
     var ids = appeal.map((i) => i.bid);
     console.log(ids);
     const beneficiary = await User.find({
