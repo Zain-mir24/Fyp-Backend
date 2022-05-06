@@ -5,7 +5,7 @@ const MonthlySchema = new mongoose.Schema({
         ref: "User"
     },
     phoneNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     cnic: {
