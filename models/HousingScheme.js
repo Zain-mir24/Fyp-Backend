@@ -70,10 +70,18 @@ const HousingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    images: {
+    fileName: {
         type: String,
     },
-
+    fileName2: {
+        type: String,
+    },
+    fileName3: {
+        type: String,
+    },
+    fileName4: {
+        type: String,
+    },
     family: [
         {
             name: { type: String },

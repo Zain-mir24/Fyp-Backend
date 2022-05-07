@@ -348,7 +348,10 @@ const addHousingScheme = async (req, res, next) => {
       EstimatedCost: req.body.EstimatedCost,
       EstimatedTimeFrame: req.body.EstimatedTimeFrame,
       contructionDetail: req.body.contructionDetail,
-      images: req.body.fileName,
+      fileName: req.body.fileName,
+      fileName2: req.body.fileName2,
+      fileName3: req.body.fileName3,
+      fileName4: req.body.fileName4,
       family: JSON.parse(req.body.family),
     });
     if (!add) {
