@@ -83,6 +83,19 @@ router.delete("/users/:id", async (req, res) => {
   }
 });
 
+router.get("/users/:id", async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.id }); //checking if id is in the database
+
+    if (!user) {
+      res.status(404).send();
+    }
+
+    res.send(user);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
 //Adding campaigns
 router.post("/addCampaign", upload.single("file"), async (req, res) => {
   const campaign = new Campaign(req.body);
@@ -169,6 +182,22 @@ router.get("/viewcampaignAppeals", async (req, res) => {
 router.get("/viewLoanAppeals", async (req, res, next) => {
   try {
     await AppealLoan.find({})
+      .populate("bid")
+      .exec((error, result) => {
+        if (error) {
+          return next(error);
+        }
+        console.log(result);
+        res.status(200).send(result);
+      });
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+router.get("/viewLoanAppeals/:id", async (req, res, next) => {
+  try {
+    await AppealLoan.find({ bid: req.params.id })
       .populate("bid")
       .exec((error, result) => {
         if (error) {
@@ -327,7 +356,7 @@ router.post(
     { name: "images", maxCount: 1 },
     { name: "image2", maxCount: 1 },
     { name: "image3", maxCount: 1 },
-    { name: "image4", maxCount: 1 }
+    { name: "image4", maxCount: 1 },
   ]),
   adminController.addHousingScheme
 );
@@ -388,7 +417,5 @@ router.get("/viewCampaign/:id", adminController.viewBeneficiaryCampaign);
 // Prediction analysis
 router.post("/Predictionanalysis", adminController.addPredictionAnalysis);
 router.get("/Predictionanalysis", adminController.viewPredictionData);
-
-
 
 module.exports = router;
