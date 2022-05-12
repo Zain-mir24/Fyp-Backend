@@ -323,7 +323,12 @@ router.get("/viewamountDetail/:id", adminController.viewammountDetail);
 // Housing Scheme for beneficiary
 router.post(
   "/addhousingScheme",
-  upload.single("images"),
+  upload.fields([
+    { name: "images", maxCount: 1 },
+    { name: "image2", maxCount: 1 },
+    { name: "image3", maxCount: 1 },
+    { name: "image4", maxCount: 1 }
+  ]),
   adminController.addHousingScheme
 );
 // Update Housing Scheme from Admin Panel
