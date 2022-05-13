@@ -27,7 +27,7 @@ router.get("/:userId", async (req, res) => {
     res.status(500).send(e);
   }
 });
-
+// this is for all conversation
 router.get("/", async (req, res) => {
   try {
     const conversation = await Conversation.find();
@@ -36,5 +36,6 @@ router.get("/", async (req, res) => {
     res.status(500).send(e);
   }
 });
+
 
 module.exports = router;

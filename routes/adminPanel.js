@@ -17,20 +17,19 @@ const mailSender = require("../email/account");
 // Verifying Email for  Latest News
 router.post("/saveEmail", async (req, res) => {
   console.log(req.body, "frontend");
-  const email = new Email(req.body);
   const email1 = await Email.findOne({ Email: req.body.Email });
   try {
     if (!email1) {
-      const link = await email.verifyToken();
-      console.log(link);
-      const mailOptions = {
-        from: '"Our Code World " <zainzz123@outlook.com>',
-        to: email,
-        subject: "Verify your email",
-        text: `Here is your verification link ${link}`,
-      };
-      await mailSender.transporter.sendMail(mailOptions);
-      res.status(201).send("Mailsent");
+      // const link = await email.verifyToken();
+      // console.log(link);
+      // const mailOptions = {
+      //   from: '"Our Code World " <zainzz123@outlook.com>',
+      //   to: email,
+      //   subject: "Verify your email",
+      //   text: `Here is your verification link ${link}`,
+      // };
+      const email = await Email.create(req.body)
+      res.status(201).send(email);
     } else {
       console.log("Mail exists");
     }
@@ -83,7 +82,9 @@ router.post("/sendAllEmail", async (req, res) => {
         text: req.body.message,
       };
       await mailSender.transporter.sendMail(mailOptions);
+
     });
+    console.log("email sent to everyone")
   } catch (e) {
     console.log(e);
   }
