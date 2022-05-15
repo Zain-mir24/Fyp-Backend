@@ -63,10 +63,14 @@ io.on("connection", (socket) => {
     console.log(receiverId, "done");
     const user = getUser(receiverId);
 
-    io.to(user.socketId).emit("getMessage", {
-      senderId,
-      text,
-    });
+    try {
+      io.to(user.socketId).emit("getMessage", {
+        senderId,
+        text,
+      });
+    } catch {
+      console.log("receiver not logged in");
+    }
   });
 
   // get name and send campaign notification
