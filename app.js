@@ -44,6 +44,7 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
+  console.log(users.find((user) => user.userId === userId), "this is what we are getting")
   return users.find((user) => user.userId === userId);
 };
 
@@ -57,8 +58,9 @@ io.on("connection", (socket) => {
   });
 
   // Send And Get Messages
-  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-    const user = getUser(receiverId);
+  socket.on("sendMessage", async ({ senderId, receiverId, text }) => {
+    console.log(receiverId)
+    const user = await getUser(receiverId);
     console.log(user)
     io.to(user.socketId).emit("getMessage", {
       senderId,
