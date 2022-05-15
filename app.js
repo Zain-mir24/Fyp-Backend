@@ -35,6 +35,7 @@ const io = require("socket.io")(4000, {
 
 let users = [];
 const addUser = (userId, socketId) => {
+  console.log("What is this");
   !users.some((user) => user.userId === userId) &&
     users.push({ userId, socketId });
 };
@@ -58,10 +59,10 @@ io.on("connection", (socket) => {
   });
 
   // Send And Get Messages
-  socket.on("sendMessage", async ({ senderId, receiverId, text }) => {
-    console.log(receiverId)
-    const user = await getUser(receiverId);
-    console.log(user)
+  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    console.log(receiverId, "done");
+    const user = getUser(receiverId);
+
     io.to(user.socketId).emit("getMessage", {
       senderId,
       text,
@@ -71,18 +72,18 @@ io.on("connection", (socket) => {
   // get name and send campaign notification
   socket.on("sendnotification", ({ name }) => {
     io.emit("getnotification", {
-      name
-    })
-  })
-
+      name,
+    });
+  });
 
   // get name and send campaign notification
   socket.on("sendDonation", ({ userName, campaignname }) => {
     io.emit("getDonation", {
       userName,
-      campaignname
-    })
-  })
+      campaignname,
+    });
+  });
+
   // socket.on("sendAdminMessage", ({ senderId, receiverId, text }) => {
   //   const user = getUser(receiverId);
   //   // console.log(user.socketId, "HELLO WORKK");
