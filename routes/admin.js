@@ -386,6 +386,7 @@ router.post("/addCowDetail", adminController.addCowDetail);
 router.post("/createAudit", adminController.CreateAuditTeam);
 router.patch("/updateTeam/:id", adminController.updateAuditTeam);
 router.get("/viewAudits", adminController.viewAudit);
+router.delete("/audit/:id", adminController.deleteAudit)
 
 // subAdmin routes
 router.post(

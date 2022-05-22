@@ -91,6 +91,25 @@ router.post("/sendAllEmail", async (req, res) => {
 
   res.status(200).send("OK");
 });
+// Api for sending a single mail
+router.post("/sendEmail", async (req, res) => {
+  try {
+
+    const mailOptions = {
+      from: req.body.from,
+      to: req.body.email,
+      subject: req.body.subject,
+      text: req.body.message,
+    };
+    await mailSender.transporter.sendMail(mailOptions);
+
+    console.log("email sent to Donor")
+  } catch (e) {
+    console.log(e);
+  }
+
+  res.status(200).send("OK");
+});
 
 router.delete("/deleteEmail/:id", async (req, res) => {
   try {

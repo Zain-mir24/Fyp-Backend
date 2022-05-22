@@ -725,6 +725,15 @@ const viewAudit = async (req, res, next) => {
     console.log(e);
   }
 };
+const deleteAudit = async (req, res, next) => {
+  try {
+    const audDelete = await Audit.findByIdAndDelete({ _id: req.params.id })
+    res.status(200).send(audDelete)
+
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
 // subadmin functions will be here at this point
 const uploadReport = async (req, res, next) => {
   console.log(req.body);
@@ -924,6 +933,7 @@ module.exports = {
   updateAuditTeam,
   viewAudit,
   uploadReport,
+  deleteAudit,
   viewBeneficiaryCampaign,
   deleteYoutubeDetail,
   viewYoutubeDetail,
