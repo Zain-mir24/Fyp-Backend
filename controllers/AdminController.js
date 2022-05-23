@@ -227,6 +227,33 @@ const donationDetails = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+const SpecificDonation = async (req, res, next) => {
+  try {
+    let arr = [];
+    await Donation.find({})
+      .populate("registeredUser.userId")
+      .exec((error, result) => {
+        if (error) {
+          return next(error);
+        }
+        result.forEach((item) => {
+          item.registeredUser.forEach((itemm) => {
+            if (itemm.userId?._id == req.params.id) {
+              arr.push({
+                campaignname: item.campaignname,
+                itemm
+              })
+
+            }
+          })
+        })
+
+        res.json(arr);
+      });
+  } catch (e) {
+    res.status(500).send(e);
+  }
+}
 // loan managment controllers
 const addLoanApproved = async (req, res, next) => {
   try {
@@ -922,6 +949,7 @@ const viewPredictionData = async (req, res, next) => {
 
 
 module.exports = {
+  SpecificDonation,
   addPredictionAnalysis,
   viewPredictionData,
   readDonor,

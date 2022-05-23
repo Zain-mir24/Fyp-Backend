@@ -333,6 +333,7 @@ router.get("/viewChild/:cid", adminController.specificChild);
 // Donation details through each campaign and donor name with each donation
 // Populating donors id
 router.get("/Donations", adminController.donationDetails);
+router.get("/Donations/:id", adminController.SpecificDonation);
 // loan management routes adding loan,updating ,deleting and viewing appeals
 router.patch("/approveLoanupdate/:Lid", adminController.updateLoanApproved);
 router.delete("/approveLoandelete/:Lid", adminController.deleteLoanApproved);
