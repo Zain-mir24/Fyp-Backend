@@ -227,6 +227,33 @@ const donationDetails = async (req, res, next) => {
     res.status(500).send(e);
   }
 };
+const SpecificDonation = async (req, res, next) => {
+  try {
+    let arr = [];
+    await Donation.find({})
+      .populate("registeredUser.userId")
+      .exec((error, result) => {
+        if (error) {
+          return next(error);
+        }
+        result.forEach((item) => {
+          item.registeredUser.forEach((itemm) => {
+            if (itemm.userId?._id == req.params.id) {
+              arr.push({
+                campaignname: item.campaignname,
+                itemm
+              })
+
+            }
+          })
+        })
+
+        res.json(arr);
+      });
+  } catch (e) {
+    res.status(500).send(e);
+  }
+}
 // loan managment controllers
 const addLoanApproved = async (req, res, next) => {
   try {
@@ -725,6 +752,15 @@ const viewAudit = async (req, res, next) => {
     console.log(e);
   }
 };
+const deleteAudit = async (req, res, next) => {
+  try {
+    const audDelete = await Audit.findByIdAndDelete({ _id: req.params.id })
+    res.status(200).send(audDelete)
+
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
 // subadmin functions will be here at this point
 const uploadReport = async (req, res, next) => {
   console.log(req.body);
@@ -913,6 +949,7 @@ const viewPredictionData = async (req, res, next) => {
 
 
 module.exports = {
+  SpecificDonation,
   addPredictionAnalysis,
   viewPredictionData,
   readDonor,
@@ -924,6 +961,7 @@ module.exports = {
   updateAuditTeam,
   viewAudit,
   uploadReport,
+  deleteAudit,
   viewBeneficiaryCampaign,
   deleteYoutubeDetail,
   viewYoutubeDetail,

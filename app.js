@@ -45,6 +45,7 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
+  console.log(users.find((user) => user.userId === userId), "this is what we are getting")
   return users.find((user) => user.userId === userId);
 };
 
