@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const campaignSchema = new mongoose.Schema({
-  Uid: {
-    type: mongoose.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+  // Uid: {
+  //   type: mongoose.Types.ObjectId,
+  //   ref: "User",
+  //   required: true,
+  // },
   name: {
     type: String,
     required: true,
