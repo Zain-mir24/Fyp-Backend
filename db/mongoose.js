@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
-  const dotenv = require("dotenv");
-  dotenv.config();
+const dotenv = require("dotenv");
+dotenv.config();
 // mongoose
 //   .connect(
 //     "mongodb+srv://Zain:globalreach123@cluster0.myxr4.mongodb.net/Globalreach?retryWrites=true&w=majority",
 mongoose
   .connect(
-    process.env.MONGO_URL,
+    "mongodb+srv://Zain:globalreach123@cluster0.myxr4.mongodb.net/Globalreach?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useCreateIndex: true,
