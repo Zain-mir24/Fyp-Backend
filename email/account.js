@@ -1,11 +1,10 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  secure: true,
+  service: "gmail",
   auth: {
     user: "globalreach.donate@gmail.com",
-    pass: "globalreach123",
+    pass: "yhziserzjgoyrvks",
   },
 });
 
