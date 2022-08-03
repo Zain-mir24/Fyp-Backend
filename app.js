@@ -109,13 +109,17 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
+let corsOptions = {
+  origin: ['https://warm-bayou-94304.herokuapp.com/'],
+}
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
 app.use("/", mainRouter);
 app.use("/admin", adminRouter);
 app.use("/User", apirouter);
