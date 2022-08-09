@@ -45,7 +45,10 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
-  console.log(users.find((user) => user.userId === userId), "this is what we are getting")
+  console.log(
+    users.find((user) => user.userId === userId),
+    "this is what we are getting"
+  );
   return users.find((user) => user.userId === userId);
 };
 
@@ -110,8 +113,8 @@ app.use((req, res, next) => {
   next();
 });
 let corsOptions = {
-  origin: ['https://warm-bayou-94304.herokuapp.com/'],
-}
+  origin: ["https://pacific-refuge-71507.herokuapp.com/"],
+};
 
 app.use(logger("dev"));
 app.use(express.json());
