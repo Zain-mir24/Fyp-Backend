@@ -113,7 +113,7 @@ app.use((req, res, next) => {
   next();
 });
 let corsOptions = {
-  origin: ["https://pacific-refuge-71507.herokuapp.com/"],
+  origin: ["https://warm-bayou-94304.herokuapp.com/", "http://localhost:3000"],
 };
 
 app.use(logger("dev"));
