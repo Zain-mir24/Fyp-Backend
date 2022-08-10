@@ -112,13 +112,13 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
-let corsOptions = {
-  origin: ["https://warm-bayou-94304.herokuapp.com/", "http://localhost:3000"],
-};
+// let corsOptions = {
+//   origin: ["https://warm-bayou-94304.herokuapp.com/", "http://localhost:3000"],
+// };
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
