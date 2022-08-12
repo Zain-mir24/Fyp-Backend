@@ -86,7 +86,7 @@ userSchema.methods.generateSecretToken = async function () {
     _id: user._id.toString(),
   };
   const token = jwt.sign(payload, secret, { expiresIn: "5m" });
-  const link = `http://localhost:3000/resetPassword/${user._id}/${token}`;
+  const link = `https://warm-bayou-94304.herokuapp.com/${user._id}/${token}`;
   await user.save();
 
   return link;
@@ -107,14 +107,14 @@ userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    console.log(user, "user")
+    console.log(user, "user");
     throw new Error("Unable to login");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    console.log(Match, "MAtch")
+    console.log(Match, "MAtch");
     throw new Error("Unable to login");
   }
 
