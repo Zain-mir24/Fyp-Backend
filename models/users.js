@@ -99,7 +99,7 @@ userSchema.methods.verifyToken = async function () {
     _id: user._id.toString(),
   };
   const token = jwt.sign(payload, secret, { expiresIn: "5m" });
-  const link = `http://localhost:3000/addUser/${user._id}/${token}/${user.name}/${user.email}/${user.password}/${user.userType}`;
+  const link = `https://warm-bayou-94304.herokuapp.com/addUser/${user._id}/${token}/${user.name}/${user.email}/${user.password}/${user.userType}`;
   return link;
 };
 
