@@ -16,7 +16,7 @@ const Conversation = require("../models/Conversation");
 // var refreshTokens={}
 
 //Reading users
-router.get("/users", auth, async (req, res, next) => {
+router.get("/users", async (req, res, next) => {
   try {
     const user = await User.find({});
     console.log("its working");
@@ -65,7 +65,6 @@ router.post("/signup/:_id/:token", async (req, res) => {
     }
     const response = await user.save();
     console.log(response._id.toString(), "User saved");
-
 
     const newConversation = new Conversation({
       member: [response._id.toString(), "620baeeab232720e2c73d30e"],
